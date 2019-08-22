@@ -5,7 +5,7 @@ export default class Logger extends Component{
         super(props);
         this.state = {
             display: true
-        }
+        };
     }
 
     componentDidMount(){
@@ -13,7 +13,7 @@ export default class Logger extends Component{
             this.setState({
                 display: false
             });
-        }, 50000)
+        }, 35000)
     }
 
     render() {
@@ -29,5 +29,4 @@ export default class Logger extends Component{
             return (<div className="none"></div>)
         }
     }
-
 }

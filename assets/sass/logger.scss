@@ -1,6 +1,6 @@
 .logger-box{
   position: fixed;
-  bottom: 50px;
+  top: 50px;
   right: 20px;
   width: 25em;
   min-height: 5em;
@@ -10,6 +10,7 @@
   align-items: center;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(30, 30, 30, 1);
+  padding: 5px;
 }
 
 .none{

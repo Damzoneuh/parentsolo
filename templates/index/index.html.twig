@@ -5,6 +5,10 @@
 {% block stylesheets %}{{ parent() }}{% endblock %}
 
 {% block body %}
-    {% block navbar %}<a href="{{ path('app_login') }}">Login</a>{% endblock %}
-    <div id="register" data-token="{{ csrf_token('register') }}"></div>
+    {% if is_granted('ROLE_USER') %}
+        <a href={{ path('app_logout') }}>Logout</a>
+    {% else %}
+        <a href="{{ path('app_login') }}">Login</a>
+        <div id="register" data-token="{{ csrf_token('register') }}"></div>
+    {% endif %}
 {% endblock %}
