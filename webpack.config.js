@@ -71,6 +71,7 @@ Encore
     //.addEntry('admin', './assets/js/admin.js')
     .addEntry('payment', './assets/js/modules/payment/Payment.js')
     .addEntry('global', './assets/sass/global.scss')
+    .addEntry('register', './assets/js/modules/registration/Registration.js')
 ;
 
 module.exports = Encore.getWebpackConfig();

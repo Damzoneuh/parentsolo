@@ -12,6 +12,7 @@ parameters:
     api.six.uri: 'https://test.saferpay.com/api'
     api.six.customer: '247964'
     api.six.terminal: '17966309'
+    api.geo.uri: 'http://ip-api.com/json'
 services:
     # default configuration for services in *this* file
     _defaults:

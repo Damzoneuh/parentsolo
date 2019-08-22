@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Index{% endblock %}
+{% block javascripts %}{{ parent() }}{{ encore_entry_script_tags('register') }}{% endblock %}
+{% block stylesheets %}{{ parent() }}{% endblock %}
+
+{% block body %}
+    {% block navbar %}<a href="{{ path('app_login') }}">Login</a>{% endblock %}
+    <div id="register" data-token="{{ csrf_token('register') }}"></div>
+{% endblock %}
