@@ -26,15 +26,13 @@ export default class Registration extends Component{
         })
     }
 
-    handleSubmit(e){
-        e.preventDefault();
+    handleSubmit(){
+        event.preventDefault();
         if (
             this.state.password && this.state.plainPassword
             && this.state.email && this.state.number
         ){
-            console.log('ici');
             if (this.state.plainPassword === this.state.password){
-                console.log('la');
                 let elem = document.getElementById('register');
                 let token = elem.dataset.token;
                 let data = {};
@@ -47,23 +45,16 @@ export default class Registration extends Component{
                     .then(res => {
                         this.setState({
                             message: 'An email was sent to ' + this.state.email + ' to confirm your profile',
-                            type: 'success'
+                            type: 'success',
+                            number: null,
+                            email: null,
+                            password: null,
+                            plainPassword: null
                         });
-                        this.clearForm();
                     });
             }
         }
     }
-
-    clearForm(){
-        this.setState({
-            number: null,
-            email: null,
-            password: null,
-            plainPassword: null
-        })
-    }
-
     render() {
         const {isLoaded, data, type, message} = this.state;
         if (!isLoaded)
@@ -77,7 +68,7 @@ export default class Registration extends Component{
                 <div>
                     <Logger message={message} type={type}/>
                     <div className="register-wrap">
-                        <form onChange={this.handleForm}>
+                        <form onChange={this.handleForm} onSubmit={this.handleSubmit} method="post">
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
                                 <input type="email" name="email" className="form-control" required/>
@@ -97,10 +88,10 @@ export default class Registration extends Component{
                                 <label htmlFor="plainPassword">Confirm your password</label>
                                 <input type="password" name="plainPassword" className="form-control" required/>
                             </div>
+                            <div className="marg-top-10">
+                                <button className="btn btn-group-lg btn-primary">Register</button>
+                            </div>
                         </form>
-                        <div className="marg-top-10">
-                            <button className="btn btn-group-lg btn-primary" onClick={this.handleSubmit}>Register</button>
-                        </div>
                     </div>
                 </div>
             )
