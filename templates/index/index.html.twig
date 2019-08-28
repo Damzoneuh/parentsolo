@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Index{% endblock %}
+{% block javascripts %}{{ parent() }}{{ encore_entry_script_tags('register') }}{% endblock %}
+{% block stylesheets %}{{ parent() }}{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href={{ path('app_logout') }}>Logout</a>
+    {% else %}
+        <a href="{{ path('app_login') }}">Login</a>
+        <div id="register" data-token="{{ csrf_token('register') }}"></div>
+    {% endif %}
+{% endblock %}

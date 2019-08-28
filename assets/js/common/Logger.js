@@ -5,19 +5,19 @@ export default class Logger extends Component{
         super(props);
         this.state = {
             display: true
-        }
+        };
+        this.stopDisplay = this.stopDisplay.bind(this);
     }
 
-    componentDidMount(){
-        setTimeout(() => {
-            this.setState({
-                display: false
-            });
-        }, 50000)
+    stopDisplay(){
+        this.setState({
+            display: false
+        })
     }
 
     render() {
         const {display} = this.state;
+        setTimeout(this.stopDisplay, 20000);
         if (display && this.props.message){
             return (
                 <div className={"logger-box " + (this.props.type)}>
@@ -29,5 +29,4 @@ export default class Logger extends Component{
             return (<div className="none"></div>)
         }
     }
-
 }

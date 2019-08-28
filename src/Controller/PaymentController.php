@@ -47,7 +47,9 @@ class PaymentController extends AbstractController
         $data['context'] = $content['settings']['context'];
         $data['currency'] = $content['settings']['currency'];
         $six = self::createSixInstance();
-        return $this->json($six->createDirectPayment($data), 200);
+        $payment = $six->createDirectPayment($data);
+        dump(json_decode($payment));
+        die;
     }
 
     private function createSixInstance(){
