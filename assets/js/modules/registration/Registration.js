@@ -14,7 +14,8 @@ export default class Registration extends Component{
             password: null,
             plainPassword: null,
             type: null,
-            message: null
+            message: null,
+            reset: null
         };
         this.handleForm = this.handleForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,7 +57,7 @@ export default class Registration extends Component{
         }
     }
     render() {
-        const {isLoaded, data, type, message} = this.state;
+        const {isLoaded, data, type, message, reset} = this.state;
         if (!isLoaded)
         {
             return (
@@ -92,6 +93,9 @@ export default class Registration extends Component{
                                 <button className="btn btn-group-lg btn-primary">Register</button>
                             </div>
                         </form>
+                        <div className="marg-top-10">
+                            <button className="btn btn-group-lg btn-primary" onClick={() => this.handleForgot}>Forgot password ?</button>
+                        </div>
                     </div>
                 </div>
             )

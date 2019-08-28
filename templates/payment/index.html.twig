@@ -5,6 +5,5 @@
     {{ encore_entry_script_tags('payment') }}
 {% endblock %}
 {% block body %}
-    {% include 'security/register.html.twig' %}
     <div id="payment" data-settings="{{ settings|json_encode|format }}" data-token="{{ csrf_token('payment') }}"></div>
 {% endblock %}

@@ -163,7 +163,6 @@ export default class CardEntries extends Component{
             return (
                 <div className="container-loader">
                     <div className="ring">
-                        Traitement en cours
                         <span className="ring-span"></span>
                     </div>
                 </div>

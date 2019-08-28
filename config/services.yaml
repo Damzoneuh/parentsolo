@@ -31,5 +31,9 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Mailer\:
+        resource: '../src/Mailer'
+        arguments: ['swiftmailer.mailer.default', '@twig']
+        public: true
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

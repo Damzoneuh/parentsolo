@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -52,6 +54,39 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $isValidated;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PaymentProfil", mappedBy="user")
+     */
+    private $payment_profil;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Img", mappedBy="user")
+     */
+    private $img;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Profil", cascade={"persist", "remove"})
+     */
+    private $profil;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
+     */
+    private $groups;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Items", mappedBy="user")
+     */
+    private $items;
+
+    public function __construct()
+    {
+        $this->payment_profil = new ArrayCollection();
+        $this->img = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->items = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -175,6 +210,137 @@ class User implements UserInterface
     public function setIsValidated(bool $isValidated): self
     {
         $this->isValidated = $isValidated;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PaymentProfil[]
+     */
+    public function getPaymentProfil(): Collection
+    {
+        return $this->payment_profil;
+    }
+
+    public function addPaymentProfil(PaymentProfil $paymentProfil): self
+    {
+        if (!$this->payment_profil->contains($paymentProfil)) {
+            $this->payment_profil[] = $paymentProfil;
+            $paymentProfil->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaymentProfil(PaymentProfil $paymentProfil): self
+    {
+        if ($this->payment_profil->contains($paymentProfil)) {
+            $this->payment_profil->removeElement($paymentProfil);
+            // set the owning side to null (unless already changed)
+            if ($paymentProfil->getUser() === $this) {
+                $paymentProfil->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Img[]
+     */
+    public function getImg(): Collection
+    {
+        return $this->img;
+    }
+
+    public function addImg(Img $img): self
+    {
+        if (!$this->img->contains($img)) {
+            $this->img[] = $img;
+            $img->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImg(Img $img): self
+    {
+        if ($this->img->contains($img)) {
+            $this->img->removeElement($img);
+            // set the owning side to null (unless already changed)
+            if ($img->getUser() === $this) {
+                $img->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?Profil $profil): self
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Items[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Items $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Items $item): self
+    {
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+            // set the owning side to null (unless already changed)
+            if ($item->getUser() === $this) {
+                $item->setUser(null);
+            }
+        }
 
         return $this;
     }
