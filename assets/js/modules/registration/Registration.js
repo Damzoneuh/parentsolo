@@ -15,16 +15,20 @@ export default class Registration extends Component{
             plainPassword: null,
             type: null,
             message: null,
-            reset: null
+            reset: null,
+            isMan: false
         };
         this.handleForm = this.handleForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
     handleForm(e){
-        this.setState({
-            [e.target.name] : e.target.value
-        })
+        if (e.target.type !== 'checkbox') {
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        }
     }
 
     handleSubmit(){
@@ -42,6 +46,7 @@ export default class Registration extends Component{
                 data.credentials.email = this.state.email;
                 data.credentials.number = this.state.number;
                 data.credentials.password = this.state.password;
+                data.credentials.sex = this.state.isMan;
                 axios.post('/api/register', data)
                     .then(res => {
                         this.setState({
@@ -56,8 +61,14 @@ export default class Registration extends Component{
             }
         }
     }
+
+    handleCheckbox(){
+        this.setState({
+            isMan: !this.state.isMan
+        })
+    }
     render() {
-        const {isLoaded, data, type, message, reset} = this.state;
+        const {isLoaded, data, type, message, reset, isMan} = this.state;
         if (!isLoaded)
         {
             return (
@@ -70,6 +81,11 @@ export default class Registration extends Component{
                     <Logger message={message} type={type}/>
                     <div className="register-wrap">
                         <form onChange={this.handleForm} onSubmit={this.handleSubmit} method="post">
+                            <div className="custom-control custom-switch flex-row align-items-center justify-content-around flex w-25">
+                                <div className="m-4">I'm a woman</div>
+                                <input type="checkbox" className="custom-control-input m-auto" id="isMan" name="isMan" onChange={this.handleCheckbox} defaultChecked={isMan}/>
+                                <label className="custom-control-label m-auto" htmlFor="isMan">I'm a man</label>
+                            </div>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
                                 <input type="email" name="email" className="form-control" required/>
@@ -93,9 +109,6 @@ export default class Registration extends Component{
                                 <button className="btn btn-group-lg btn-primary">Register</button>
                             </div>
                         </form>
-                        <div className="marg-top-10">
-                            <button className="btn btn-group-lg btn-primary" onClick={() => this.handleForgot}>Forgot password ?</button>
-                        </div>
                     </div>
                 </div>
             )

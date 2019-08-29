@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Payment;
+use App\Entity\PaymentProfil;
+use App\Entity\User;
 use backndev\sixpayment\SixPayment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -36,6 +39,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Route("/api/card", name="payment_card_credentials", methods={"POST"})
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function getCardCredentials(Request $request){
         if (!$request->isMethod('POST') || !self::checkToken($request)){
@@ -47,9 +51,23 @@ class PaymentController extends AbstractController
         $data['context'] = $content['settings']['context'];
         $data['currency'] = $content['settings']['currency'];
         $six = self::createSixInstance();
-        $payment = $six->createDirectPayment($data);
-        dump(json_decode($payment));
-        die;
+        $payment = json_decode($six->createDirectPayment($data));
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $pay = new PaymentProfil();
+        $pay->setUser($user);
+        $pay->setAlias('alias' . $payment->alias);
+        $em->persist($pay);
+
+        $paid = new Payment();
+        $paid->setPaymentProfil($pay);
+        $paid->setUniqKey($payment->Transaction->Id);
+        $em->persist($paid);
+        $em->flush();
+
+        return $this->json($this->_serializer->encode($payment, 'json'));
     }
 
     private function createSixInstance(){

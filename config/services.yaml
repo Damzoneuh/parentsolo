@@ -13,6 +13,7 @@ parameters:
     api.six.customer: '247964'
     api.six.terminal: '17966309'
     api.geo.uri: 'http://ip-api.com/json'
+    storage.img: '/var/www/html/storage/img'
 services:
     # default configuration for services in *this* file
     _defaults:

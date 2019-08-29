@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Profil;
 use App\Entity\User;
 use App\Mailer\Mailing;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,17 +34,24 @@ class RegistrationController extends AbstractController
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws \Exception
      * @Route("/api/register", name="app_register_form", methods={"POST"})
      */
     public function index(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer){
         if (!self::checkToken($request)){
             return $this->json(['data' => ['error' => 'bad token']]);
         }
-        if (self::checkCountry($request)){ //TODO retirer le fr à la fin
+        $country = self::checkCountry($request);
+        if ($country){
             $token = self::genToken();
             $data = $this->_serializer->decode($request->getContent(), 'json');
+            $profil = new Profil();
+            $profil->setIsMan($data['credentials']['sex']);
             $em = $this->getDoctrine()->getManager();
             $user = new User();
+            $user->setCountry($country);
+            $user->setProfil($profil);
+            $user->setPhone($data['credentials']['number']);
             $user->setPassword($encoder->encodePassword($user, $data['credentials']['password']));
             $user->setEmail($data['credentials']['email']);
             $user->setRoles(['ROLE_USER']);
@@ -162,7 +170,7 @@ class RegistrationController extends AbstractController
         $response = $client->request('GET', $this->getParameter('api.geo.uri') . '/' . $clientIp);
         $data = $this->_serializer->decode($response->getContent(), 'json');
         if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){ //TODO retirer le fr à la fin
-            return $data;
+            return $data['countryCode'];
         }
         return false;
     }
