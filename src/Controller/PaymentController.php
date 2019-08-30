@@ -9,6 +9,7 @@ use backndev\sixpayment\SixPayment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -45,27 +46,39 @@ class PaymentController extends AbstractController
         if (!$request->isMethod('POST') || !self::checkToken($request)){
             throw new AccessDeniedException();
         }
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $six = self::createSixInstance();
         $content = $this->_serializer->decode($request->getContent(), 'json');
         $data['credentials'] = $content['credentials'];
         $data['amount'] = $content['settings']['amount'];
         $data['context'] = $content['settings']['context'];
         $data['currency'] = $content['settings']['currency'];
-        $six = self::createSixInstance();
-        $payment = json_decode($six->createDirectPayment($data));
-        /** @var User $user */
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
+        if (count($user->getPaymentProfil()) > 0){
+            $alias = $six->createAlias($data);
+            $paymentProfil = new PaymentProfil();
+            $paymentProfil->setAlias('alias' . $alias->Alias->Id);
+            $paymentProfil->setUser($user);
+            $em->persist($paymentProfil);
+            $em->flush();
+        }
+        else {
+            $payment = json_decode($six->createDirectPayment($data));
 
-        $pay = new PaymentProfil();
-        $pay->setUser($user);
-        $pay->setAlias('alias' . $payment->alias);
-        $em->persist($pay);
+            $paid = new Payment();
+            $paymentProfil = $user->getPaymentProfil();
+            $paid->setPaymentProfil($paymentProfil[0]);
+            $paid->setUniqKey($payment->Transaction->Id);
+            $paid->setIsCaptured(false);
+            $em->persist($paid);
+            $em->flush();
 
-        $paid = new Payment();
-        $paid->setPaymentProfil($pay);
-        $paid->setUniqKey($payment->Transaction->Id);
-        $em->persist($paid);
-        $em->flush();
+            $process = new Process(['php', 'console', 'payment:capture']);
+            $process->setWorkingDirectory('/var/www/html/bin/');
+            $process->start();
+            $process->wait();
+        }
 
         return $this->json($this->_serializer->encode($payment, 'json'));
     }
