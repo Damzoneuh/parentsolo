@@ -4,6 +4,7 @@
 namespace App\Mailer;
 
 use App\Entity\User;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class Mailing
 {
@@ -40,5 +41,20 @@ class Mailing
                 <a class="btn btn-primary btn-group" href="https://parentsolo.backndev.fr/reset/browse/' . $token . '">Reset</a>
             </body>', 'text/html');
         $this->_mailer->send($this->_message);
+    }
+
+    public function sendException(ExceptionEvent $event){
+        $e = $event->getException();
+        $message = new \Swift_Message();
+        $message->setSubject('Exception');
+        $message->setTo('damien@backndev.fr');
+        $message->setFrom('exception@parentsolo.ch');
+        $message->setBody('
+            <h1>Exception Caught</h1>
+            <p>message : '. $e->getMessage() . '</p>
+            <p>error code : ' . $e->getCode()  . '</p>
+            <p>stack trace : ' . $e->getTraceAsString() . '</p>
+        ', 'text/html');
+        $this->_mailer->send($message);
     }
 }
