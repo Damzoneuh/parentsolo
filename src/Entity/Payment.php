@@ -26,6 +26,11 @@ class Payment
      */
     private $paymentProfil;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isCaptured;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class Payment
     public function setPaymentProfil(?PaymentProfil $paymentProfil): self
     {
         $this->paymentProfil = $paymentProfil;
+
+        return $this;
+    }
+
+    public function getIsCaptured(): ?bool
+    {
+        return $this->isCaptured;
+    }
+
+    public function setIsCaptured(bool $isCaptured): self
+    {
+        $this->isCaptured = $isCaptured;
 
         return $this;
     }

@@ -74,6 +74,7 @@ Encore
     .addEntry('register', './assets/js/modules/registration/Registration.js')
     .addEntry('reset', './assets/js/modules/registration/Reset.js')
     .addEntry('resetemail', './assets/js/modules/registration/ResetEmail.js')
+    .addEntry('profil', './assets/js/modules/profil/Profil.js')
 ;
 
 module.exports = Encore.getWebpackConfig();

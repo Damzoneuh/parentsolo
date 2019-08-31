@@ -24,11 +24,6 @@ class Profil
     private $is_man;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $canton;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -116,7 +111,7 @@ class Profil
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Origin", inversedBy="profil", cascade={"persist", "remove"})
      */
-    private $origiin;
+    private $origin;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Weight", inversedBy="profil", cascade={"persist", "remove"})
@@ -183,6 +178,11 @@ class Profil
      */
     private $favorite;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Canton", inversedBy="profil", cascade={"persist", "remove"})
+     */
+    private $canton;
+
     public function __construct()
     {
         $this->childs = new ArrayCollection();
@@ -211,18 +211,6 @@ class Profil
     public function setIsMan(bool $is_man): self
     {
         $this->is_man = $is_man;
-
-        return $this;
-    }
-
-    public function getCanton(): ?string
-    {
-        return $this->canton;
-    }
-
-    public function setCanton(?string $canton): self
-    {
-        $this->canton = $canton;
 
         return $this;
     }
@@ -469,14 +457,14 @@ class Profil
         return $this;
     }
 
-    public function getOrigiin(): ?Origin
+    public function getorigin(): ?Origin
     {
-        return $this->origiin;
+        return $this->origin;
     }
 
-    public function setOrigiin(?Origin $origiin): self
+    public function setorigin(?Origin $origin): self
     {
-        $this->origiin = $origiin;
+        $this->origin = $origin;
 
         return $this;
     }
@@ -759,6 +747,18 @@ class Profil
         if ($this->favorite->contains($favorite)) {
             $this->favorite->removeElement($favorite);
         }
+
+        return $this;
+    }
+
+    public function getCanton(): ?Canton
+    {
+        return $this->canton;
+    }
+
+    public function setCanton(?Canton $canton): self
+    {
+        $this->canton = $canton;
 
         return $this;
     }

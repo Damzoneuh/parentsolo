@@ -5,6 +5,8 @@ import '../../../sass/global.scss';
 import SelectPayment from "./SelectPayment";
 import CardEntries from "./CardEntries";
 import Logger from "../../common/Logger";
+import axios from 'axios';
+import KnowCards from "./KnowCards";
 
 export default class Payment extends Component{
    constructor(props){
@@ -20,8 +22,15 @@ export default class Payment extends Component{
            message: {
                message: null,
                type: null
-           }
+           },
+           cards: []
        };
+       axios.get('/api/payment/profil')
+           .then(res => {
+               this.setState({
+                   cards: res.data
+               });
+           });
        this.tabHandler = this.tabHandler.bind(this);
        this.loggerHandler = this.loggerHandler.bind(this);
    }
@@ -43,11 +52,13 @@ export default class Payment extends Component{
 
 
     render() {
-       const {settings, message, tab, token} = this.state;
+       const {settings, message, tab, token, cards} = this.state;
        if (tab === 1) {
            return (
                <div>
+                   <Logger message={message.message} type={message.type}/>
                    <SelectPayment handler={this.tabHandler}/>
+                   {cards.length > 0 ? <KnowCards cards={cards} token={token} logger={this.loggerHandler}/> : ''}
                </div>
            );
        }

@@ -26,6 +26,31 @@ class PaymentProfil
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $card_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $display_text;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $exp_month;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $exp_year;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $selected;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +76,66 @@ class PaymentProfil
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCardName(): ?string
+    {
+        return $this->card_name;
+    }
+
+    public function setCardName(string $card_name): self
+    {
+        $this->card_name = $card_name;
+
+        return $this;
+    }
+
+    public function getDisplayText(): ?string
+    {
+        return $this->display_text;
+    }
+
+    public function setDisplayText(string $display_text): self
+    {
+        $this->display_text = $display_text;
+
+        return $this;
+    }
+
+    public function getExpMonth(): ?int
+    {
+        return $this->exp_month;
+    }
+
+    public function setExpMonth(int $exp_month): self
+    {
+        $this->exp_month = $exp_month;
+
+        return $this;
+    }
+
+    public function getExpYear(): ?int
+    {
+        return $this->exp_year;
+    }
+
+    public function setExpYear(int $exp_year): self
+    {
+        $this->exp_year = $exp_year;
+
+        return $this;
+    }
+
+    public function getSelected(): ?bool
+    {
+        return $this->selected;
+    }
+
+    public function setSelected(bool $selected): self
+    {
+        $this->selected = $selected;
 
         return $this;
     }
