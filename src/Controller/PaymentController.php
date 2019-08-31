@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use App\Async\SixProcess;
 use App\Entity\Payment;
 use App\Entity\PaymentProfil;
 use App\Entity\User;
-use App\Process\SixProcess;
 use backndev\sixpayment\SixPayment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -54,13 +55,14 @@ class PaymentController extends AbstractController
         $six = self::createSixInstance();
         $payment = json_decode($six->createDirectPayment($data));
         $alias = $six->createAlias($data);
+        $alias = json_decode($alias);
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $pay = new PaymentProfil();
         $pay->setUser($user);
-        $pay->setAlias('alias' . $alias->Alias->Id);
+        $pay->setAlias($alias->Alias->Id);
         $em->persist($pay);
 
         $paid = new Payment();
@@ -69,8 +71,6 @@ class PaymentController extends AbstractController
         $paid->setIsCaptured(false);
         $em->persist($paid);
         $em->flush();
-
-        SixProcess::capturePayments();
 
         return $this->json($this->_serializer->encode($payment, 'json'));
     }
@@ -83,6 +83,23 @@ class PaymentController extends AbstractController
     public function payWithAlias(Request $request){
         //TODO create payment with a know card
         return $this->json('cool');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/payment/profil", name="api_know_card_profil")
+     */
+    public function checkIfKnowCard(){
+        /** @var User $user */
+        $user = $this->getUser();
+        if(count($user->getPaymentProfil()) > 0){
+            $cards = [];
+            foreach ($user->getPaymentProfil() as $paymentProfil){
+                array_push($cards, $paymentProfil);
+            }
+            return $this->json($cards);
+        }
+        return $this->json([]);
     }
 
     private function createSixInstance(){
@@ -100,5 +117,14 @@ class PaymentController extends AbstractController
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/cron/capture", name="api_cron_capture")
+     */
+    public function doACapture(){
+        SixProcess::capture();
+        return $this->json('ok');
     }
 }
