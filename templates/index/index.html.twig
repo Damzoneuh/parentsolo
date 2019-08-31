@@ -7,6 +7,7 @@
 {% block body %}
     {% if is_granted('ROLE_USER') %}
         <a href={{ path('app_logout') }}>Logout</a>
+        <a href="{{ path('profil') }}">Mon profile</a>
     {% else %}
         <a href="{{ path('app_login') }}">Login</a>
         <div id="register" data-token="{{ csrf_token('register') }}"></div>

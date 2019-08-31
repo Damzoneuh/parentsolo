@@ -76,16 +76,25 @@ class User implements UserInterface
     private $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Items", mappedBy="user")
+     * @ORM\Column(type="integer")
      */
-    private $items;
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $country;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Subscribe", cascade={"persist", "remove"})
+     */
+    private $subscribe;
 
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
         $this->groups = new ArrayCollection();
-        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -314,33 +323,38 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Items[]
-     */
-    public function getItems(): Collection
+    public function getPhone(): ?int
     {
-        return $this->items;
+        return $this->phone;
     }
 
-    public function addItem(Items $item): self
+    public function setPhone(int $phone): self
     {
-        if (!$this->items->contains($item)) {
-            $this->items[] = $item;
-            $item->setUser($this);
-        }
+        $this->phone = $phone;
 
         return $this;
     }
 
-    public function removeItem(Items $item): self
+    public function getCountry(): ?string
     {
-        if ($this->items->contains($item)) {
-            $this->items->removeElement($item);
-            // set the owning side to null (unless already changed)
-            if ($item->getUser() === $this) {
-                $item->setUser(null);
-            }
-        }
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getSubscribe(): ?Subscribe
+    {
+        return $this->subscribe;
+    }
+
+    public function setSubscribe(?Subscribe $subscribe): self
+    {
+        $this->subscribe = $subscribe;
 
         return $this;
     }
