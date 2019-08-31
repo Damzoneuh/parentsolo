@@ -44,6 +44,7 @@ export default class CardEntries extends Component{
         axios.post('https://parentsolo.backndev.fr/api/card', data)
             .then(res => {
                 let data = JSON.parse(res.data);
+                console.log(data);
                 if (data.error){
                     let log = {
                         message: data.error,
@@ -56,7 +57,6 @@ export default class CardEntries extends Component{
                 }
                 else {
                     if (data.Transaction.Status === 'AUTHORIZED') {
-                        console.log('auth');
                         let log = {
                             message: 'Payment succeeded',
                             type: 'success'
@@ -65,7 +65,7 @@ export default class CardEntries extends Component{
                             isLoaded: true
                         });
                         this.handleLogger(log);
-                        setTimeout(() => window.location.href = '/', 5000);
+                        //setTimeout(() => window.location.href = '/', 5000);
                     }
                     else {
                         let log = {

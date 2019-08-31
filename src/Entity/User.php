@@ -76,11 +76,6 @@ class User implements UserInterface
     private $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Items", mappedBy="user")
-     */
-    private $items;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $phone;
@@ -95,7 +90,6 @@ class User implements UserInterface
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
         $this->groups = new ArrayCollection();
-        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -319,37 +313,6 @@ class User implements UserInterface
     {
         if ($this->groups->contains($group)) {
             $this->groups->removeElement($group);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Items[]
-     */
-    public function getItems(): Collection
-    {
-        return $this->items;
-    }
-
-    public function addItem(Items $item): self
-    {
-        if (!$this->items->contains($item)) {
-            $this->items[] = $item;
-            $item->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeItem(Items $item): self
-    {
-        if ($this->items->contains($item)) {
-            $this->items->removeElement($item);
-            // set the owning side to null (unless already changed)
-            if ($item->getUser() === $this) {
-                $item->setUser(null);
-            }
         }
 
         return $this;

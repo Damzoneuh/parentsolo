@@ -22,14 +22,14 @@ class Items
     private $type;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="float")
      */
-    private $deadline;
+    private $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="items")
+     * @ORM\OneToOne(targetEntity="App\Entity\Subscribe", mappedBy="item", cascade={"persist", "remove"})
      */
-    private $user;
+    private $subscribe;
 
     public function getId(): ?int
     {
@@ -48,26 +48,32 @@ class Items
         return $this;
     }
 
-    public function getDeadline(): ?\DateTimeInterface
+    public function getPrice(): ?float
     {
-        return $this->deadline;
+        return $this->price;
     }
 
-    public function setDeadline(?\DateTimeInterface $deadline): self
+    public function setPrice(float $price): self
     {
-        $this->deadline = $deadline;
+        $this->price = $price;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getSubscribe(): ?Subscribe
     {
-        return $this->user;
+        return $this->subscribe;
     }
 
-    public function setUser(?User $user): self
+    public function setSubscribe(?Subscribe $subscribe): self
     {
-        $this->user = $user;
+        $this->subscribe = $subscribe;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newItem = $subscribe === null ? null : $this;
+        if ($newItem !== $subscribe->getItem()) {
+            $subscribe->setItem($newItem);
+        }
 
         return $this;
     }
