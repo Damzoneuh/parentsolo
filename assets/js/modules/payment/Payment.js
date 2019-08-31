@@ -58,7 +58,7 @@ export default class Payment extends Component{
                <div>
                    <Logger message={message.message} type={message.type}/>
                    <SelectPayment handler={this.tabHandler}/>
-                   {cards.length > 0 ? <KnowCards cards={cards} token={token} logger={this.loggerHandler}/> : ''}
+                   {cards.length > 0 ? <KnowCards cards={cards} token={token} settings={settings} logger={this.loggerHandler}/> : ''}
                </div>
            );
        }

@@ -90,11 +90,17 @@ class User implements UserInterface
      */
     private $subscribe;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Items", inversedBy="users")
+     */
+    private $items;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
         $this->groups = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -355,6 +361,32 @@ class User implements UserInterface
     public function setSubscribe(?Subscribe $subscribe): self
     {
         $this->subscribe = $subscribe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Items[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Items $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Items $item): self
+    {
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+        }
 
         return $this;
     }

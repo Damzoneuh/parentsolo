@@ -13,10 +13,13 @@ export default class KnowCards extends Component{
     handlePayment(alias){
        let data = {
            token: null,
-           alias: null
+           alias: null,
+           settings: {}
        };
        data.token = this.props.token;
        data.alias = alias;
+       data.settings.amount = this.props.settings.amount;
+       data.settings.context = this.props.settings.context;
        this.setState({
            isLoaded: false
        });

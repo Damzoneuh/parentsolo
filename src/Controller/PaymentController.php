@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Async\SixProcess;
+use App\Entity\Items;
 use App\Entity\Payment;
 use App\Entity\PaymentProfil;
 use App\Entity\User;
@@ -20,6 +21,7 @@ use Symfony\Component\Serializer\Serializer;
 class PaymentController extends AbstractController
 {
     private $_serializer;
+
     public function __construct()
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
@@ -28,12 +30,17 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/payment", name="payment")
+     * @Route("/payment/{itemId}", name="payment")
+     * @param int $itemId
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(int $itemId)
     {
-        $data['amount'] = 100;
-        $data['context'] = 'test';
+        $em = $this->getDoctrine()->getRepository(Items::class);
+        $item = $em->find($itemId);
+        $data['amount'] = $item->getPrice();
+        $data['context'] = $item->getType();
+        $data['user'] = $this->getUser()->getEmail();
         $data['currency'] = 'CHF';
         return $this->render('payment/index.html.twig', ['settings' => $data]);
     }
@@ -110,7 +117,7 @@ class PaymentController extends AbstractController
             }
         }
         $six = self::createSixInstance();
-        $response = $six->createAliasPayment($data['alias']);
+        $response = $six->createAliasPayment($data['alias'], $data['settings']['amount'], $data['settings']['context']);
         return $this->json($response);
     }
 
