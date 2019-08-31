@@ -85,6 +85,11 @@ class User implements UserInterface
      */
     private $country;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Subscribe", cascade={"persist", "remove"})
+     */
+    private $subscribe;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
@@ -338,6 +343,18 @@ class User implements UserInterface
     public function setCountry(string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getSubscribe(): ?Subscribe
+    {
+        return $this->subscribe;
+    }
+
+    public function setSubscribe(?Subscribe $subscribe): self
+    {
+        $this->subscribe = $subscribe;
 
         return $this;
     }

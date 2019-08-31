@@ -53,15 +53,17 @@ class PaymentController extends AbstractController
         $data['currency'] = $content['settings']['currency'];
         $six = self::createSixInstance();
         $payment = json_decode($six->createDirectPayment($data));
-        $alias = $six->createAlias($data);
-        $alias = json_decode($alias);
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $pay = new PaymentProfil();
         $pay->setUser($user);
-        $pay->setAlias($alias->Alias->Id);
+        $pay->setAlias($payment->alias);
+        $pay->setCardName($payment->PaymentMeans->Brand->Name);
+        $pay->setDisplayText($payment->PaymentMeans->DisplayText);
+        $pay->setExpMonth($payment->PaymentMeans->Card->ExpMonth);
+        $pay->setExpYear($payment->PaymentMeans->Card->ExpYear);
         $em->persist($pay);
 
         $paid = new Payment();
@@ -77,16 +79,22 @@ class PaymentController extends AbstractController
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/api/payment/knowcard", name="api_know_card")
+     * @Route("/api/payment/knowcard", name="api_know_card", methods={"POST"})
      */
     public function payWithAlias(Request $request){
         //TODO create payment with a know card
-        return $this->json('cool');
+        if (!self::checkToken($request) || !$request->isMethod('POST')){
+            throw new AccessDeniedException();
+        }
+        $data = $this->_serializer->decode($request->getContent(), 'json');
+        $six = self::createSixInstance();
+        $response = $six->createAliasPayment($data['alias']);
+        return $this->json($response);
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/api/payment/profil", name="api_know_card_profil")
+     * @Route("/api/payment/profil", name="api_know_card_profil", methods={"GET"})
      */
     public function checkIfKnowCard(){
         /** @var User $user */
@@ -94,7 +102,12 @@ class PaymentController extends AbstractController
         if(count($user->getPaymentProfil()) > 0){
             $cards = [];
             foreach ($user->getPaymentProfil() as $paymentProfil){
-                array_push($cards, $paymentProfil);
+                $card['expMount'] = $paymentProfil->getExpMonth();
+                $card['expYear'] = $paymentProfil->getExpYear();
+                $card['alias'] = $paymentProfil->getAlias();
+                $card['displayText'] = $paymentProfil->getDisplayText();
+                $card['cardName'] = $paymentProfil->getCardName();
+                array_push($cards,$card);
             }
             return $this->json($cards);
         }

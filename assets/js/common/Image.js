@@ -22,7 +22,6 @@ export default class Image extends Component{
             });
             let resize = await this.setPreviewState(e.target.files[0]);
             let fr = new FileReader();
-            console.log(fr.readAsDataURL(resize));
         }
         else {
             this.setState({

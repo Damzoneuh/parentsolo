@@ -41,7 +41,7 @@ export default class CardEntries extends Component{
         data.settings.amount = this.props.settings.amount;
         data.settings.context = this.props.settings.context;
         data.settings.currency = this.props.settings.currency;
-        axios.post('https://parentsolo.backndev.fr/api/card', data)
+        axios.post('/api/card', data)
             .then(res => {
                 let data = JSON.parse(res.data);
                 console.log(data);
