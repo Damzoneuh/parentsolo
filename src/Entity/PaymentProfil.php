@@ -46,6 +46,11 @@ class PaymentProfil
      */
     private $exp_year;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $selected;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +124,18 @@ class PaymentProfil
     public function setExpYear(int $exp_year): self
     {
         $this->exp_year = $exp_year;
+
+        return $this;
+    }
+
+    public function getSelected(): ?bool
+    {
+        return $this->selected;
+    }
+
+    public function setSelected(bool $selected): self
+    {
+        $this->selected = $selected;
 
         return $this;
     }

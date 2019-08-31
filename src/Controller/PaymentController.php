@@ -64,6 +64,15 @@ class PaymentController extends AbstractController
         $pay->setDisplayText($payment->PaymentMeans->DisplayText);
         $pay->setExpMonth($payment->PaymentMeans->Card->ExpMonth);
         $pay->setExpYear($payment->PaymentMeans->Card->ExpYear);
+        if (!$user->getPaymentProfil()){
+            $pay->setSelected(true);
+        }
+        else{
+            foreach ($user->getPaymentProfil() as $card){
+                $card->setSelected(false);
+            }
+            $pay->setSelected(true);
+        }
         $em->persist($pay);
 
         $paid = new Payment();
@@ -86,7 +95,21 @@ class PaymentController extends AbstractController
         if (!self::checkToken($request) || !$request->isMethod('POST')){
             throw new AccessDeniedException();
         }
+        $em = $this->getDoctrine()->getManager();
         $data = $this->_serializer->decode($request->getContent(), 'json');
+        /** @var User $user */
+        $user = $this->getUser();
+        $cards = $user->getPaymentProfil();
+        $usedCard = $em->getRepository(PaymentProfil::class)->findOneBy(['alias' => $data['alias']]);
+        foreach ($cards as $card){
+            if ($usedCard->getId() !== $card->getId() && $card->getSelected() === true){
+                $card->setSelected(false);
+                $em->persist($card);
+                $usedCard->setSelected(true);
+                $em->persist($usedCard);
+                $em->flush();
+            }
+        }
         $six = self::createSixInstance();
         $response = $six->createAliasPayment($data['alias']);
         return $this->json($response);
