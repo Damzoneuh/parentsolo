@@ -91,7 +91,6 @@ class PaymentController extends AbstractController
      * @Route("/api/payment/knowcard", name="api_know_card", methods={"POST"})
      */
     public function payWithAlias(Request $request){
-        //TODO create payment with a know card
         if (!self::checkToken($request) || !$request->isMethod('POST')){
             throw new AccessDeniedException();
         }

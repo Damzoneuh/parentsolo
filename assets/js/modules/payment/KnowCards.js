@@ -37,7 +37,7 @@ export default class KnowCards extends Component{
     render() {
         const {isLoaded} = this.state;
         const {cards} = this.props;
-        if (cards.length > 0) {
+        if (cards.length > 0 && isLoaded) {
             return (
                 <div className="marg-top-10">
                     <div className="row w-50 m-auto">
