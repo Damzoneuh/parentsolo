@@ -129,6 +129,7 @@ class PaymentController extends AbstractController
                 $card['alias'] = $paymentProfil->getAlias();
                 $card['displayText'] = $paymentProfil->getDisplayText();
                 $card['cardName'] = $paymentProfil->getCardName();
+                $card['id'] = $paymentProfil->getId();
                 array_push($cards,$card);
             }
             return $this->json($cards);

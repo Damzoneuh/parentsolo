@@ -22,14 +22,12 @@ export default class KnowCards extends Component{
        });
         axios.post('/api/payment/knowcard', data)
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     isLoaded: true
                 });
                 this.props.logger({message : 'Payment succeed', type: 'success'});
             })
             .catch(e => {
-                console.log(e);
                 this.props.logger({message: 'An error is occurred during the payment', type: 'error'})
             })
     }
@@ -42,9 +40,9 @@ export default class KnowCards extends Component{
                 <div className="marg-top-10">
                     <div className="row w-50 m-auto">
                         <div className="col-12">
-                            {cards.map( card => {
+                            {cards.map(card => {
                                 return(
-                                    <div className="flex-row card marg-top-10 pad-10" onClick={() => this.handlePayment(card.alias)}>
+                                    <div key={card.id} className="flex-row card marg-top-10 pad-10" onClick={() => this.handlePayment(card.alias)}>
                                         <div className="col-6 text-center">
                                             {card.cardName}
                                         </div>
