@@ -28,7 +28,20 @@ export default class KnowCards extends Component{
                 this.setState({
                     isLoaded: true
                 });
-                this.props.logger({message : 'Payment succeed', type: 'success'});
+                let data = JSON.parse(res.data);
+                if (data.Transaction.Status === 'AUTHORIZED'){
+                    console.log(data)
+                    this.props.logger({message : 'Payment succeed', type: 'success'});
+                    let data = {
+                        id: 5,
+                        token: this.props.token
+                    };
+                    axios.post('/api/subscribe', data)
+                        .then(res => {
+                            console.log(res.data)
+                        })
+                }
+
             })
             .catch(e => {
                 this.props.logger({message: 'An error is occurred during the payment', type: 'error'})

@@ -48,6 +48,11 @@ class Items
      */
     private $duration;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $role;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -148,6 +153,18 @@ class Items
     public function setDuration(?int $duration): self
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
