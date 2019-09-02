@@ -5,21 +5,23 @@ export default class KnowCards extends Component{
     constructor(props){
         super(props);
         this.state= {
-            isLoaded: true
+            isLoaded: true,
+            item: this.props.item
         };
         this.handlePayment = this.handlePayment.bind(this);
     }
 
     handlePayment(alias){
        let data = {
-           token: null,
-           alias: null,
-           settings: {}
+           token: this.props.token,
+           alias: alias,
+           settings: {
+               amount: this.props.settings.amount,
+               context: this.props.settings.context
+           },
+           id:this.state.item.id
        };
-       data.token = this.props.token;
-       data.alias = alias;
-       data.settings.amount = this.props.settings.amount;
-       data.settings.context = this.props.settings.context;
+       console.log(data);
        this.setState({
            isLoaded: false
        });
@@ -30,16 +32,24 @@ export default class KnowCards extends Component{
                 });
                 let data = JSON.parse(res.data);
                 if (data.Transaction.Status === 'AUTHORIZED'){
-                    console.log(data)
-                    this.props.logger({message : 'Payment succeed', type: 'success'});
                     let data = {
-                        id: 5,
+                        id: this.state.item.id,
                         token: this.props.token
                     };
-                    axios.post('/api/subscribe', data)
-                        .then(res => {
-                            console.log(res.data)
-                        })
+                    if (this.state.item.isSubscribe){
+                        axios.post('/api/subscribe', data)
+                            .then(res => {
+                                this.props.logger({message : 'Payment succeed, You will be logout to activate your subscription', type: 'success'});
+                                setTimeout(() => window.location.href = '/logout')
+                            });
+                    }
+                    else {
+                        this.props.logger({message : 'Payment succeed', type: 'success'});
+                        setTimeout(() => window.location.href = '/profil')
+                    }
+                }
+                else {
+                    this.props.logger({message: 'An error is occurred during the payment', type: 'error'})
                 }
 
             })

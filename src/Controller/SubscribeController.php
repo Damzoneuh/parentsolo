@@ -31,6 +31,7 @@ class SubscribeController extends AbstractController
     /**
      * @Route("/api/subscribe", name="api_subscribe")
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
     public function setSubscription(Request $request){
@@ -58,8 +59,7 @@ class SubscribeController extends AbstractController
         $user->setRoles(['ROLE_' . $item->getRole(), 'ROLE_USER']);
         $em->flush();
 
-        //return $this->json($user->getSubscribe());
-        return $this->redirectToRoute('app_logout');
+        return $this->json($user->getSubscribe()->getId());
     }
 
 

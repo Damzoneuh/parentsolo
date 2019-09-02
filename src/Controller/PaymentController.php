@@ -28,7 +28,6 @@ class PaymentController extends AbstractController
         $normalizers = [new ObjectNormalizer()];
         $this->_serializer = new Serializer($normalizers, $encoders);
     }
-
     /**
      * @Route("/payment/{itemId}", name="payment")
      * @param int $itemId
@@ -41,6 +40,7 @@ class PaymentController extends AbstractController
         $data['amount'] = $item->getPrice();
         $data['context'] = $item->getType();
         $data['user'] = $this->getUser()->getEmail();
+        $data['itemId'] = $item->getId();
         $data['currency'] = 'CHF';
         return $this->render('payment/index.html.twig', ['settings' => $data]);
     }

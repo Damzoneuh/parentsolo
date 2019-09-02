@@ -14,8 +14,12 @@ export default class Shop extends Component{
                     items: res.data
                 })
             });
+        this.handleShop = this.handleShop.bind(this);
     }
 
+    handleShop(id){
+        window.location.href = '/payment/' + id;
+    }
 
     render() {
         const {isLoaded, items} = this.state;
@@ -28,12 +32,13 @@ export default class Shop extends Component{
                 </div>
             )
         }
+
         else {
             return (
                 <div className="flex-row w-50 m-auto">
                     {items.map(item => {
                         return(
-                            <div className="col-12 card marg-top-10" key={item.id}>
+                            <div className="col-12 card marg-top-10" key={item.id} onClick={() => this.handleShop(item.id)}>
                                 <div className="row pad-10 flex-row justify-content-center align-items-center">
                                     <div className="col-6 text-center">
                                         {item.type}
