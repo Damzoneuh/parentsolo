@@ -5,18 +5,23 @@ export default class KnowCards extends Component{
     constructor(props){
         super(props);
         this.state= {
-            isLoaded: true
+            isLoaded: true,
+            item: this.props.item
         };
         this.handlePayment = this.handlePayment.bind(this);
     }
 
     handlePayment(alias){
        let data = {
-           token: null,
-           alias: null
+           token: this.props.token,
+           alias: alias,
+           settings: {
+               amount: this.props.settings.amount,
+               context: this.props.settings.context
+           },
+           id:this.state.item.id
        };
-       data.token = this.props.token;
-       data.alias = alias;
+       console.log(data);
        this.setState({
            isLoaded: false
        });
@@ -25,7 +30,28 @@ export default class KnowCards extends Component{
                 this.setState({
                     isLoaded: true
                 });
-                this.props.logger({message : 'Payment succeed', type: 'success'});
+                let data = JSON.parse(res.data);
+                if (data.Transaction.Status === 'AUTHORIZED'){
+                    let data = {
+                        id: this.state.item.id,
+                        token: this.props.token
+                    };
+                    if (this.state.item.isSubscribe){
+                        axios.post('/api/subscribe', data)
+                            .then(res => {
+                                this.props.logger({message : 'Payment succeed, You will be logout to activate your subscription', type: 'success'});
+                                setTimeout(() => window.location.href = '/logout')
+                            });
+                    }
+                    else {
+                        this.props.logger({message : 'Payment succeed', type: 'success'});
+                        setTimeout(() => window.location.href = '/profil')
+                    }
+                }
+                else {
+                    this.props.logger({message: 'An error is occurred during the payment', type: 'error'})
+                }
+
             })
             .catch(e => {
                 this.props.logger({message: 'An error is occurred during the payment', type: 'error'})

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Damzoneuh/SixPayment.git",
-                "reference": "8cc81e18eb915f9506fcb9c693d89b658038de71"
+                "reference": "7a476fafbaa65054dab21b7f932205c96a8dcbee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Damzoneuh/SixPayment/zipball/8cc81e18eb915f9506fcb9c693d89b658038de71",
-                "reference": "8cc81e18eb915f9506fcb9c693d89b658038de71",
+                "url": "https://api.github.com/repos/Damzoneuh/SixPayment/zipball/7a476fafbaa65054dab21b7f932205c96a8dcbee",
+                "reference": "7a476fafbaa65054dab21b7f932205c96a8dcbee",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 }
             ],
             "description": "Six payment solution bundle",
-            "time": "2019-08-31T17:54:55+00:00"
+            "time": "2019-08-31T21:04:19+00:00"
         },
         {
             "name": "doctrine/annotations",
