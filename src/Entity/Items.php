@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,36 @@ class Items
      * @ORM\OneToOne(targetEntity="App\Entity\Subscribe", mappedBy="item", cascade={"persist", "remove"})
      */
     private $subscribe;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isASubscribe;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="items")
+     */
+    private $users;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $duration;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $role;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $quantity;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +106,82 @@ class Items
         if ($newItem !== $subscribe->getItem()) {
             $subscribe->setItem($newItem);
         }
+
+        return $this;
+    }
+
+    public function getIsASubscribe(): ?bool
+    {
+        return $this->isASubscribe;
+    }
+
+    public function setIsASubscribe(bool $isASubscribe): self
+    {
+        $this->isASubscribe = $isASubscribe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeItem($this);
+        }
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?int $duration): self
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

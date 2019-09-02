@@ -12,24 +12,32 @@ export default class Payment extends Component{
    constructor(props){
        super(props);
        let doc = document.getElementById('payment');
-       let settings = doc.dataset.settings;
+       let settings = JSON.parse(doc.dataset.settings);
        let token = doc.dataset.token;
        this.state = {
            isLoaded: false,
-           settings: JSON.parse(settings),
+           settings: settings,
            token: token,
            tab: 1,
            message: {
                message: null,
                type: null
            },
-           cards: []
+           cards: [],
+           item: {}
        };
        axios.get('/api/payment/profil')
            .then(res => {
                this.setState({
                    cards: res.data
                });
+               axios.get('/api/items/' + this.state.settings.itemId)
+                       .then(res => {
+                           this.setState({
+                               item: res.data,
+                               isLoaded: true
+                           })
+                       });
            });
        this.tabHandler = this.tabHandler.bind(this);
        this.loggerHandler = this.loggerHandler.bind(this);
@@ -52,21 +60,30 @@ export default class Payment extends Component{
 
 
     render() {
-       const {settings, message, tab, token, cards} = this.state;
-       if (tab === 1) {
+       const {settings, message, tab, token, cards, isLoaded, item} = this.state;
+       if (!isLoaded){
+           return (
+               <div className="container-loader">
+                   <div className="ring">
+                       <span className="ring-span"></span>
+                   </div>
+               </div>
+           )
+       }
+       if (tab === 1 && isLoaded) {
            return (
                <div>
                    <Logger message={message.message} type={message.type}/>
                    <SelectPayment handler={this.tabHandler}/>
-                   {cards.length > 0 ? <KnowCards cards={cards} token={token} logger={this.loggerHandler}/> : ''}
+                   {cards.length > 0 ? <KnowCards cards={cards} item={item} token={token} settings={settings} logger={this.loggerHandler}/> : ''}
                </div>
            );
        }
-       if (tab === 2){
+       if (tab === 2 && isLoaded){
            return (
                <div>
                    <Logger message={message.message} type={message.type}/>
-                   <CardEntries handler={this.tabHandler} token={token} settings={settings} logger={this.loggerHandler}/>
+                   <CardEntries handler={this.tabHandler} item={item} token={token} settings={settings} logger={this.loggerHandler}/>
                </div>
            )
        }

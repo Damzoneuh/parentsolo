@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Image from "../../common/Image";
+import Shop from "./Shop";
 
 export default class Profil extends Component{
     constructor(props){
@@ -26,7 +27,14 @@ export default class Profil extends Component{
         }
         if (tab === 0){
             return (
-                <Image/>
+                <div className="flex-row w-75">
+                    <div className="col-12">
+                        <Shop/>
+                    </div>
+                    <div className="col-12">
+                        <Image/>
+                    </div>
+                </div>
             )
         }
     }
