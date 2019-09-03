@@ -4,8 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e757500ff6fa28bc4e4aa3b8e396c594",
+    "content-hash": "5b9a25b55b3f2a153ba042bf249549aa",
     "packages": [
+        {
+            "name": "backndev/paypal",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Damzoneuh/paypal.git",
+                "reference": "ab8032e0c32b902ec7433dc5ca901a955ae055a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Damzoneuh/paypal/zipball/ab8032e0c32b902ec7433dc5ca901a955ae055a3",
+                "reference": "ab8032e0c32b902ec7433dc5ca901a955ae055a3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Backndev\\Paypal\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Damien Reb",
+                    "email": "damzoneuh74@gmail.com"
+                }
+            ],
+            "description": "paypal module for symfony",
+            "time": "2019-09-03T03:21:03+00:00"
+        },
         {
             "name": "backndev/sixpayment",
             "version": "dev-master",
@@ -6716,6 +6757,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "backndev/paypal": 20,
         "backndev/sixpayment": 20
     },
     "prefer-stable": false,
