@@ -4,8 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    api.pp.client: 'ASvKT0PELf02c8czgV7bc9gMOHoFta4w8rudflInCUSi01sHgZxST_rYzpajTQeezYovoL8P06CagPj-'
-    api.pp.secret: 'EGItmyzLAe9iSzvugak1tyyIIYMnQwJWNxVJc0zhv0fwfE1FBcYP216kHqI5GNYX06qu7Nh-HfApJEYb'
+    api.pp.client: 'AaXpOTiDYtDlu1j4CHTmd5a-kqpbPs6fds3kC0Sk1d3qfYHVN1TexTsiWWf2o0l0ToLVP70Bx9bFlikM'
+    api.pp.secret: 'EBIYQoByzD70OQdMR3OHhcomY_0UlQ3XoPk9yIGRtLLI3fU6DBgYhedFeOxDnTElDWD6S5M7-bbDSZce'
     api.pp.uri: 'https://api.sandbox.paypal.com'
     api.six.key: 'QVBJXzI0Nzk2NF83NzYwMjk2MTpac3B0ODhnU1R4dHFLcGZK'
     api.six.user: 'API_247964_08724734'
@@ -48,3 +48,7 @@ services:
     backndev\sixpayment\Command\:
         resource: '../vendor/backndev/sixpayment/Command'
         public: true
+
+    App\Service\:
+        resource: '../src/Service'
+        arguments: ['@doctrine.orm.entity_manager', 'swiftmailer.mailer.default']

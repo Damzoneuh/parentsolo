@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Damzoneuh/paypal.git",
-                "reference": "ab8032e0c32b902ec7433dc5ca901a955ae055a3"
+                "reference": "d4ff743451beeff1b398942e942c517ad274f8cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Damzoneuh/paypal/zipball/ab8032e0c32b902ec7433dc5ca901a955ae055a3",
-                "reference": "ab8032e0c32b902ec7433dc5ca901a955ae055a3",
+                "url": "https://api.github.com/repos/Damzoneuh/paypal/zipball/d4ff743451beeff1b398942e942c517ad274f8cb",
+                "reference": "d4ff743451beeff1b398942e942c517ad274f8cb",
                 "shasum": ""
             },
             "require": {
@@ -31,7 +31,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Backndev\\Paypal\\": ""
+                    "backndev\\paypal\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "paypal module for symfony",
-            "time": "2019-09-03T03:21:03+00:00"
+            "time": "2019-09-03T08:40:21+00:00"
         },
         {
             "name": "backndev/sixpayment",
@@ -6045,16 +6045,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.3",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "e612609022e935f3d0337c1295176505b41188c8"
+                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e612609022e935f3d0337c1295176505b41188c8",
-                "reference": "e612609022e935f3d0337c1295176505b41188c8",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/97e59c7a16464196a8b9c77c47df68e4a39a45c4",
+                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4",
                 "shasum": ""
             },
             "require": {
@@ -6092,7 +6092,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-08-12T20:17:41+00:00"
+            "time": "2019-09-01T07:51:21+00:00"
         },
         {
             "name": "symfony/browser-kit",

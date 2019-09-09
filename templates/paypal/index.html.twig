@@ -1,3 +1,48 @@
 {% extends 'base.html.twig' %}
 {% block javascripts %}<script src="https://www.paypal.com/sdk/js?client-id={{ client }}"></script>
-<script>paypal.Buttons().render('body');</script>{% endblock %}
+    {% if subscribe == false %}
+        <script>
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: {{ price }}
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        if (details.status === 'COMPLETED'){
+                            fetch('/api/paypal/complete', {
+                                method: 'post',
+                                headers: {
+                                    'content-type' : 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    details: details,
+                                    item: {{ id }}
+                                })
+                            })
+                                .then(function (res) {
+                                    alert('success !');
+                                    setTimeout(() => window.location.href = '/profil', 2000)
+                               })
+                        }
+                        else {
+                            alert('Payment failed')
+                        }
+                    });
+                }
+            }).render('body');</script>
+    {% else %}
+        <script>paypal.Buttons({
+                createSubscription: function (data, action) {
+                    return action.subscription.create({
+                        'plan_id': {{ planId }}
+                    })
+                }
+            }).render('body');</script>
+    {% endif %}
+{% endblock %}

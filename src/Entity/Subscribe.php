@@ -26,6 +26,11 @@ class Subscribe
      */
     private $item;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $plan;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class Subscribe
     public function setItem(?Items $item): self
     {
         $this->item = $item;
+
+        return $this;
+    }
+
+    public function getPlan(): ?string
+    {
+        return $this->plan;
+    }
+
+    public function setPlan(?string $plan): self
+    {
+        $this->plan = $plan;
 
         return $this;
     }

@@ -38,6 +38,11 @@ class Payment
      */
     private $payment_profil;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="payments")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class Payment
     public function setPaymentProfil(?PaymentProfil $payment_profil): self
     {
         $this->payment_profil = $payment_profil;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
