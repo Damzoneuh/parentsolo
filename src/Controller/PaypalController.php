@@ -35,6 +35,10 @@ class PaypalController extends AbstractController
     /**
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @Route("/paypal/{id}", name="paypal")
      */
     public function index($id){

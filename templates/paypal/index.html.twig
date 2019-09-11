@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}<script src="https://www.paypal.com/sdk/js?client-id={{ client }}"></script>
+{% block javascripts %}<script src="https://www.paypal.com/sdk/js?client-id={{ client }}&vault=true"></script>
     {% if subscribe == false %}
         <script>
             paypal.Buttons({
@@ -37,12 +37,17 @@
                 }
             }).render('body');</script>
     {% else %}
-        <script>paypal.Buttons({
-                createSubscription: function (data, action) {
-                    return action.subscription.create({
-                        'plan_id': {{ planId }}
-                    })
-                }
-            }).render('body');</script>
-    {% endif %}
+        <script>
+                paypal.Buttons({
+                    createSubscription: function(data, actions) {
+                        return actions.subscription.create({
+                            'plan_id': '{{ plan }}'
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        console.log(data)
+                    }
+                }).render('body');
+        </script>
+            {% endif %}
 {% endblock %}
