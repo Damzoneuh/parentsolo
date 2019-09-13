@@ -45,7 +45,21 @@
                         });
                     },
                     onApprove: function(data, actions) {
-                        console.log(data)
+                        fetch('/api/paypal/approuve/sub', {
+                            method: 'POST',
+                            headers: {'content-type' : 'application/json'},
+                            body: JSON.stringify({
+                                'item_id' : {{ id }},
+                                'plan_id' : '{{ plan }}'
+                            })
+                        })
+                            .then(res => {
+                                res.json().then(data => {
+                                    let decoded = JSON.parse(data);
+                                    window.location.href = decoded.links[0].href
+                                })
+                            })
+
                     }
                 }).render('body');
         </script>

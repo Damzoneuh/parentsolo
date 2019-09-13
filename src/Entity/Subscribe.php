@@ -31,6 +31,11 @@ class Subscribe
      */
     private $plan;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAuthorized;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class Subscribe
     public function setPlan(?string $plan): self
     {
         $this->plan = $plan;
+
+        return $this;
+    }
+
+    public function getIsAuthorized(): ?bool
+    {
+        return $this->isAuthorized;
+    }
+
+    public function setIsAuthorized(bool $isAuthorized): self
+    {
+        $this->isAuthorized = $isAuthorized;
 
         return $this;
     }

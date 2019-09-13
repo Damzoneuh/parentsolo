@@ -86,6 +86,33 @@ class PaypalController extends AbstractController
         return $this->json($capture);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @Route("/api/paypal/approuve/sub", name="api_approuve_sub")
+     */
+    public function approuveSubscribe(Request $request){
+        $data = $this->_serializer->decode($request->getContent(), 'json');
+        $item = $this->getDoctrine()->getRepository(Items::class)->find($data['item_id']);
+        $sub = self::createPaypalInstance();
+        $subscrib = $sub->approuveSubscription($item, $this->getUser(), $data['plan_id']);
+        return $this->json($subscrib);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/paypal/accept/sub", name="paypal_accept_sub")
+     */
+    public function acceptSubscribe(Request $request){
+        //TODO stocké le sub ici
+        return $this->json([$request->get('subscription_id')]);
+    }
+
     private function checkToken(Request $request){
         $data = $this->_serializer->decode($request->getContent(), 'json');
         $submittedToken = $data['token'];
