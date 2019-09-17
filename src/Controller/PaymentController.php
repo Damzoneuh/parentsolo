@@ -85,6 +85,7 @@ class PaymentController extends AbstractController
         $paid = new Payment();
         $paid->setPaymentProfil($pay);
         $paid->setUniqKey($payment->Transaction->Id);
+        $paid->setMethod('six');
         $paid->setIsCaptured(false);
         $em->persist($paid);
         $em->flush();
@@ -117,8 +118,15 @@ class PaymentController extends AbstractController
             }
         }
         $six = self::createSixInstance();
-        $response = $six->createAliasPayment($data['alias'], $data['settings']['amount'], $data['settings']['context']);
-        return $this->json($response);
+        $response = json_decode($six->createAliasPayment($data['alias'], $data['settings']['amount'], $data['settings']['context']));
+        $paid = new Payment();
+        $paid->setPaymentProfil($usedCard);
+        $paid->setUniqKey($response->Transaction->Id);
+        $paid->setMethod('six');
+        $paid->setIsCaptured(false);
+        $em->persist($paid);
+        $em->flush();
+        return $this->json(json_encode($response));
     }
 
     /**
