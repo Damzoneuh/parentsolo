@@ -112,16 +112,17 @@ class PaypalController extends AbstractController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @param Session $session
+     * @param SubscribeService $service
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/paypal/accept/sub", name="paypal_accept_sub")
      */
     public function acceptSubscribe(Request $request, Session $session, SubscribeService $service){
         $sub = $request->get('subscription_id');
-        dump($service->setPayPalSubscribe($this->getUser(),$sub, $session->get('item'))); die();
+        if ($service->setPayPalSubscribe($this->getUser(),$sub, $session->get('item'))){
+            return $this->redirectToRoute('app_logout');
+        }
+        return $this->redirectToRoute('home');
     }
 
     private function checkToken(Request $request){
