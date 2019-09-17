@@ -5,11 +5,16 @@ namespace App\Controller;
 use App\Async\CreateItem;
 use App\Entity\Items;
 use App\Entity\Payment;
+use App\Entity\Subscribe;
 use App\Entity\User;
 use App\Service\ItemsService;
+use App\Service\SubscribeService;
 use backndev\paypal\PayPal;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -88,29 +93,35 @@ class PaypalController extends AbstractController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @param Session $session
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      * @Route("/api/paypal/approuve/sub", name="api_approuve_sub")
      */
-    public function approuveSubscribe(Request $request){
+    public function approuveSubscribe(Request $request, Session $session){
         $data = $this->_serializer->decode($request->getContent(), 'json');
         $item = $this->getDoctrine()->getRepository(Items::class)->find($data['item_id']);
         $sub = self::createPaypalInstance();
-        $subscrib = $sub->approuveSubscription($item, $this->getUser(), $data['plan_id']);
-        return $this->json($subscrib);
+        $session->set('item', $data['item_id']);
+        $sub->approuveSubscription($item, $this->getUser(), $data['plan_id']);
+        return $this->redirectToRoute('app_logout');
     }
 
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @Route("/paypal/accept/sub", name="paypal_accept_sub")
      */
-    public function acceptSubscribe(Request $request){
-        //TODO stocké le sub ici
-        return $this->json([$request->get('subscription_id')]);
+    public function acceptSubscribe(Request $request, Session $session, SubscribeService $service){
+        $sub = $request->get('subscription_id');
+        dump($service->setPayPalSubscribe($this->getUser(),$sub, $session->get('item'))); die();
     }
 
     private function checkToken(Request $request){

@@ -43,6 +43,13 @@ class Payment
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Subscribe", inversedBy="payment")
+     */
+    private $subscribe;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +111,18 @@ class Payment
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSubscribe(): ?Subscribe
+    {
+        return $this->subscribe;
+    }
+
+    public function setSubscribe(?Subscribe $subscribe): self
+    {
+        $this->subscribe = $subscribe;
 
         return $this;
     }

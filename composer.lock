@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Damzoneuh/paypal.git",
-                "reference": "f98b8fd9426abf769b95c1b3d352531800975898"
+                "reference": "34819726d3f6db707ec2376515d716c7892b5a9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Damzoneuh/paypal/zipball/f98b8fd9426abf769b95c1b3d352531800975898",
-                "reference": "f98b8fd9426abf769b95c1b3d352531800975898",
+                "url": "https://api.github.com/repos/Damzoneuh/paypal/zipball/34819726d3f6db707ec2376515d716c7892b5a9a",
+                "reference": "34819726d3f6db707ec2376515d716c7892b5a9a",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "paypal module for symfony",
-            "time": "2019-09-13T07:50:03+00:00"
+            "time": "2019-09-16T08:21:50+00:00"
         },
         {
             "name": "backndev/sixpayment",
