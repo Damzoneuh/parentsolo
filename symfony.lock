@@ -1,4 +1,7 @@
 {
+    "backndev/paypal": {
+        "version": "1.0.x-dev"
+    },
     "backndev/sixpayment": {
         "version": "1.0.x-dev"
     },

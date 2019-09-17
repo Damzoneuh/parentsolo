@@ -58,6 +58,11 @@ class Items
      */
     private $quantity;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paypalProduct;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -182,6 +187,18 @@ class Items
     public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getPaypalProduct(): ?string
+    {
+        return $this->paypalProduct;
+    }
+
+    public function setPaypalProduct(string $paypalProduct): self
+    {
+        $this->paypalProduct = $paypalProduct;
 
         return $this;
     }

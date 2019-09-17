@@ -7,6 +7,7 @@ import CardEntries from "./CardEntries";
 import Logger from "../../common/Logger";
 import axios from 'axios';
 import KnowCards from "./KnowCards";
+import Paypal from "./Paypal";
 
 export default class Payment extends Component{
    constructor(props){
@@ -85,6 +86,11 @@ export default class Payment extends Component{
                    <Logger message={message.message} type={message.type}/>
                    <CardEntries handler={this.tabHandler} item={item} token={token} settings={settings} logger={this.loggerHandler}/>
                </div>
+           )
+       }
+       if (tab === 3 && isLoaded){
+           return (
+               <Paypal handler={this.tabHandler} item={item} token={token} settings={settings} logger={this.loggerHandler}/>
            )
        }
     }

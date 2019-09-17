@@ -54,6 +54,7 @@ class SubscribeController extends AbstractController
         $subscribe = new Subscribe();
         $subscribe->setDeadline($deadline);
         $subscribe->setItem($item);
+        $subscribe->setIsAuthorized(true);
         $em->persist($subscribe);
         $user->setSubscribe($subscribe);
         $user->setRoles(['ROLE_' . $item->getRole(), 'ROLE_USER']);

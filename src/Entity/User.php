@@ -95,12 +95,28 @@ class User implements UserInterface
      */
     private $items;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Payment", mappedBy="user")
+     */
+    private $payments;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $flowerNumber;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $favoriteNumber;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -387,6 +403,61 @@ class User implements UserInterface
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payment[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->contains($payment)) {
+            $this->payments->removeElement($payment);
+            // set the owning side to null (unless already changed)
+            if ($payment->getUser() === $this) {
+                $payment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFlowerNumber(): ?int
+    {
+        return $this->flowerNumber;
+    }
+
+    public function setFlowerNumber(?int $flowerNumber): self
+    {
+        $this->flowerNumber = $flowerNumber;
+
+        return $this;
+    }
+
+    public function getFavoriteNumber(): ?int
+    {
+        return $this->favoriteNumber;
+    }
+
+    public function setFavoriteNumber(?int $favoriteNumber): self
+    {
+        $this->favoriteNumber = $favoriteNumber;
 
         return $this;
     }

@@ -118,7 +118,7 @@ class RegistrationController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findOneBy(['resetToken' => $data['resetToken']]);
         if (!$user){
-            return $this->json(['error' => 'Email not found']);
+            return $this->json(['error' => 'User not found']);
         }
         $user->setPassword($encoder->encodePassword($user, $data['plainPassword']));
         $em->flush();
@@ -169,7 +169,7 @@ class RegistrationController extends AbstractController
         $client = HttpClient::create();
         $response = $client->request('GET', $this->getParameter('api.geo.uri') . '/' . $clientIp);
         $data = $this->_serializer->decode($response->getContent(), 'json');
-        if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){ //TODO retirer le fr à la fin
+        if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){ //TODO retirer le fr à la fin et le stocké
             return $data['countryCode'];
         }
         return false;
