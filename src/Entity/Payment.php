@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +49,26 @@ class Payment
      * @ORM\ManyToOne(targetEntity="App\Entity\Subscribe", inversedBy="payment")
      */
     private $subscribe;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Items")
+     */
+    private $item;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAccepted;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
+    public function __construct()
+    {
+        $this->item = new ArrayCollection();
+    }
 
 
 
@@ -123,6 +145,56 @@ class Payment
     public function setSubscribe(?Subscribe $subscribe): self
     {
         $this->subscribe = $subscribe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Items[]
+     */
+    public function getItem(): Collection
+    {
+        return $this->item;
+    }
+
+    public function addItem(Items $item): self
+    {
+        if (!$this->item->contains($item)) {
+            $this->item[] = $item;
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Items $item): self
+    {
+        if ($this->item->contains($item)) {
+            $this->item->removeElement($item);
+        }
+
+        return $this;
+    }
+
+    public function getIsAccepted(): ?bool
+    {
+        return $this->isAccepted;
+    }
+
+    public function setIsAccepted(bool $isAccepted): self
+    {
+        $this->isAccepted = $isAccepted;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

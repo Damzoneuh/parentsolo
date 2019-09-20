@@ -7,6 +7,8 @@ use App\Entity\Items;
 use App\Entity\Payment;
 use App\Entity\PaymentProfil;
 use App\Entity\User;
+use App\Service\ItemsService;
+use App\Service\SubscribeService;
 use backndev\sixpayment\SixPayment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -16,6 +18,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class PaymentController extends AbstractController
@@ -28,12 +31,14 @@ class PaymentController extends AbstractController
         $normalizers = [new ObjectNormalizer()];
         $this->_serializer = new Serializer($normalizers, $encoders);
     }
+
     /**
-     * @Route("/payment/{itemId}", name="payment")
      * @param int $itemId
+     * @param Session $session
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/payment/{itemId}", name="payment")
      */
-    public function index(int $itemId)
+    public function index(int $itemId, Session $session)
     {
         $em = $this->getDoctrine()->getRepository(Items::class);
         $item = $em->find($itemId);
@@ -42,14 +47,20 @@ class PaymentController extends AbstractController
         $data['user'] = $this->getUser()->getEmail();
         $data['itemId'] = $item->getId();
         $data['currency'] = 'CHF';
+        $session->set('itemId', $itemId);
         return $this->render('payment/index.html.twig', ['settings' => $data]);
     }
 
     /**
+     * @param Request $request
+     * @param Session $session
+     * @param ItemsService $itemsService
+     * @param SubscribeService $subscribeService
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
      * @Route("/api/card", name="payment_card_credentials", methods={"POST"})
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function getCardCredentials(Request $request){
+    public function getCardCredentials(Request $request, Session $session, ItemsService $itemsService, SubscribeService $subscribeService){
         if (!$request->isMethod('POST') || !self::checkToken($request)){
             throw new AccessDeniedException();
         }
@@ -81,24 +92,40 @@ class PaymentController extends AbstractController
             $pay->setSelected(true);
         }
         $em->persist($pay);
-
+        $item = $em->getRepository(Items::class)->find($session->get('itemId'));
+        if ($item->getIsASubscribe()){
+            if($subscribeService->setSixSubscription($user, $item->getId(), $payment->alias)){
+                return $this->json(['success' => 'You will be logout to activate your subscription']);
+            }
+            return $this->json(['error' => 'An error as been throw during your payment']);
+        }
         $paid = new Payment();
         $paid->setPaymentProfil($pay);
         $paid->setUniqKey($payment->Transaction->Id);
         $paid->setMethod('six');
         $paid->setIsCaptured(false);
+        $paid->setUser($user);
+        $paid->setDate(new \DateTime('now'));
+        $paid->addItem($item);
+        $paid->setIsAccepted(true);
         $em->persist($paid);
         $em->flush();
 
+        $itemsService->createItem($item->getId(), $user->getId());
+        $session->remove('itemId');
         return $this->json($this->_serializer->encode($payment, 'json'));
     }
 
     /**
      * @param Request $request
+     * @param Session $session
+     * @param ItemsService $itemsService
+     * @param SubscribeService $subscribeService
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
      * @Route("/api/payment/knowcard", name="api_know_card", methods={"POST"})
      */
-    public function payWithAlias(Request $request){
+    public function payWithAlias(Request $request, Session $session, ItemsService $itemsService, SubscribeService $subscribeService){
         if (!self::checkToken($request) || !$request->isMethod('POST')){
             throw new AccessDeniedException();
         }
@@ -120,12 +147,27 @@ class PaymentController extends AbstractController
         $six = self::createSixInstance();
         $response = json_decode($six->createAliasPayment($data['alias'], $data['settings']['amount'], $data['settings']['context']));
         $paid = new Payment();
+        $item = $em->getRepository(Items::class)->find($session->get('itemId'));
+        if ($item->getIsASubscribe()){
+            if($subscribeService->setSixSubscription($user, $item->getId(), $usedCard->getAlias())){
+                return $this->json(['success' => 'You will be logout to activate your subscription']);
+            }
+            return $this->json(['error' => 'An error as been throw during your payment']);
+        }
         $paid->setPaymentProfil($usedCard);
         $paid->setUniqKey($response->Transaction->Id);
         $paid->setMethod('six');
         $paid->setIsCaptured(false);
+        $paid->setDate(new \DateTime('now'));
+        $paid->setIsAccepted(true);
+        $paid->setUser($user);
+        $paid->addItem($item);
+
         $em->persist($paid);
         $em->flush();
+
+        $itemsService->createItem($item->getId(), $user->getId());
+        $session->remove('itemId');
         return $this->json(json_encode($response));
     }
 

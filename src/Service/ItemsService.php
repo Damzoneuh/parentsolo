@@ -23,10 +23,14 @@ class ItemsService
         $item = $this->_em->getRepository(Items::class)->find($id);
         $user = $this->_em->getRepository(User::class)->find($userId);
         if (strstr($item->getType(), 'flower')){
-            $user->setFlowerNumber($item->getQuantity());
+            ($user->getFlowerNumber() > 0 || !null) ?
+                $user->setFlowerNumber($item->getQuantity() + $user->getFlowerNumber()) :
+                $user->setFlowerNumber($item->getQuantity());
         }
         if (strstr($item->getType(), 'favorite')){
-            $user->setFavoriteNumber($item->getQuantity());
+            ($user->getFavoriteNumber() > 0 || !null) ?
+                $user->setFavoriteNumber($item->getQuantity() + $user->getFavoriteNumber()) :
+                $user->setFavoriteNumber($item->getQuantity());
         }
         try {
             $this->_em->persist($user);

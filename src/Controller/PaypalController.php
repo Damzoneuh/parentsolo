@@ -72,29 +72,37 @@ class PaypalController extends AbstractController
      * @throws TransportExceptionInterface
      * @Route("api/paypal/complete", name="api_paypal", methods={"POST"})
      */
-    public function setDirectOrder(Request $request)
+    public function setDirectOrder(Request $request, ItemsService $itemsService)
     {
         $data = $this->_serializer->decode($request->getContent(), 'json');
         $paypal = self::createPaypalInstance();
         $capture = $this->_serializer->decode($paypal->setCapture($data['details']['id']), 'json');
-        $em = $this->getDoctrine()->getManager();
-        /** @var User $user */
-        $user = $this->getUser();
-        CreateItem::createItem($user->getId(), $data['item']);
-        $payment = new Payment();
-        $payment->setIsCaptured(true);
-        $payment->setUniqKey($data['details']['id']);
-        $payment->setMethod('paypal');
-        $payment->setUser($user);
-        $em->persist($payment);
-        $em->flush();
-        return $this->json($capture);
+        if($data['details']['status'] == 'COMPLETED' && $data['details']['intent'] == 'CAPTURE') {
+            $em = $this->getDoctrine()->getManager();
+            $item = $em->getRepository(Items::class)->find($data['item']);
+            /** @var User $user */
+            $user = $this->getUser();
+            CreateItem::createItem($user->getId(), $data['item']);
+            $payment = new Payment();
+            $payment->setIsCaptured(true);
+            $payment->setUniqKey($data['details']['id']);
+            $payment->setMethod('paypal');
+            $payment->setUser($user);
+            $payment->setDate(new \DateTime('now'));
+            $payment->setIsAccepted(true);
+            $payment->addItem($item);
+            $em->persist($payment);
+            $em->flush();
+            $itemsService->createItem($item->getId(), $user->getId());
+            return $this->json($capture);
+        }
+        return $this->json(['error' => 'payment refused']);
     }
 
     /**
      * @param Request $request
      * @param Session $session
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -106,8 +114,8 @@ class PaypalController extends AbstractController
         $item = $this->getDoctrine()->getRepository(Items::class)->find($data['item_id']);
         $sub = self::createPaypalInstance();
         $session->set('item', $data['item_id']);
-        $sub->approuveSubscription($item, $this->getUser(), $data['plan_id']);
-        return $this->redirectToRoute('app_logout');
+        $response = $sub->approuveSubscription($item, $this->getUser(), $data['plan_id']);
+        return $this->json($response);
     }
 
     /**
@@ -115,6 +123,8 @@ class PaypalController extends AbstractController
      * @param Session $session
      * @param SubscribeService $service
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @Route("/paypal/accept/sub", name="paypal_accept_sub")
      */
     public function acceptSubscribe(Request $request, Session $session, SubscribeService $service){
