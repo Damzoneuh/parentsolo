@@ -4,6 +4,7 @@
 namespace App\Mailer;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class Mailing
@@ -11,7 +12,7 @@ class Mailing
     private $_mailer;
     private $_message;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(EntityManagerInterface $entityManager, \Swift_Mailer $mailer)
     {
         $this->_mailer = $mailer;
         $this->_message = new \Swift_Message();
@@ -54,6 +55,18 @@ class Mailing
             <p>message : '. $e->getMessage() . '</p>
             <p>error code : ' . $e->getCode()  . '</p>
             <p>stack trace : ' . $e->getTraceAsString() . '</p>
+        ', 'text/html');
+        $this->_mailer->send($message);
+    }
+
+    public function sendMessageReceived(User $user, User $target){
+        $message = $this->_message;
+        $message->setTo($target->getEmail());
+        $message->setFrom('noreply@parentsolo.ch');
+        $message->setSubject('New message');
+        $message->setBody('
+            <h1>You have receive a new message</h1>
+            <p>' . $user->getEmail() . ' sent a message for you !</p>
         ', 'text/html');
         $this->_mailer->send($message);
     }

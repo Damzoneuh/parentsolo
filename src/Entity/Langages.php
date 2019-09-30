@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +24,14 @@ class Langages
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Profil", inversedBy="langages")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Profil", inversedBy="langages")
      */
     private $profil;
+
+    public function __construct()
+    {
+        $this->profil = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -43,14 +50,28 @@ class Langages
         return $this;
     }
 
-    public function getProfil(): ?Profil
+    /**
+     * @return Collection|Profil[]
+     */
+    public function getProfil(): Collection
     {
         return $this->profil;
     }
 
-    public function setProfil(?Profil $profil): self
+    public function addProfil(Profil $profil): self
     {
-        $this->profil = $profil;
+        if (!$this->profil->contains($profil)) {
+            $this->profil[] = $profil;
+        }
+
+        return $this;
+    }
+
+    public function removeProfil(Profil $profil): self
+    {
+        if ($this->profil->contains($profil)) {
+            $this->profil->removeElement($profil);
+        }
 
         return $this;
     }

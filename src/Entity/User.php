@@ -461,4 +461,14 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function removeMessage(Messages $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            $message->removeMessageTo($this);
+        }
+
+        return $this;
+    }
 }
