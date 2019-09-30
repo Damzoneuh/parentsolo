@@ -79,11 +79,6 @@ class Profil
     private $activity;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Langages", mappedBy="profil")
-     */
-    private $langages;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Relationship", cascade={"persist", "remove"})
      */
     private $relationship;
@@ -182,6 +177,11 @@ class Profil
      * @ORM\OneToOne(targetEntity="App\Entity\Canton", inversedBy="profil", cascade={"persist", "remove"})
      */
     private $canton;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Langages", mappedBy="profil")
+     */
+    private $langages;
 
     public function __construct()
     {
@@ -362,37 +362,6 @@ class Profil
     public function setActivity(?Activity $activity): self
     {
         $this->activity = $activity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Langages[]
-     */
-    public function getLangages(): Collection
-    {
-        return $this->langages;
-    }
-
-    public function addLangage(Langages $langage): self
-    {
-        if (!$this->langages->contains($langage)) {
-            $this->langages[] = $langage;
-            $langage->setProfil($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLangage(Langages $langage): self
-    {
-        if ($this->langages->contains($langage)) {
-            $this->langages->removeElement($langage);
-            // set the owning side to null (unless already changed)
-            if ($langage->getProfil() === $this) {
-                $langage->setProfil(null);
-            }
-        }
 
         return $this;
     }
@@ -759,6 +728,34 @@ class Profil
     public function setCanton(?Canton $canton): self
     {
         $this->canton = $canton;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Langages[]
+     */
+    public function getLangages(): Collection
+    {
+        return $this->langages;
+    }
+
+    public function addLangage(Langages $langage): self
+    {
+        if (!$this->langages->contains($langage)) {
+            $this->langages[] = $langage;
+            $langage->addProfil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLangage(Langages $langage): self
+    {
+        if ($this->langages->contains($langage)) {
+            $this->langages->removeElement($langage);
+            $langage->removeProfil($this);
+        }
 
         return $this;
     }

@@ -31,6 +31,11 @@ class Messages
      */
     private $messageTo;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isRead;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class Messages
     public function setMessageTo(int $messageTo): self
     {
         $this->messageTo = $messageTo;
+
+        return $this;
+    }
+
+    public function getIsRead(): ?bool
+    {
+        return $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): self
+    {
+        $this->isRead = $isRead;
 
         return $this;
     }

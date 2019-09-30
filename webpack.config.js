@@ -75,6 +75,7 @@ Encore
     .addEntry('reset', './assets/js/modules/registration/Reset.js')
     .addEntry('resetemail', './assets/js/modules/registration/ResetEmail.js')
     .addEntry('profil', './assets/js/modules/profil/Profil.js')
+    .addEntry('chat', './assets/js/modules/messaging/Chat.js')
 ;
 
 module.exports = Encore.getWebpackConfig();
