@@ -2,6 +2,8 @@
 @import "logger";
 @import "preloader";
 @import "registration";
+@import "chat";
+
 .box{
   margin: 50px auto;
   padding: 10px;
@@ -18,4 +20,8 @@
 
 .pad-10{
   padding: 10px;
+}
+
+.bottom-0{
+  bottom: 0;
 }

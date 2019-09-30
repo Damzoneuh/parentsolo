@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Mailer\Mailing;
+use App\Service\MailingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,7 @@ class RegistrationController extends AbstractController
      * @throws \Exception
      * @Route("/api/register", name="app_register_form", methods={"POST"})
      */
-    public function index(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer){
+    public function index(Request $request, UserPasswordEncoderInterface $encoder, MailingService $mailingService){
         if (!self::checkToken($request)){
             return $this->json(['data' => ['error' => 'bad token']]);
         }
@@ -60,8 +61,7 @@ class RegistrationController extends AbstractController
             $user->setIsValidated(false);
             $em->persist($user);
             $em->flush();
-            $mail = new Mailing($mailer);
-            $mail->sendConfirmMessage($user, $token);
+            $mailingService->sendRegistrationConfirmationMail($user, $token);
         }
         return $this->json(['data' => ['error' => 'You must be a Swissman to be registered if you use a VPN you have to deactivate it to register']]);
     }
@@ -164,15 +164,15 @@ class RegistrationController extends AbstractController
     private function checkCountry(Request $request){
         $clientIp = $request->headers->get('x-real-ip');
         if (empty($clientIp)){
-            return false;
+            return $data['countryCode'] = '?';
         }
         $client = HttpClient::create();
         $response = $client->request('GET', $this->getParameter('api.geo.uri') . '/' . $clientIp);
         $data = $this->_serializer->decode($response->getContent(), 'json');
-        if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){ //TODO retirer le fr à la fin et le stocké
+        if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){
             return $data['countryCode'];
         }
-        return false;
+        return $data['countryCode'] = '?';
     }
 
     /**

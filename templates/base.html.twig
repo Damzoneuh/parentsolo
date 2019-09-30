@@ -9,6 +9,13 @@
         <div class="container-fluid">
             {% block body %}{% endblock %}
         </div>
-        {% block javascripts %}{% endblock %}
+        {% if is_granted('ROLE_BASIC') %}
+            <div id="chat" data-user="{{ app.user.id }}" class="flex w-100 position-fixed bottom-0 justify-content-sm-around"></div>
+        {% endif %}
+        {% block javascripts %}
+            {% if is_granted('ROLE_BASIC') %}
+                {{ encore_entry_script_tags('chat') }}
+            {% endif %}
+        {% endblock %}
     </body>
 </html>

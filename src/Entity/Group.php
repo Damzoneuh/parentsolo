@@ -42,6 +42,7 @@ class Group
     {
         $this->users = new ArrayCollection();
         $this->img = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,5 +131,13 @@ class Group
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Messages[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
     }
 }
