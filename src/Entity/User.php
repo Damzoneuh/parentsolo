@@ -71,11 +71,6 @@ class User implements UserInterface
     private $profil;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
-     */
-    private $groups;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $phone;
@@ -114,7 +109,6 @@ class User implements UserInterface
     {
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
-        $this->groups = new ArrayCollection();
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
     }
@@ -315,32 +309,6 @@ class User implements UserInterface
     public function setProfil(?Profil $profil): self
     {
         $this->profil = $profil;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        if ($this->groups->contains($group)) {
-            $this->groups->removeElement($group);
-        }
 
         return $this;
     }
