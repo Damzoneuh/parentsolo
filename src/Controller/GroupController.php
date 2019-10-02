@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Groups;
 use App\Entity\Slug;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -148,10 +149,13 @@ class GroupController extends AbstractController
     public function addSlug(Request $request){
         $data = $this->_serializer->decode($request->getContent(), 'json');
         $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
         $slug = new Slug();
         $slug->setText($data['text']);
         $group = $em->getRepository(Groups::class)->find($data['groupId']);
         $slug->addGroup($group);
+        $slug->setAuthor($user);
         $em->persist($slug);
         $em->flush();
         return $this->json('success');
@@ -174,8 +178,9 @@ class GroupController extends AbstractController
             /** @var  Slug $slug */
             $content['text'] = $slug->getText();
             $content['id'] = $slug->getId();
+            $content['author'] = $slug->getAuthor();
             array_push($slugs, $content);
         }
-        return $this->json($slugs); //TODO add the user qui l'as écris
+        return $this->json($slugs);
     }
 }

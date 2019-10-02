@@ -28,6 +28,12 @@ class Slug
      */
     private $groups;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="slugs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
@@ -72,6 +78,18 @@ class Slug
         if ($this->groups->contains($group)) {
             $this->groups->removeElement($group);
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
