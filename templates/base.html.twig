@@ -2,13 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Parent solo - {% endblock %}</title>
+        <title>{% block title %}Parent solo - {% endblock %} Home</title>
         {% block stylesheets %}{{ encore_entry_link_tags('global') }}{% endblock %}
     </head>
     <body>
+    <div id="nav"></div>
         <div class="container-fluid">
             {% block body %}{% endblock %}
         </div>
+    <div id="footer"></div>
         {% if is_granted('ROLE_BASIC') %}
             <div id="chat" data-user="{{ app.user.id }}" class="flex w-100 position-fixed bottom-0 justify-content-sm-around"></div>
         {% endif %}

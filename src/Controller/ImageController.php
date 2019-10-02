@@ -50,6 +50,33 @@ class ImageController extends AbstractController
         return $this->json(['cool']);
     }
 
+    /**
+     * @param null $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/img/{id}", name="api_get_img", methods={"GET"})
+     */
+    public function getImg($id = null){
+        if (!$id){
+            $array = [];
+            /** @var User $user */
+            $user = $this->getUser();
+            $imgs = $user->getImg()->getValues();
+            foreach ($imgs as $img){
+                /** @var Img $img */
+                $content['path'] = $img->getPath();
+                $content['title'] = $img->getTitle();
+                $content['id'] = $img->getId();
+                array_push($array, $content);
+            }
+            return $this->json($array);
+        }
+        $img = $this->getDoctrine()->getRepository(Img::class)->find($id);
+        $content['id'] = $img->getId();
+        $content['title'] = $img->getTitle();
+        $content['path'] = $img->getPath();
+        return $this->json($content);
+    }
+
     private function checkExtension(UploadedFile $file){
         switch ($file->getClientMimeType()){
             case 'image/png':
