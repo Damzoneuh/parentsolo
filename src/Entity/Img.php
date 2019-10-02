@@ -32,7 +32,7 @@ class Img
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="img")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Groups", inversedBy="img")
      */
     private $groups;
 
@@ -82,12 +82,12 @@ class Img
         return $this;
     }
 
-    public function getGroups(): ?Group
+    public function getGroups(): ?Groups
     {
         return $this->groups;
     }
 
-    public function setGroups(?Group $groups): self
+    public function setGroups(?Groups $groups): self
     {
         $this->groups = $groups;
 

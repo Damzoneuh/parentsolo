@@ -71,11 +71,6 @@ class User implements UserInterface
     private $profil;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
-     */
-    private $groups;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $phone;
@@ -110,13 +105,23 @@ class User implements UserInterface
      */
     private $favoriteNumber;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Slug", mappedBy="author", orphanRemoval=true)
+     */
+    private $slugs;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pseudo;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
-        $this->groups = new ArrayCollection();
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
+        $this->slugs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -319,32 +324,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        if ($this->groups->contains($group)) {
-            $this->groups->removeElement($group);
-        }
-
-        return $this;
-    }
-
     public function getPhone(): ?int
     {
         return $this->phone;
@@ -468,6 +447,49 @@ class User implements UserInterface
             $this->messages->removeElement($message);
             $message->removeMessageTo($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Slug[]
+     */
+    public function getSlugs(): Collection
+    {
+        return $this->slugs;
+    }
+
+    public function addSlug(Slug $slug): self
+    {
+        if (!$this->slugs->contains($slug)) {
+            $this->slugs[] = $slug;
+            $slug->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlug(Slug $slug): self
+    {
+        if ($this->slugs->contains($slug)) {
+            $this->slugs->removeElement($slug);
+            // set the owning side to null (unless already changed)
+            if ($slug->getAuthor() === $this) {
+                $slug->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(?string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
 
         return $this;
     }
