@@ -25,3 +25,31 @@
 .bottom-0{
   bottom: 0;
 }
+
+.custom-link{
+  color: rgba(0, 0, 0, 0.5);
+}
+.custom-link:hover{
+  color: rgba(0, 0, 0, 0.7);
+}
+.pad-right-10{
+  margin-right: 10px;
+}
+
+.none{
+  display: none;
+}
+
+.banner{
+  position: relative;
+  top: -56px
+}
+
+.fixed-top{
+  position: fixed;
+  top: 0;
+}
+
+.z{
+  z-index: 100;
+}
