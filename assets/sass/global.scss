@@ -42,7 +42,8 @@
 
 .banner{
   position: relative;
-  top: -56px
+  top: -5em;
+  min-height: 100vh;
 }
 
 .fixed-top{
@@ -52,4 +53,11 @@
 
 .z{
   z-index: 100;
+}
+
+.nav-logo{
+  width: 15%;
+}
+.navbar{
+  padding: 0.3em;
 }

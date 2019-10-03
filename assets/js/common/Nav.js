@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import { faLockOpen, faLock } from "@fortawesome/free-solid-svg-icons";
+import logo from '../../fixed/logo_noir.png';
 
 
 export default class Nav extends Component{
@@ -79,6 +80,7 @@ export default class Nav extends Component{
                             <li className="nav-item"><a className="nav-link" href={link.testimony.path}>{link.testimony.name}</a></li>
                             <li className="nav-item"><a className="nav-link" href={link.faq.path}>{link.faq.name}</a></li>
                         </ul>
+                        <img src={logo} alt="logo" className={scroll === 0 ? "none" : "nav-logo"}/>
                         <form className="form-inline">
                             <a className="nav-link custom-link" href={connection.path}>{connection.name}</a><FontAwesomeIcon icon="lock-open" color={"rgba(0, 0, 0, 0.5)"} className={"pad-right-10"}/>
                             <select onChange={this.handleLang} defaultValue={lang.selected} className="form-control">

@@ -29,7 +29,7 @@ export default class Registration extends Component{
     }
 
     componentDidMount(){
-        setInterval(() => this.CarouselHandler(), 6000)
+        setInterval(() => this.CarouselHandler(), 60000)
     }
 
     handleForm(e){
@@ -101,9 +101,9 @@ export default class Registration extends Component{
         else {
             return (
                     <div className="register-wrap">
-                        <img src={bannerOne} className={activeImg === 1 ? "w-100 banner" : "w-100 none"}/>
-                        <img src={bannerTwo} className={activeImg === 2 ? "w-100 banner" : "w-100 none"}/>
-                        <img src={bannerThree} className={activeImg === 3 ? "w-100 banner" : "w-100 none"}/>
+                        <div className={"w-100 banner banner-" + activeImg}>
+
+                        </div>
                         {/*<form onChange={this.handleForm} onSubmit={this.handleSubmit} method="post">*/}
                         {/*    <div className="custom-control custom-switch flex-row align-items-center justify-content-around flex w-25">*/}
                         {/*        <div className="m-4">I'm a woman</div>*/}
