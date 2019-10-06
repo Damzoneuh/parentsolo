@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import Logger from "../../common/Logger";
-import bannerOne from '../../../fixed/iStock-1034831832.png';
-import bannerTwo from '../../../fixed/iStock-514318934.png';
-import bannerThree from '../../../fixed/banner3.png';
+import logo from '../../../fixed/Logo_ParentsoloFR_Noir_sansBL.png';
+import TalkingThreatSubscribe from "./TalkingThreatSubscribe";
 
 export default class Registration extends Component{
     constructor(props){
         super(props);
         this.state = {
-            isLoaded: true,
+            isLoaded: false,
+            baseline: [],
             data: [],
             number: null,
             email: null,
@@ -29,6 +28,13 @@ export default class Registration extends Component{
     }
 
     componentDidMount(){
+        axios.get('/api/baseline')
+            .then(res => {
+                this.setState({
+                    isLoaded: true,
+                    baseline: res.data
+                })
+            });
         setInterval(() => this.CarouselHandler(), 60000)
     }
 
@@ -91,7 +97,7 @@ export default class Registration extends Component{
     }
 
     render() {
-        const {isLoaded, data, type, message, reset, isMan, activeImg} = this.state;
+        const {isLoaded,baseline, activeImg} = this.state;
         if (!isLoaded)
         {
             return (
@@ -102,7 +108,15 @@ export default class Registration extends Component{
             return (
                     <div className="register-wrap">
                         <div className={"w-100 banner banner-" + activeImg}>
-
+                            <div className="row row-banner">
+                                <div className="offset-lg-6 col-lg-6 col-12 text-center">
+                                    <img src={logo} alt="logo" className="w-75"/>
+                                    <div className="flex-row flex justify-content-center align-items-center">
+                                        <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
+                                    </div>
+                                    <TalkingThreatSubscribe/>
+                                </div>
+                            </div>
                         </div>
                         {/*<form onChange={this.handleForm} onSubmit={this.handleSubmit} method="post">*/}
                         {/*    <div className="custom-control custom-switch flex-row align-items-center justify-content-around flex w-25">*/}

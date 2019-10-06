@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IndexController extends AbstractController
@@ -93,5 +93,113 @@ class IndexController extends AbstractController
         $response->send();
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @Route("/api/talking/subscribe", name="api_talking_subscribe", methods={"GET"})
+     */
+    public function getTalkingThreat(Request $request, TranslatorInterface $translator){
+        $data = [
+            'first' => [
+                $translator->trans('talking.threat.first', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.first.red', [], null, $request->getLocale())
+                ],
+            'firstButton' => [
+                'lovely' => [
+                    'value' => 'lovely',
+                    'text' => $translator->trans('lovely', [], null, $request->getLocale())
+                ],
+                'friendly' => [
+                    'value' => 'friendly',
+                    'text' => $translator->trans('friendly', [], null, $request->getLocale())
+                ],
+                'both' => [
+                    'value' => 'both',
+                    'text' => $translator->trans('both', [], null, $request->getLocale())
+                ]
+            ],
+            'second' => [
+                $translator->trans('talking.threat.second', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.second.red', [], null, $request->getLocale())
+            ],
+            'secondButton' => [
+                'daddy' => [
+                    'value' => true,
+                    'text' => $translator->trans('daddy', [], null, $request->getLocale())
+                ],
+                'mom' => [
+                    'value' => false,
+                    'text' => $translator->trans('mom', [], null, $request->getLocale())
+                ]
+            ],
+            'third' => [
+                $translator->trans('talking.threat.third', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.third.red', [], null, $request->getLocale())
+            ],
+            'thirdButton' => [
+                'text' => $translator->trans('validate', [], null, $request->getLocale())
+            ],
+            'thirdError' => [
+                'text' => $translator->trans('talking.threat.third.error', [], null, $request->getLocale())
+            ],
+            'fourth' => [
+                'text' => [
+                    $translator->trans('talking.threat.fourth', [], null, $request->getLocale()),
+                    $translator->trans('talking.threat.fourth.red', [], null, $request->getLocale())
+                ],
+                'response' => [
+                    $translator->trans('talking.threat.fourth.response', [], null, $request->getLocale())
+                ],
+                'labels' => [
+                    'canton' => $translator->trans('talking.threat.fourth.label.canton', [], null, $request->getLocale()),
+                    'city' => $translator->trans('talking.threat.fourth.label.city')
+                ]
+            ],
+            'fifth' => [
+                $translator->trans('talking.threat.fifth', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.fifth.red', [], null, $request->getLocale())
+            ],
+            'sixth' => [
+                $translator->trans('talking.threat.sixth', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.sixth.red', [], null, $request->getLocale())
+            ],
+            'sixthButton' => [
+                'text' => $translator->trans('validate', [], null, $request->getLocale())
+            ],
+            'seventh' => [
+                $translator->trans('talking.threat.seventh', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.seventh.red', [], null, $request->getLocale()),
+                $translator->trans('talking.threat.seventh.confirm', [], null, $request->getLocale())
+            ],
+            'seventhButton' => [
+                'text' => $translator->trans('validate', [], null, $request->getLocale())
+            ],
+            'seventhError' => [
+                'text' => $translator->trans('talking.threat.seventh.error', [], null, $request->getLocale())
+            ],
+            'final' => [
+                $translator->trans('talking.threat.final', [], null, $request->getLocale())
+            ]
+        ];
+        return $this->json($data);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @Route("/api/baseline", name="api_baseline", methods={"GET"})
+     */
+    public function baseline(Request $request, TranslatorInterface $translator){
+        $data = [
+            'baseline' => [
+                $translator->trans('baseline', [], null, $request->getLocale()),
+                $translator->trans('baseline.red', [], null, $request->getLocale())
+            ]
+        ];
+        return $this->json($data);
     }
 }

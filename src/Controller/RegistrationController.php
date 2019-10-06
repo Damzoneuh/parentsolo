@@ -3,7 +3,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Canton;
+use App\Entity\Cities;
 use App\Entity\Profil;
+use App\Entity\Relationship;
 use App\Entity\User;
 use App\Mailer\Mailing;
 use App\Service\MailingService;
@@ -30,12 +33,12 @@ class RegistrationController extends AbstractController
     /**
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
+     * @param MailingService $mailingService
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     * @throws \Exception
      * @Route("/api/register", name="app_register_form", methods={"POST"})
      */
     public function index(Request $request, UserPasswordEncoderInterface $encoder, MailingService $mailingService){
@@ -48,7 +51,11 @@ class RegistrationController extends AbstractController
             $data = $this->_serializer->decode($request->getContent(), 'json');
             $profil = new Profil();
             $profil->setIsMan($data['credentials']['sex']);
+            $relationship = $this->getDoctrine()->getRepository(Relationship::class)
+                ->findOneBy(['name' => $data['credentials']['relation']]);
+            $profil->setRelationship($relationship);
             $em = $this->getDoctrine()->getManager();
+            //TODO ajouter birthday + city
             $user = new User();
             $user->setCountry($country);
             $user->setProfil($profil);
@@ -173,6 +180,40 @@ class RegistrationController extends AbstractController
             return $data['countryCode'];
         }
         return $data['countryCode'] = '?';
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/canton", name="api_get_canton", methods={"GET"})
+     */
+    public function getCantons(){
+        $em = $this->getDoctrine()->getRepository(Canton::class);
+        $data = [];
+        $push = [];
+        foreach ($em->findAll() as $canton){
+            $push['name'] = $canton->getName();
+            $push['id'] = $canton->getId();
+            array_push($data, $push);
+        }
+        return $this->json($data);
+    }
+
+    /**
+     * @param $canton
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/cities/{canton}", name="api_get_cities", methods={"GET"})
+     */
+    public function getCities($canton){
+        $em = $this->getDoctrine()->getRepository(Canton::class);
+        $cantons = $em->find($canton);
+        $data = [];
+        $push = [];
+        foreach ($cantons->getCities() as $city){
+            $push['name'] = $city->getName();
+            $push['id'] = $city->getId();
+            array_push($data, $push);
+        }
+        return $this->json($data);
     }
 
     /**

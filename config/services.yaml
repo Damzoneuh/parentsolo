@@ -15,6 +15,8 @@ parameters:
     api.geo.uri: 'http://ip-api.com/json'
     storage.img: '/var/www/html/storage/img'
     app.supported_locales: ['en', 'de', 'fr']
+    api.city.name: parentsolo
+    api.city.key: so03232fa975a927abf4d5e48b2e17968981c1c221
 
 services:
     # default configuration for services in *this* file

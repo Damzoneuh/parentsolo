@@ -4,6 +4,10 @@
 @import "registration";
 @import "chat";
 
+$red: #e30813;
+$white: rgb(245,245,245);
+$transparent: rgba(0,0,0, 0);
+
 .box{
   margin: 50px auto;
   padding: 10px;
@@ -61,3 +65,9 @@
 .navbar{
   padding: 0.3em;
 }
+
+.marg-10{
+  margin: 10px;
+}
+
+

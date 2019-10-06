@@ -1,3 +1,4 @@
+$red: #e30813;
 .banner-1{
   background: url("../fixed/iStock-514318934.png") center no-repeat fixed;
   background-size: cover;
@@ -11,4 +12,69 @@
 .banner-3{
   background: url("../fixed/banner3.png") center no-repeat fixed;
   background-size: cover;
+}
+
+.row-banner{
+  padding-top: 5em;
+  margin-right: 0;
+}
+
+.bubble{
+  padding: 0.2em;
+}
+
+.img-bubble{
+  margin: 0;
+  padding: 0.5em;
+  background-color: $white;
+  border-radius: 0 1em 1em 1em;
+}
+
+.triangle{
+  display : inline-block;
+  height : 0;
+  width : 0;
+  margin: 0;
+  padding: 0;
+  border-top : 30px solid $white;
+  border-left : 30px solid #11ffee00;
+}
+
+.sophie{
+  background: url("../fixed/SophieFavre_Carre.png") top no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+  border: 2px solid $red;
+  height: 7em;
+  width: 7em;
+}
+
+.threat-red {
+  color: $red;
+  font-weight: bold;
+}
+
+.baseline{
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.btn-danger{
+  background-color: $red;
+}
+
+.size-more{
+  font-size: 1.1em;
+}
+
+.day{
+  width: 65%;
+}
+
+.month{
+  width: 65%;
+}
+
+.year{
+  width: 100%;
 }

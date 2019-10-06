@@ -5,5 +5,5 @@
 {% block stylesheets %}{{ parent() }} {% endblock %}
 
 {% block body %}
-    <div id="register"></div>
+    <div id="register" data-token="{{ csrf_token('register') }}"></div>
 {% endblock %}
