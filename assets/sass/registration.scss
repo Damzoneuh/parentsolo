@@ -1,17 +1,26 @@
 $red: #e30813;
 .banner-1{
-  background: url("../fixed/iStock-514318934.png") center no-repeat fixed;
+  background: url("../fixed/banner3.png") center no-repeat fixed;
   background-size: cover;
+  position: relative;
 }
 
 .banner-2{
   background: url("../fixed/iStock-1034831832.png") center no-repeat fixed;
   background-size: cover;
+  position: relative;
 }
 
 .banner-3{
-  background: url("../fixed/banner3.png") center no-repeat fixed;
+  background: url("../fixed/banner2.png") top no-repeat fixed;
   background-size: cover;
+  position: relative;
+}
+
+.banner-phone{
+  background: url("../fixed/HomePage-Mobile.png") top left no-repeat fixed;
+  background-size: cover;
+  position: relative;
 }
 
 .row-banner{
@@ -21,23 +30,6 @@ $red: #e30813;
 
 .bubble{
   padding: 0.2em;
-}
-
-.img-bubble{
-  margin: 0;
-  padding: 0.5em;
-  background-color: $white;
-  border-radius: 0 1em 1em 1em;
-}
-
-.triangle{
-  display : inline-block;
-  height : 0;
-  width : 0;
-  margin: 0;
-  padding: 0;
-  border-top : 30px solid $white;
-  border-left : 30px solid #11ffee00;
 }
 
 .sophie{
@@ -68,13 +60,17 @@ $red: #e30813;
 }
 
 .day{
-  width: 65%;
+  width: 45px;
 }
 
 .month{
-  width: 65%;
+  width: 45px;
 }
 
 .year{
-  width: 100%;
+  width: 66px;
+}
+
+.day, .month, .year{
+  margin-bottom: 5px;
 }

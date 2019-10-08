@@ -24,11 +24,6 @@ class Canton
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profil", mappedBy="canton", cascade={"persist", "remove"})
-     */
-    private $profil;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $code;
@@ -56,24 +51,6 @@ class Canton
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getProfil(): ?Profil
-    {
-        return $this->profil;
-    }
-
-    public function setProfil(?Profil $profil): self
-    {
-        $this->profil = $profil;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newCanton = $profil === null ? null : $this;
-        if ($newCanton !== $profil->getCanton()) {
-            $profil->setCanton($newCanton);
-        }
 
         return $this;
     }
@@ -117,7 +94,6 @@ class Canton
                 $city->setCanton(null);
             }
         }
-
         return $this;
     }
 }

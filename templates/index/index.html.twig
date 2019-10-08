@@ -6,4 +6,45 @@
 
 {% block body %}
     <div id="register" data-token="{{ csrf_token('register') }}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 w-75 text-center">
+                <h3>ParentSolo.ch : <span class="text-danger font-weight-bold"> {{ intro }}</span></h3>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="flex flex-row justify-content-around align-items-start marg-top-50">
+                    <div class="w-25">
+                        <img src="{{ asset('/img/Qualite.png') }}" alt="icon" class="w-100">
+                    </div>
+                    <div class="w-75">
+                        <h4>{{ meetingTitle }}</h4>
+                        <p>{{ meetingText }} <span class="text-success">{{ ratio }}</span> <br /><span class="text-danger">{{ meetingRed }}</span> </p>
+                    </div>
+                </div>
+                <div class="flex flex-row justify-content-around align-items-start marg-top-50">
+                    <div class="w-25">
+                        <img src="{{ asset('/img/Securite.png') }}" alt="icon" class="w-100">
+                    </div>
+                    <div class="w-75">
+                        <h4>{{ securityTitle }}</h4>
+                        <p>{{ securityText }} <span class="text-success">{{ securityGreen }}</span> <br /><span class="text-danger">{{ securityRed }}</span> </p>
+                    </div>
+                </div>
+                <div class="flex flex-row justify-content-around align-items-start marg-top-50">
+                    <div class="w-25">
+                        <img src="{{ asset('/img/Interactivite.png') }}" alt="icon" class="w-100">
+                    </div>
+                    <div class="w-75">
+                        <h4>{{ interactiveTitle }}</h4>
+                        <p>{{ interactiveText }} <span class="text-success">{{ interactiveGreen }}</span> <br /><span class="text-danger">{{ interactiveRed }}</span> </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="diary-wrap">
+                    {{ diary }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

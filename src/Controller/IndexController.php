@@ -27,10 +27,52 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/", name="index")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(Request $request, TranslatorInterface $translator)
     {
-        return $this->render('index/index.html.twig');
+        $diary = $translator->trans('diary.home', [], null, $request->getLocale());
+        return $this->render('index/index.html.twig',[
+            'intro' => $translator->trans('intro', [], null, $request->getLocale()),
+            'meetingTitle' => $translator->trans('meeting.quality.title', [], null, $request->getLocale()),
+            'meetingText' => $translator->trans('meeting.quality', [], null, $request->getLocale()),
+            'meetingRed' => $translator->trans('meeting.quality.red', [], null, $request->getLocale()),
+            'ratio' => $translator->trans('ratio', [], null, $request->getLocale()),
+            'securityTitle' => $translator->trans('security.title', [], null, $request->getLocale()),
+            'securityText' => $translator->trans('security.text', [], null, $request->getLocale()),
+            'securityGreen' => $translator->trans('security.green', [], null, $request->getLocale()),
+            'securityRed' => $translator->trans('security.red', [], null, $request->getLocale()),
+            'interactiveTitle' => $translator->trans('interactive.title', [], null, $request->getLocale()),
+            'interactiveText' => $translator->trans('interactive.text', [], null, $request->getLocale()),
+            'interactiveGreen' => $translator->trans('interactive.green', [], null, $request->getLocale()),
+            'interactiveRed' => $translator->trans('interactive.red', [], null, $request->getLocale()),
+            'diary' => $diary
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @Route("/api/footer", name="api_footer", methods={"GET"})
+     */
+    public function getFooter(Request $request, TranslatorInterface $translator){
+        $links = [
+            'home' => $translator->trans('home.link', [], null, $request->getLocale()),
+            'diary' => $translator->trans('diary', [], null, $request->getLocale()),
+            'faq' => 'FAQ',
+            'testimony' => $translator->trans('testimony.link', [], null, $request->getLocale()),
+            'contact' => $translator->trans('contact', [], null, $request->getLocale()),
+            'cgu' => $translator->trans('cgu', [], null, $request->getLocale()),
+            'press' => $translator->trans('press.link', [], null, $request->getLocale()),
+            'add' => $translator->trans('add', [], null, $request->getLocale()),
+            'payment' => $translator->trans('payment', [], null, $request->getLocale()),
+            'follow' => $translator->trans('follow', [], null, $request->getLocale()),
+            'sub' => $translator->trans('baseline', [], null, $request->getLocale()) . ' ' . $translator->trans('baseline.red', [], null, $request->getLocale())
+        ];
+        return $this->json($links);
     }
 
     /**
@@ -185,6 +227,16 @@ class IndexController extends AbstractController
             ]
         ];
         return $this->json($data);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @Route("/api/press", name="api_press", methods={"GET"})
+     */
+    public function getPress(Request $request, TranslatorInterface $translator){
+        return $this->json(['press' => $translator->trans('press', [], null, $request->getLocale())]);
     }
 
     /**

@@ -39,6 +39,7 @@ class RegistrationController extends AbstractController
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws \Exception
      * @Route("/api/register", name="app_register_form", methods={"POST"})
      */
     public function index(Request $request, UserPasswordEncoderInterface $encoder, MailingService $mailingService){
@@ -55,8 +56,12 @@ class RegistrationController extends AbstractController
                 ->findOneBy(['name' => $data['credentials']['relation']]);
             $profil->setRelationship($relationship);
             $em = $this->getDoctrine()->getManager();
-            //TODO ajouter birthday + city
+
+            $birthDate = new \DateTime($data['credentials']['day'] . '-' . $data['credentials']['month'] . '-' . $data['credentials']['year']);
+            $city = $em->getRepository(Cities::class)->find($data['credentials']['city']);
             $user = new User();
+            $user->setBirthdate($birthDate);
+            $profil->setCityId($city->getId());
             $user->setCountry($country);
             $user->setProfil($profil);
             $user->setPhone($data['credentials']['number']);
@@ -70,7 +75,7 @@ class RegistrationController extends AbstractController
             $em->flush();
             $mailingService->sendRegistrationConfirmationMail($user, $token);
         }
-        return $this->json(['data' => ['error' => 'You must be a Swissman to be registered if you use a VPN you have to deactivate it to register']]);
+        return $this->json(['data' => 'success']);
     }
 
     /**
@@ -175,9 +180,11 @@ class RegistrationController extends AbstractController
         }
         $client = HttpClient::create();
         $response = $client->request('GET', $this->getParameter('api.geo.uri') . '/' . $clientIp);
-        $data = $this->_serializer->decode($response->getContent(), 'json');
-        if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){
-            return $data['countryCode'];
+        if ($response->getStatusCode() === 200){
+            $data = $this->_serializer->decode($response->getContent(), 'json');
+            if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){
+                return $data['countryCode'];
+            }
         }
         return $data['countryCode'] = '?';
     }

@@ -23,7 +23,8 @@ export default class TalkingThreatSubscribe extends Component{
             phone: null,
             password: null,
             plainPassword: null,
-            passwordError: false
+            passwordError: false,
+            phoneScreen: this.props.phone
         };
         this.handleAnimation = this.handleAnimation.bind(this);
         this.handleTab = this.handleTab.bind(this);
@@ -151,6 +152,11 @@ export default class TalkingThreatSubscribe extends Component{
     }
 
     handlePhone(e){
+        if (this.state.tab === 7 ){
+            this.setState({
+                passwordError: false
+            })
+        }
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -159,20 +165,26 @@ export default class TalkingThreatSubscribe extends Component{
     handlePassword(e){
         e.preventDefault();
         if (this.state.password === this.state.plainPassword && this.state.plainPassword){
-            this.setState({
-                tab: this.state.tab +1
-            });
             let data = {
-                token: document.getElementById('register').dataset('token'),
+                token: document.getElementById('register').dataset.token,
                 credentials: {
                     email: this.state.email,
                     sex: this.state.sex,
                     city: this.state.selectedCity,
                     number: this.state.phone,
                     password: this.state.password,
-                    relation: this.state.relation
+                    relation: this.state.relation,
+                    day: this.state.day,
+                    month: this.state.month,
+                    year: this.state.year
                 }
-            }
+            };
+            axios.post('/api/register', data)
+                .then(res => {
+                    this.setState({
+                        tab: this.state.tab +1
+                    })
+                })
         }
         else {
             this.setState({
@@ -186,12 +198,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 1){
             return(
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10">
-                        <div className="flex-row flex justify-content-end">
+                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
                             {animationText} <br/><span className="threat-red size-more">{threat.first[1]}</span>
                         </div>
                     </div>
@@ -210,12 +222,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 2){
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10">
-                        <div className="flex-row flex justify-content-end">
+                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
                             {threat.second[0]} <br/><span className="threat-red size-more">{threat.second[1]}</span>
                         </div>
                     </div>
@@ -231,12 +243,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 3){
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10">
-                        <div className="flex-row flex justify-content-end">
+                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
                             {major ? <p>{threat.third[0]} <br/><span className="threat-red size-more"> {threat.third[1]}</span></p> :
                                 <span className="threat-red size-more">{threat.thirdError.text}</span>}
                         </div>
@@ -271,12 +283,12 @@ export default class TalkingThreatSubscribe extends Component{
             return (
                 <div>
                     <div className="flex flex-column align-items-center justify-content-center">
-                        <div className="flex flex-row justify-content-center marg-top-10">
-                            <div className="flex-row flex justify-content-end">
+                        <div className="flex flex-row justify-content-center marg-top-10 threat">
+                            <div className="flex-row flex sophie-wrap">
                                 <div className="sophie"></div>
                             </div>
                             <div className="triangle"></div>
-                            <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                            <div className="img-bubble flex flex-column align-items-center justify-content-center">
                                 {!selectedCity ? <p>{threat.fourth.text[0]} <br/><span className="threat-red size-more">{threat.fourth.text[1]}</span></p> :
                                     <h2>{threat.fourth.response[0]}</h2>
                                 }
@@ -315,12 +327,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 5) {
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10">
-                        <div className="flex-row flex justify-content-end">
+                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
                             {threat.fifth[0]} <br/><span className="threat-red size-more">{threat.fifth[1]}</span>
                         </div>
                     </div>
@@ -344,12 +356,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 6){
             return(
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10">
-                        <div className="flex-row flex justify-content-end">
+                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
                             {threat.sixth[0]} <br/><span className="threat-red size-more">{threat.sixth[1]}</span>
                         </div>
                     </div>
@@ -370,19 +382,19 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 7){
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10">
-                        <div className="flex-row flex justify-content-end">
+                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble w-50 flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
                             {threat.seventh[0]}
                         </div>
                     </div>
                     <form className="w-75" onChange={this.handlePhone}>
                         <div className="form-group marg-top-10">
                             <input type="password" name="password" className={!passwordError ? "form-control" : "form-control is-invalid"} id="password" placeholder={threat.seventh[1]}
-                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{6,12}$"/>
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{6,22}$"/>
                             <div className="invalid-feedback">
                                 {threat.seventhError.text}
                             </div>
@@ -395,6 +407,21 @@ export default class TalkingThreatSubscribe extends Component{
                     </form>
                 </div>
             )
+        }
+        if (isLoaded && tab === 8){
+           return (
+               <div className="flex flex-column align-items-center justify-content-center">
+                   <div className="flex flex-row justify-content-center marg-top-10 threat">
+                       <div className="flex-row flex sophie-wrap">
+                           <div className="sophie"></div>
+                       </div>
+                       <div className="triangle"></div>
+                       <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                           {threat.final[0]}
+                       </div>
+                   </div>
+               </div>
+           )
         }
         else {
             return (

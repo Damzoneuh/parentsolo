@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import { faLockOpen, faLock } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../fixed/logo_noir.png';
+import fr from '../../fixed/fr.png';
+import de from '../../fixed/de.png';
+import en from '../../fixed/en.png';
 
 
 export default class Nav extends Component{
@@ -17,10 +20,14 @@ export default class Nav extends Component{
             connection: [],
             flags: [],
             isLoaded: false,
-            scroll: 0
+            scroll: 0,
+            toggle: false,
+            phone: window.matchMedia('(max-width: 752px)').matches
         };
+
         this.handleLang = this.handleLang.bind(this);
         this.scrollHandler = this.scrollHandler.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     componentDidMount(){
@@ -40,9 +47,9 @@ export default class Nav extends Component{
         window.removeEventListener('scroll', this.scrollHandler);
     }
 
-    handleLang(e){
+    handleLang(value){
         let data = {
-            lang: e.target.value
+            lang: value
         };
         axios.post("/api/lang", data)
             .then(res => {
@@ -65,37 +72,112 @@ export default class Nav extends Component{
         }
     }
 
+    toggle(){
+        if (!this.state.toggle){
+            this.setState({
+                toggle: true
+            })
+        }
+        else {
+            this.setState({
+                toggle: false
+            })
+        }
+    }
+
     render() {
-        const {isLoaded, lang, link, connection, scroll} = this.state;
+        const {isLoaded, lang, link, connection, scroll, toggle, phone} = this.state;
         if (isLoaded){
             return (
-                <nav className={scroll === 0 ? "navbar navbar-expand-lg navbar-light z" : "navbar navbar-expand-lg navbar-light bg-light z fixed-top"} >
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-                            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse justify-content-between align-items-center" id="navbarText">
-                        <ul className="navbar-nav ">
-                            <li className="nav-item"><a className="nav-link" href={link.home.path}>{link.home.name}</a></li>
-                            <li className="nav-item"><a className="nav-link" href={link.testimony.path}>{link.testimony.name}</a></li>
-                            <li className="nav-item"><a className="nav-link" href={link.faq.path}>{link.faq.name}</a></li>
+                <div className={scroll === 0 ? "" : "bg-light z fixed-top border-red-nav"}>
+                    <nav className={!toggle ? "navbar navbar-expand-md navbar-light z" : "navbar navbar-expand-md navbar-light z bg-light border-red-nav"} >
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" onClick={this.toggle}>
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse justify-content-between align-items-center" id="navbarText">
+                            <ul className="navbar-nav ">
+                                <li className="nav-item font-weight-bold"><a className="nav-link" href={link.home.path}>{link.home.name}</a></li>
+                                <li className="nav-item font-weight-bold"><a className="nav-link" href={link.testimony.path}>{link.testimony.name}</a></li>
+                                <li className="nav-item font-weight-bold"><a className="nav-link" href={link.faq.path}>{link.faq.name}</a></li>
+                            </ul>
+                            <img src={logo} alt="logo" className={scroll === 0 ? "none" : "nav-logo"}/>
+                            {!phone ? <div className={toggle ? "text-left" : "flex flex-row justify-content-center align-items-center"}>
+                                <a href={connection.path} className="nav-link custom-link font-weight-bold"><FontAwesomeIcon icon="lock-open" color={"rgba(0, 0, 0, 0.5)"} className={"pad-right-10"}/> {connection.name}</a>
+                                <ul className="navbar-nav">
+                                    <li className="nav-item dropdown">
+                                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                           role="button" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
+                                            {lang.selected === "fr" ? <span>Français <img src={fr} alt="flag" /></span> : '' }
+                                            {lang.selected === "de" ? <span>Deutsch <img src={de} alt="flag" /></span> : '' }
+                                            {lang.selected === "en" ? <span>English <img src={en} alt="flag" /></span> : ''}
+                                        </a>
+                                        {lang.selected === "fr" ?
+                                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>Deutsch <img src={de} alt="flag" /></span></a>
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('en')}><span>English <img src={en} alt="flag" /></span></a>
+                                            </div>
+                                         : ''}
+                                        {lang.selected === "de" ?
+                                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('fr')}><span>Français <img src={fr} alt="flag" /></span></a>
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>English <img src={en} alt="flag" /></span></a>
+                                            </div>
+                                            : ''
+                                        }
+                                        {lang.selected === "en" ?
+                                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('fr')}><span>Français <img src={fr} alt="flag" /></span></a>
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>Deutsch <img src={de} alt="flag" /></span></a>
+                                            </div>
+                                            : ''
+                                        }
+                                    </li>
+                                </ul>
+                            </div> : ''}
+                        </div>
+                    </nav>
+                    {phone ? <div className="flex flex-row justify-content-center align-items-center top-marg-nav position-fixed z">
+                        <a href={connection.path} className="nav-link custom-link font-weight-bold"><FontAwesomeIcon icon="lock-open" color={"rgba(0, 0, 0, 0.5)"} className={"pad-right-10"}/> {connection.name}</a>
+                        <ul className="navbar-nav">
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle custom-link" href="#" id="navbarDropdownMenuLink"
+                                   role="button" data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    {lang.selected === "fr" ? <span>Français <img src={fr} alt="flag" /></span> : '' }
+                                    {lang.selected === "de" ? <span>Deutsch <img src={de} alt="flag" /></span> : '' }
+                                    {lang.selected === "en" ? <span>English <img src={en} alt="flag" /></span> : ''}
+                                </a>
+                                {lang.selected === "fr" ?
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>Deutsch <img src={de} alt="flag" /></span></a>
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('en')}><span>English <img src={en} alt="flag" /></span></a>
+                                    </div>
+                                    : ''}
+                                {lang.selected === "de" ?
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('fr')}><span>Français <img src={fr} alt="flag" /></span></a>
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>English <img src={en} alt="flag" /></span></a>
+                                    </div>
+                                    : ''
+                                }
+                                {lang.selected === "en" ?
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('fr')}><span>Français <img src={fr} alt="flag" /></span></a>
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>Deutsch <img src={de} alt="flag" /></span></a>
+                                    </div>
+                                    : ''
+                                }
+                            </li>
                         </ul>
-                        <img src={logo} alt="logo" className={scroll === 0 ? "none" : "nav-logo"}/>
-                        <form className="form-inline">
-                            <a className="nav-link custom-link" href={connection.path}>{connection.name}</a><FontAwesomeIcon icon="lock-open" color={"rgba(0, 0, 0, 0.5)"} className={"pad-right-10"}/>
-                            <select onChange={this.handleLang} defaultValue={lang.selected} className="form-control">
-                                <option value={lang.de.name} >{lang.de.name}</option>
-                                <option value={lang.en.name} >{lang.en.name}</option>
-                                <option value={lang.fr.name} >{lang.fr.name}</option>
-                            </select>
-                        </form>
-                    </div>
-                </nav>
+                    </div> : ''}
+                </div>
             )
         }
         return (
             <div>
-                navbar
+
             </div>
         );
     }

@@ -27,6 +27,7 @@ class Cities
      */
     private $canton;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +53,23 @@ class Cities
     public function setCanton(?Canton $canton): self
     {
         $this->canton = $canton;
+
+        return $this;
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(Profil $profil): self
+    {
+        $this->profil = $profil;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $profil->getCity()) {
+            $profil->setCity($this);
+        }
 
         return $this;
     }

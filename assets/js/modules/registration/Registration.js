@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import logo from '../../../fixed/Logo_ParentsoloFR_Noir_sansBL.png';
 import TalkingThreatSubscribe from "./TalkingThreatSubscribe";
+import press1 from '../../../fixed/20minuten.png';
+import press2 from '../../../fixed/AargauerZeitung.png';
+import press3 from '../../../fixed/Bilan.jpg';
+import press4 from '../../../fixed/RTS.jpg';
+import press5 from '../../../fixed/SchweizerIllustriert.jpg';
+import press6 from '../../../fixed/SRF.png';
 
 export default class Registration extends Component{
     constructor(props){
@@ -19,7 +25,9 @@ export default class Registration extends Component{
             message: null,
             reset: null,
             isMan: false,
-            activeImg: 1
+            activeImg: 2,
+            press: null,
+            phone: window.matchMedia('(max-width: 752px)').matches
         };
         this.handleForm = this.handleForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,7 +43,15 @@ export default class Registration extends Component{
                     baseline: res.data
                 })
             });
-        setInterval(() => this.CarouselHandler(), 60000)
+        axios.get('api/press')
+            .then(res => {
+                this.setState({
+                    press: res.data
+                })
+            });
+        if (window.matchMedia('(min-width: 768px)').matches){
+            setInterval(() => this.CarouselHandler(), 60000)
+        }
     }
 
     handleForm(e){
@@ -97,8 +113,8 @@ export default class Registration extends Component{
     }
 
     render() {
-        const {isLoaded,baseline, activeImg} = this.state;
-        if (!isLoaded)
+        const {isLoaded,baseline, activeImg, press, phone} = this.state;
+        if (!isLoaded || !press )
         {
             return (
                 <div></div>
@@ -107,46 +123,49 @@ export default class Registration extends Component{
         else {
             return (
                     <div className="register-wrap">
-                        <div className={"w-100 banner banner-" + activeImg}>
-                            <div className="row row-banner">
-                                <div className="offset-lg-6 col-lg-6 col-12 text-center">
-                                    <img src={logo} alt="logo" className="w-75"/>
-                                    <div className="flex-row flex justify-content-center align-items-center">
-                                        <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
+                        {!phone ?
+                            <div className={"w-100 banner banner-" + activeImg}>
+                                <div className="row row-banner">
+                                    <div className="offset-lg-6 col-lg-6 col-12 text-center marg-top-50">
+                                        <img src={logo} alt="logo" className="w-75"/>
+                                        <div className="flex-row flex justify-content-center align-items-center">
+                                            <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
+                                        </div>
+                                        <TalkingThreatSubscribe phone={phone}/>
                                     </div>
-                                    <TalkingThreatSubscribe/>
+                                    <div className="press flex flex-row align-items-center justify-content-around">
+                                        <h2>{press.press}</h2>
+                                        <img src={press1} alt="press"/>
+                                        <img src={press2} alt="press"/>
+                                        <img src={press3} alt="press"/>
+                                        <img src={press4} alt="press"/>
+                                        <img src={press5} alt="press"/>
+                                        <img src={press6} alt="press"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/*<form onChange={this.handleForm} onSubmit={this.handleSubmit} method="post">*/}
-                        {/*    <div className="custom-control custom-switch flex-row align-items-center justify-content-around flex w-25">*/}
-                        {/*        <div className="m-4">I'm a woman</div>*/}
-                        {/*        <input type="checkbox" className="custom-control-input m-auto" id="isMan" name="isMan" onChange={this.handleCheckbox} defaultChecked={isMan}/>*/}
-                        {/*        <label className="custom-control-label m-auto" htmlFor="isMan">I'm a man</label>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="form-group">*/}
-                        {/*        <label htmlFor="email">Email</label>*/}
-                        {/*        <input type="email" name="email" className="form-control" required/>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="form-group">*/}
-                        {/*        <label htmlFor="number">Phone number</label>*/}
-                        {/*        <div className="input-group-prepend">*/}
-                        {/*            <div className="input-group-text"> +41</div>*/}
-                        {/*            <input type="text" name="number" className="form-control" required/>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="form-group">*/}
-                        {/*        <label htmlFor="password">Type a password</label>*/}
-                        {/*        <input type="password" name="password" className="form-control" required/>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="form-group">*/}
-                        {/*        <label htmlFor="plainPassword">Confirm your password</label>*/}
-                        {/*        <input type="password" name="plainPassword" className="form-control" required/>*/}
-                        {/*    </div>*/}
-                        {/*    <div className="marg-top-10">*/}
-                        {/*        <button className="btn btn-group-lg btn-primary">Register</button>*/}
-                        {/*    </div>*/}
-                        {/*</form>*/}
+                            :
+                            <div className={"w-100 banner banner-phone"}>
+                                <div className="row row-banner">
+                                    <div className="offset-lg-6 col-lg-6 col-12 text-center marg-top-50">
+                                        <img src={logo} alt="logo" className="w-75"/>
+                                        <div className="flex-row flex justify-content-center align-items-center">
+                                            <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
+                                        </div>
+                                        <TalkingThreatSubscribe phone={phone}/>
+                                    </div>
+                                    <div className="press flex flex-row align-items-center justify-content-around">
+                                        <h2>{press.press}</h2>
+                                        <img src={press1} alt="press"/>
+                                        <img src={press2} alt="press"/>
+                                        <img src={press3} alt="press"/>
+                                        <img src={press4} alt="press"/>
+                                        <img src={press5} alt="press"/>
+                                        <img src={press6} alt="press"/>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
             )
         }

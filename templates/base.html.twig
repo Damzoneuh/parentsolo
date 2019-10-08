@@ -9,11 +9,12 @@
     <body>
     <div id="nav"></div>
         {% block body %}{% endblock %}
-    <div id="footer"></div>
+    <footer id="footer"></footer>
         {% if is_granted('ROLE_BASIC') %}
             <div id="chat" data-user="{{ app.user.id }}" class="flex w-100 position-fixed bottom-0 justify-content-sm-around"></div>
         {% endif %}
         {% block javascripts %}
+            {{ encore_entry_script_tags('footer') }}
             {{ encore_entry_script_tags('nav') }}
             {% if is_granted('ROLE_BASIC') %}
                 {{ encore_entry_script_tags('chat') }}

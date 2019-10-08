@@ -69,16 +69,6 @@ class Profil
     private $temperament;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Religion", cascade={"persist", "remove"}, mappedBy="profil")
-     */
-    private $religion;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Activity", cascade={"persist", "remove"}, mappedBy="profil")
-     */
-    private $activity;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Relationship", cascade={"persist", "remove"})
      */
     private $relationship;
@@ -174,14 +164,24 @@ class Profil
     private $favorite;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Canton", inversedBy="profil", cascade={"persist", "remove"})
-     */
-    private $canton;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Langages", mappedBy="profil")
      */
     private $langages;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $cityId;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Religion", cascade={"persist", "remove"})
+     */
+    private $religion;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Activity", inversedBy="profils")
+     */
+    private $activity;
 
     public function __construct()
     {
@@ -196,6 +196,7 @@ class Profil
         $this->reading = new ArrayCollection();
         $this->pets = new ArrayCollection();
         $this->favorite = new ArrayCollection();
+        $this->activity = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -338,30 +339,6 @@ class Profil
     public function setTemperament(?Temperament $temperament): self
     {
         $this->temperament = $temperament;
-
-        return $this;
-    }
-
-    public function getReligion(): ?Religion
-    {
-        return $this->religion;
-    }
-
-    public function setReligion(?Religion $religion): self
-    {
-        $this->religion = $religion;
-
-        return $this;
-    }
-
-    public function getActivity(): ?Activity
-    {
-        return $this->activity;
-    }
-
-    public function setActivity(?Activity $activity): self
-    {
-        $this->activity = $activity;
 
         return $this;
     }
@@ -720,18 +697,6 @@ class Profil
         return $this;
     }
 
-    public function getCanton(): ?Canton
-    {
-        return $this->canton;
-    }
-
-    public function setCanton(?Canton $canton): self
-    {
-        $this->canton = $canton;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Langages[]
      */
@@ -759,4 +724,56 @@ class Profil
 
         return $this;
     }
+
+    public function getCityId(): ?int
+    {
+        return $this->cityId;
+    }
+
+    public function setCityId(int $cityId): self
+    {
+        $this->cityId = $cityId;
+
+        return $this;
+    }
+
+    public function getReligion(): ?Religion
+    {
+        return $this->religion;
+    }
+
+    public function setReligion(?Religion $religion): self
+    {
+        $this->religion = $religion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivity(): Collection
+    {
+        return $this->activity;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activity->contains($activity)) {
+            $this->activity[] = $activity;
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activity->contains($activity)) {
+            $this->activity->removeElement($activity);
+        }
+
+        return $this;
+    }
+
+
 }
