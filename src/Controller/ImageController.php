@@ -74,7 +74,7 @@ class ImageController extends AbstractController
         $content['id'] = $img->getId();
         $content['title'] = $img->getTitle();
         $content['path'] = $img->getPath();
-        return $this->json($content);
+        return $this->file($img->getPath());
     }
 
     private function checkExtension(UploadedFile $file){

@@ -198,12 +198,14 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 1){
             return(
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10 threat">
-                        <div className="flex-row flex sophie-wrap">
-                            <div className="sophie"></div>
+                    <div className="marg-top-10 threat">
+                        <div className="flex flex-row justify-content-center">
+                            <div className="flex-row flex sophie-wrap">
+                                <div className="sophie"></div>
+                            </div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                             {animationText} <br/><span className="threat-red size-more">{threat.first[1]}</span>
                         </div>
                     </div>
@@ -222,12 +224,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 2){
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                    <div className="marg-top-10 threat">
                         <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                             {threat.second[0]} <br/><span className="threat-red size-more">{threat.second[1]}</span>
                         </div>
                     </div>
@@ -243,12 +245,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 3){
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                    <div className="marg-top-10 threat">
                         <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                             {major ? <p>{threat.third[0]} <br/><span className="threat-red size-more"> {threat.third[1]}</span></p> :
                                 <span className="threat-red size-more">{threat.thirdError.text}</span>}
                         </div>
@@ -283,12 +285,12 @@ export default class TalkingThreatSubscribe extends Component{
             return (
                 <div>
                     <div className="flex flex-column align-items-center justify-content-center">
-                        <div className="flex flex-row justify-content-center marg-top-10 threat">
+                        <div className="marg-top-10 threat">
                             <div className="flex-row flex sophie-wrap">
                                 <div className="sophie"></div>
                             </div>
                             <div className="triangle"></div>
-                            <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                            <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                                 {!selectedCity ? <p>{threat.fourth.text[0]} <br/><span className="threat-red size-more">{threat.fourth.text[1]}</span></p> :
                                     <h2>{threat.fourth.response[0]}</h2>
                                 }
@@ -327,12 +329,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 5) {
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                    <div className="marg-top-10 threat">
                         <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                             {threat.fifth[0]} <br/><span className="threat-red size-more">{threat.fifth[1]}</span>
                         </div>
                     </div>
@@ -356,12 +358,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 6){
             return(
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                    <div className="marg-top-10 threat">
                         <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                             {threat.sixth[0]} <br/><span className="threat-red size-more">{threat.sixth[1]}</span>
                         </div>
                     </div>
@@ -382,12 +384,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 7){
             return (
                 <div className="flex flex-column align-items-center justify-content-center">
-                    <div className="flex flex-row justify-content-center marg-top-10 threat">
+                    <div className="marg-top-10 threat">
                         <div className="flex-row flex sophie-wrap">
                             <div className="sophie"></div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                             {threat.seventh[0]}
                         </div>
                     </div>
@@ -411,12 +413,12 @@ export default class TalkingThreatSubscribe extends Component{
         if (isLoaded && tab === 8){
            return (
                <div className="flex flex-column align-items-center justify-content-center">
-                   <div className="flex flex-row justify-content-center marg-top-10 threat">
+                   <div className="marg-top-10 threat">
                        <div className="flex-row flex sophie-wrap">
                            <div className="sophie"></div>
                        </div>
                        <div className="triangle"></div>
-                       <div className="img-bubble flex flex-column align-items-center justify-content-center">
+                       <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
                            {threat.final[0]}
                        </div>
                    </div>

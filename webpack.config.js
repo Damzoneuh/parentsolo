@@ -78,6 +78,7 @@ Encore
     .addEntry('chat', './assets/js/modules/messaging/Chat.js')
     .addEntry('nav', './assets/js/common/Nav.js')
     .addEntry('footer', './assets/js/common/Footer.js')
+    .addEntry('viewer', './assets/js/common/ImageViewer.js')
 ;
 
 module.exports = Encore.getWebpackConfig();

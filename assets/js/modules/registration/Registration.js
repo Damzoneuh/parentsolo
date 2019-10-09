@@ -147,9 +147,9 @@ export default class Registration extends Component{
                             :
                             <div className={"w-100 banner banner-phone"}>
                                 <div className="row row-banner">
-                                    <div className="offset-lg-6 col-lg-6 col-12 text-center marg-top-50">
+                                    <div className="offset-lg-6 col-lg-6 col-12 text-right marg-top-50">
                                         <img src={logo} alt="logo" className="w-75"/>
-                                        <div className="flex-row flex justify-content-center align-items-center">
+                                        <div className="flex-row flex justify-content-end align-items-center">
                                             <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
                                         </div>
                                         <TalkingThreatSubscribe phone={phone}/>

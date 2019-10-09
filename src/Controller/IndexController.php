@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Entity\Diary;
+use App\Entity\Testimony;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,12 +32,20 @@ class IndexController extends AbstractController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function index(Request $request, TranslatorInterface $translator)
     {
-        $diary = $translator->trans('diary.home', [], null, $request->getLocale());
+        $diaryDefault = $translator->trans('diary.home', [], null, $request->getLocale());
+        $diary = $this->getDoctrine()->getRepository(Diary::class)->findByValidateAndActual();
+        $testimony = $this->getDoctrine()->getRepository(Testimony::class)
+            ->findBy(['isValidated' => true], ['id' => 'DESC'], 1);
+        if (empty($diary)){
+            $diary = null;
+        }
         return $this->render('index/index.html.twig',[
             'intro' => $translator->trans('intro', [], null, $request->getLocale()),
+            'introRed' => $translator->trans('intro.red', [], null, $request->getLocale()),
             'meetingTitle' => $translator->trans('meeting.quality.title', [], null, $request->getLocale()),
             'meetingText' => $translator->trans('meeting.quality', [], null, $request->getLocale()),
             'meetingRed' => $translator->trans('meeting.quality.red', [], null, $request->getLocale()),
@@ -48,7 +58,15 @@ class IndexController extends AbstractController
             'interactiveText' => $translator->trans('interactive.text', [], null, $request->getLocale()),
             'interactiveGreen' => $translator->trans('interactive.green', [], null, $request->getLocale()),
             'interactiveRed' => $translator->trans('interactive.red', [], null, $request->getLocale()),
-            'diary' => $diary
+            'diaryDefault' => $diaryDefault,
+            'diary' => $translator->trans('diary', [], null, $request->getLocale()),
+            'diaryValue' => $diary,
+            'shareEvent' => $translator->trans('share.event', [], null, $request->getLocale()),
+            'location' => $translator->trans('location', [], null, $request->getLocale()),
+            'date' => $translator->trans('date', [], null, $request->getLocale()),
+            'readMore' => $translator->trans('read.more', [], null, $request->getLocale()),
+            'testimony' => $testimony,
+            'testimonyLink' => $translator->trans('testimony.link', [], null, $request->getLocale())
         ]);
     }
 

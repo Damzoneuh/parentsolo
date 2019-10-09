@@ -8,6 +8,7 @@ $red: #e30813;
 $white: rgb(245,245,245);
 $transparent: rgba(0,0,0, 0);
 $redLight: rgba(227, 8, 19, 0.6);
+$redTestimony: rgba(227, 8, 19, 0.8);
 
 @font-face {
   font-family: Avenir-next;
@@ -121,8 +122,15 @@ body{
       font-size: 1em;
     }
   }
+
+  .press-footer{
+    display: none;
+  }
+
   .threat{
     display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
   .triangle{
     display : inline-block;
@@ -150,23 +158,42 @@ body{
   .press{
     display: none;
   }
+
+  .press-footer{
+    background-color: rgba(0,0,0,0.6);
+    color: $white;
+    h2 {
+      font-size: 1.2em;
+      margin: 10px 10px;
+    }
+    img{
+      height: 2.5em;
+      margin: 10px 10px;
+    }
+  }
   .threat{
-    display: block;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    align-items: end;
+    -webkit-align-items: flex-end;
+    justify-content: end;
   }
   .triangle {
     display: none;
   }
 
   .img-bubble{
-    margin: auto;
+    margin: 0;
     padding: 0.5em;
     background-color: $white;
     border-radius: 1em 1em 1em 1em;
-    width: 75%;
+    width: 55%;
     font-size: 0.8em;
   }
   .sophie-wrap{
     justify-content: center;
+    width: 100%;
   }
 }
 
@@ -250,8 +277,6 @@ footer{
     width: 275px;
     font-size: 0.9em;
   }
-
-
   .ext-row{
     margin: 0;
   }
@@ -342,3 +367,21 @@ footer{
   width: 150px;
 }
 
+.diary-img{
+  width: 25%;
+}
+
+.testimony-wrap{
+  background-color: $redTestimony;
+  border-radius: 1em;
+  padding: 15px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.testimony-img{
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border: 5px solid $white;
+}

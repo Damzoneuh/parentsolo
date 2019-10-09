@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} Index{% endblock %}
-{% block javascripts %}{{ parent() }} {{ encore_entry_script_tags('register') }}{% endblock %}
+{% block javascripts %}{{ parent() }} {{ encore_entry_script_tags('register') }} {{ encore_entry_script_tags('viewer') }}{% endblock %}
 {% block stylesheets %}{{ parent() }} {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 w-75 text-center">
-                <h3>ParentSolo.ch : <span class="text-danger font-weight-bold"> {{ intro }}</span></h3>
+                <h3>ParentSolo.ch : <span class="text-danger font-weight-bold"> {{ introRed }}</span> {{ intro }}</h3>
             </div>
             <div class="col-lg-6 col-12">
                 <div class="flex flex-row justify-content-around align-items-start marg-top-50">
@@ -41,9 +41,65 @@
                 </div>
             </div>
             <div class="col-lg-6 col-12">
+                {% if testimony is not null %}
+                    <div class="testimony-wrap">
+                        {% for testi in testimony %}
+                            <div class="flex flex-row justify-content-between marg-10">
+                                <div class="w-50 text-left">
+                                    <h4>{{ testimonyLink }}</h4>
+                                    <h5>{{ testi.title }}</h5>
+                                    {{ testi.user.pseudo }}
+                                </div>
+                                <div class="w-50">
+                                    {% if testi.user.img.values is not empty%}
+                                        <div id="viewer" class="text-right" data-path="{{ testi.user.img.values.0.id }}" data-alt="{{ testi.user.img.values.0.title }}" data-class="testimony-img"></div>
+                                    {% else %}
+                                        <img src="{{ asset('/img/FavIcon.png') }}" alt="image" class="testimony-img">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {{ testi.text }}
+                            <div class="text-right">
+                                <a href="#" class="btn btn-group btn-outline-success marg-top-10">{{ readMore }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if diaryValue is null %}
+                    <div class="diary-wrap">
+                        <div class="flex flex-row justify-content-between marg-10">
+                            <h4>{{ diary }}</h4>
+                            <img src="{{ asset('/img/Agenda.png') }}" alt="diary" class="diary-img">
+                        </div>
+                        {{ diaryDefault }}
+                        <div class="text-right">
+                            <a href="#" class="btn btn-group btn-outline-success marg-top-10">{{ shareEvent }}</a>
+                        </div>
+                    </div>
+                {% else %}
                 <div class="diary-wrap">
-                    {{ diary }}
+                        {% for diaryVal in diaryValue %}
+                             <div class="flex flex-row justify-content-between">
+                                <div class="w-50 text-left">
+                                    <h4>{{ diary }}</h4>
+                                    <h4>{{ diaryVal.title }}</h4>
+                                    <h4 class="date">{{ diaryVal.date|date('d/m/y') }} - {{ diaryVal.location }}</h4>
+                                </div>
+                                <div class="w-50 text-right">
+                                    {% if diaryVal.img is not null %}
+                                        <img src="{{ diaryVal.img.path }}" alt="diary event">
+                                    {% else %}
+                                        <img src="{{ asset('/img/Agenda.png') }}" alt="diary" class="diary-img">
+                                    {% endif %}
+                                </div>
+                             </div>
+                            {{ diaryVal.text }}
+                            <div class="text-right">
+                                <a href="#" class="btn btn-group btn-outline-success marg-top-10">{{ readMore }}</a>
+                            </div>
+                        {% endfor %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
