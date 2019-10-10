@@ -272,4 +272,13 @@ class IndexController extends AbstractController
         ];
         return $this->json($data);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @Route("/api/lang", name="api_lang", methods={"GET"})
+     */
+    public function getCurrentLang(Request $request){
+        return $this->json($request->getLocale());
+    }
 }

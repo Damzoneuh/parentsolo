@@ -9,10 +9,20 @@ import press3 from '../../../fixed/Bilan.jpg';
 import press4 from '../../../fixed/RTS.jpg';
 import press5 from '../../../fixed/SchweizerIllustriert.jpg';
 import press6 from '../../../fixed/SRF.png';
+import LogoForLang from "../../common/LogoForLang";
 
 export default class Registration extends Component{
     constructor(props){
         super(props);
+        let phoneScreen = null;
+        if (window.outerWidth > 752){
+            phoneScreen = false;
+            console.log(window.outerWidth)
+        }
+        else {
+            phoneScreen = true;
+            console.log(window.outerWidth)
+        }
         this.state = {
             isLoaded: false,
             baseline: [],
@@ -27,8 +37,9 @@ export default class Registration extends Component{
             isMan: false,
             activeImg: 2,
             press: null,
-            phone: window.matchMedia('(max-width: 752px)').matches
+            phone: phoneScreen
         };
+        window.matchMedia('(max-width: 752px)').matches;
         this.handleForm = this.handleForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -127,20 +138,11 @@ export default class Registration extends Component{
                             <div className={"w-100 banner banner-" + activeImg}>
                                 <div className="row row-banner">
                                     <div className="offset-lg-6 col-lg-6 col-12 text-center marg-top-50">
-                                        <img src={logo} alt="logo" className="w-75"/>
-                                        <div className="flex-row flex justify-content-center align-items-center">
+                                        <LogoForLang alt={"logo"} color={"black"} baseline={false} className={"w-75"} />
+                                        <div className="flex-row d-flex justify-content-center align-items-center">
                                             <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
                                         </div>
                                         <TalkingThreatSubscribe phone={phone}/>
-                                    </div>
-                                    <div className="press flex flex-row align-items-center justify-content-around">
-                                        <h2>{press.press}</h2>
-                                        <img src={press1} alt="press"/>
-                                        <img src={press2} alt="press"/>
-                                        <img src={press3} alt="press"/>
-                                        <img src={press4} alt="press"/>
-                                        <img src={press5} alt="press"/>
-                                        <img src={press6} alt="press"/>
                                     </div>
                                 </div>
                             </div>
@@ -148,24 +150,24 @@ export default class Registration extends Component{
                             <div className={"w-100 banner banner-phone"}>
                                 <div className="row row-banner">
                                     <div className="offset-lg-6 col-lg-6 col-12 text-right marg-top-50">
-                                        <img src={logo} alt="logo" className="w-75"/>
-                                        <div className="flex-row flex justify-content-end align-items-center">
+                                        <LogoForLang alt={"logo"} color={"black"} baseline={false} className={"w-75"} />
+                                        <div className="flex-row d-flex justify-content-end align-items-center">
                                             <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
                                         </div>
-                                        <TalkingThreatSubscribe phone={phone}/>
-                                    </div>
-                                    <div className="press flex flex-row align-items-center justify-content-around">
-                                        <h2>{press.press}</h2>
-                                        <img src={press1} alt="press"/>
-                                        <img src={press2} alt="press"/>
-                                        <img src={press3} alt="press"/>
-                                        <img src={press4} alt="press"/>
-                                        <img src={press5} alt="press"/>
-                                        <img src={press6} alt="press"/>
+                                        <TalkingThreatSubscribe isPhone={phone}/>
                                     </div>
                                 </div>
                             </div>
                         }
+                        <div className="press flex flex-row align-items-center justify-content-around">
+                            <h2>{press.press}</h2>
+                            <img src={press1} alt="press"/>
+                            <img src={press2} alt="press"/>
+                            <img src={press3} alt="press"/>
+                            <img src={press4} alt="press"/>
+                            <img src={press5} alt="press"/>
+                            <img src={press6} alt="press"/>
+                        </div>
                     </div>
             )
         }

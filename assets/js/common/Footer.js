@@ -11,6 +11,7 @@ import press3 from "../../fixed/Bilan.jpg";
 import press4 from "../../fixed/RTS.jpg";
 import press5 from "../../fixed/SchweizerIllustriert.jpg";
 import press6 from "../../fixed/SRF.png";
+import LogoForLang from "./LogoForLang";
 
 export default class Footer extends Component{
     constructor(props){
@@ -47,21 +48,21 @@ export default class Footer extends Component{
         if (isLoaded){
             return (
                 <div>
-                    <div className="press-footer m-auto clearfix text-center">
-                        <h2 className="float-left ">{press.press}</h2>
-                        <img className="float-left " src={press1} alt="press"/>
-                        <img className="float-left " src={press2} alt="press"/>
-                        <img className="float-left " src={press3} alt="press"/>
-                        <img className="float-left " src={press4} alt="press"/>
-                        <img className="float-left " src={press5} alt="press"/>
-                        <img className="float-left " src={press6} alt="press"/>
+                    <div className="press-footer clearfix text-center">
+                        <div><h2 className="float-left">{press.press}</h2></div>
+                        <img className="float-left" src={press2} alt="press"/>
+                        <img className="float-left" src={press3} alt="press"/>
+                        <img className="float-left" src={press4} alt="press"/>
+                        <img className="float-left" src={press1} alt="press"/>
+                        <img className="float-left" src={press5} alt="press"/>
+                        <img className="float-left" src={press6} alt="press"/>
                     </div>
                     <div className="footer-wrap">
                         <div className="row ext-row">
                             <div className="col-lg-6 col-md-6 col-sm-12">
                                 <div className="flex flex-column justify-content-center align-items-center h-100 w-75 m-auto">
                                     <div>
-                                        <button className="btn btn-lg btn-success " onClick={() => this.handleSub()}>{links.sub}</button>
+                                        <button className="btn btn-lg btn-success pulse" onClick={() => this.handleSub()}>{links.sub}</button>
                                     </div>
                                     <div className="bigger">
                                         <a href="/">{links.home}</a>|
@@ -93,7 +94,7 @@ export default class Footer extends Component{
                                     <div className="col-xl-6 col-lg-12">
                                         <div className="flex flex-column justify-content-center align-items-center h-100">
                                             <div className="text-center">
-                                                <img src={logo} alt={"logo"} className="footer-logo"/>
+                                                <LogoForLang color={"white"} alt={"logo"} className="footer-logo" baseline={false}/>
                                             </div>
                                             <div className="flex flex-row justify-content-between align-items-center">
                                                 <div className="follow">

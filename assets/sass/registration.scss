@@ -19,7 +19,8 @@ $red: #e30813;
 
 .banner-phone{
   background: url("../fixed/HomePage-Mobile.png") top left no-repeat fixed;
-  background-size: cover;
+  background-size: 100vmax;
+  -webkit-background-size: 100vmax;
   position: relative;
 }
 
@@ -73,4 +74,8 @@ $red: #e30813;
 
 .day, .month, .year{
   margin-bottom: 5px;
+}
+
+.w-custom{
+  width: 60%;
 }

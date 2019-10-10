@@ -8,6 +8,7 @@ import logo from '../../fixed/logo_noir.png';
 import fr from '../../fixed/fr.png';
 import de from '../../fixed/de.png';
 import en from '../../fixed/en.png';
+import LogoForLang from "./LogoForLang";
 
 
 export default class Nav extends Component{
@@ -101,8 +102,8 @@ export default class Nav extends Component{
                                 <li className="nav-item font-weight-bold"><a className="nav-link" href={link.testimony.path}>{link.testimony.name}</a></li>
                                 <li className="nav-item font-weight-bold"><a className="nav-link" href={link.faq.path}>{link.faq.name}</a></li>
                             </ul>
-                            <img src={logo} alt="logo" className={scroll === 0 ? "none" : "nav-logo"}/>
-                            {!phone ? <div className={toggle ? "text-left" : "flex flex-row justify-content-center align-items-center"}>
+                            <LogoForLang alt="logo" className={scroll === 0 ? "none" : "nav-logo"} baseline={true} color={"black"} />
+                            {!phone ? <div className={toggle ? "text-left" : "d-flex flex-row justify-content-center align-items-center"}>
                                 <a href={connection.path} className="nav-link custom-link font-weight-bold"><FontAwesomeIcon icon="lock-open" color={"rgba(0, 0, 0, 0.5)"} className={"pad-right-10"}/> {connection.name}</a>
                                 <ul className="navbar-nav">
                                     <li className="nav-item dropdown">
@@ -122,7 +123,7 @@ export default class Nav extends Component{
                                         {lang.selected === "de" ?
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                                 <a className="dropdown-item" href="#" onClick={() => this.handleLang('fr')}><span>Français <img src={fr} alt="flag" /></span></a>
-                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>English <img src={en} alt="flag" /></span></a>
+                                                <a className="dropdown-item" href="#" onClick={() => this.handleLang('en')}><span>English <img src={en} alt="flag" /></span></a>
                                             </div>
                                             : ''
                                         }
@@ -138,7 +139,7 @@ export default class Nav extends Component{
                             </div> : ''}
                         </div>
                     </nav>
-                    {phone ? <div className="flex flex-row justify-content-center align-items-center top-marg-nav position-fixed z">
+                    {phone ? <div className="d-flex flex-row justify-content-center align-items-center top-marg-nav position-fixed z">
                         <a href={connection.path} className="nav-link custom-link font-weight-bold"><FontAwesomeIcon icon="lock-open" color={"rgba(0, 0, 0, 0.5)"} className={"pad-right-10"}/> {connection.name}</a>
                         <ul className="navbar-nav">
                             <li className="nav-item dropdown">
@@ -158,7 +159,7 @@ export default class Nav extends Component{
                                 {lang.selected === "de" ?
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a className="dropdown-item" href="#" onClick={() => this.handleLang('fr')}><span>Français <img src={fr} alt="flag" /></span></a>
-                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('de')}><span>English <img src={en} alt="flag" /></span></a>
+                                        <a className="dropdown-item" href="#" onClick={() => this.handleLang('en')}><span>English <img src={en} alt="flag" /></span></a>
                                     </div>
                                     : ''
                                 }

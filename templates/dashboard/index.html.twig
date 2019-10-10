@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Dashboard{% endblock %}
+
+{% block body %}
+    <div id="dashboard"></div>
+{% endblock %}
+{% block javascripts %}{{ parent() }} {{ encore_entry_script_tags('dashboard') }}{% endblock %}

@@ -75,7 +75,7 @@ export default class TalkingThreatSubscribe extends Component{
                 })
             }
             else {
-                clearInterval();
+                setTimeout(() => {i = -1}, 5000);
             }
         }, 100)
     }
@@ -195,27 +195,30 @@ export default class TalkingThreatSubscribe extends Component{
 
     render() {
         const {threat, isLoaded, tab, animationText, major, canton, cities, selectedCanton, selectedCity, passwordError} = this.state;
+        const {isPhone} = this.props;
         if (isLoaded && tab === 1){
             return(
                 <div className="flex flex-column align-items-center justify-content-center">
                     <div className="marg-top-10 threat">
-                        <div className="flex flex-row justify-content-center">
-                            <div className="flex-row flex sophie-wrap">
+                        <div className="d-flex flex-row justify-content-center">
+                            <div className="flex-row d-flex sophie-wrap">
                                 <div className="sophie"></div>
                             </div>
                         </div>
                         <div className="triangle"></div>
-                        <div className="img-bubble flex flex-column align-items-center justify-content-center text-center">
-                            {animationText} <br/><span className="threat-red size-more">{threat.first[1]}</span>
+                        <div className="img-bubble d-flex flex-column align-items-center justify-content-center text-center">
+                            {animationText} <br/><span className="threat-red pulse">{threat.first[1]}</span>
                         </div>
                     </div>
-                    <div className="flex flex-row align-items-center justify-content-center w-100 marg-top-10">
-                        <button className="btn btn-group btn-danger marg-10" name="relation" value={threat.firstButton.lovely.value} onClick={this.handleTab}>
-                            {threat.firstButton.lovely.text}</button>
-                        <button className="btn btn-group btn-danger marg-10" name="relation" value={threat.firstButton.friendly.value} onClick={this.handleTab}>
-                            {threat.firstButton.friendly.text}</button>
-                        <button className="btn btn-group btn-danger marg-10" name="relation" value={threat.firstButton.both.value} onClick={this.handleTab}>
-                            {threat.firstButton.both.text}</button>
+                    <div className="d-flex flex-row align-items-center justify-content-end">
+                        <div className={isPhone ? "w-50 marg-top-10 text-center" : "d-flex flex-row align-items-center justify-content-center w-100 marg-top-10"}>
+                            <button className="btn btn-group btn-danger marg-10" name="relation" value={threat.firstButton.lovely.value} onClick={this.handleTab}>
+                                {threat.firstButton.lovely.text}</button>
+                            <button className="btn btn-group btn-danger marg-10" name="relation" value={threat.firstButton.friendly.value} onClick={this.handleTab}>
+                                {threat.firstButton.friendly.text}</button>
+                            <button className="btn btn-group btn-danger marg-10" name="relation" value={threat.firstButton.both.value} onClick={this.handleTab}>
+                                {threat.firstButton.both.text}</button>
+                        </div>
                     </div>
                 </div>
 
