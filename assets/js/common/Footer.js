@@ -47,7 +47,6 @@ export default class Footer extends Component{
                     })
             })
     }
-
     handleSub(){
         window.location.hash='#'
     }
