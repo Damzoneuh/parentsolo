@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Diary;
 use App\Entity\Testimony;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -88,7 +87,9 @@ class IndexController extends AbstractController
             'add' => $translator->trans('add', [], null, $request->getLocale()),
             'payment' => $translator->trans('payment', [], null, $request->getLocale()),
             'follow' => $translator->trans('follow', [], null, $request->getLocale()),
-            'sub' => $translator->trans('baseline', [], null, $request->getLocale()) . ' ' . $translator->trans('baseline.red', [], null, $request->getLocale())
+            'sub' => $translator->trans('baseline', [], null, $request->getLocale()) . ' ' . $translator->trans('baseline.red', [], null, $request->getLocale()),
+            'letTestimony' => $translator->trans('let.testimony', [], null, $request->getLocale()),
+            'goShop' => $translator->trans('go.shop', [], null, $request->getLocale())
         ];
         return $this->json($links);
     }

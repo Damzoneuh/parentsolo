@@ -13,9 +13,11 @@ export default class ImageViewer extends Component{
 
 
     render() {
-        return (
-            <img src={'https://parentsolo.backndev.fr/api/img/render/' + el.dataset.path} alt={el.dataset.alt} className={el.dataset.class}/>
-        );
+        if (el.dataset.path && el.dataset.alt && el.dataset.class){
+            return (
+                <img src={'https://parentsolo.backndev.fr/api/img/render/' + el.dataset.path} alt={el.dataset.alt} className={el.dataset.class}/>
+            );
+        }
     }
 }
 ReactDOM.render(<ImageViewer/>, document.getElementById('viewer'));

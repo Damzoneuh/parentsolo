@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Img;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,14 +16,12 @@ class DashboardController extends AbstractController
     {
         /** @var $user User */
         $user = $this->getUser();
-        $display = true;
-        if (in_array($user->getRoles(), ['ROLE_BASIC']) || in_array($user->getRoles(), ['ROLE_MEDIUM']) || in_array($user->getRoles(), ['ROLE_PREMIUM'])){
-            $display = false;
-        }
         $data = [];
         $img = $user->getImg()->getValues();
         if (!empty($img[0])){
-            $data['profilImg'] = $img[0];
+            $image = $img[0];
+            /** @var $image Img */
+            $data['profilImg'] = $image->getId();
         }
         else{
             $data['profilImg'] = null;
@@ -42,6 +41,6 @@ class DashboardController extends AbstractController
 
         $data['userId'] = $user->getId();
 
-        return $this->render('dashboard/index.html.twig', ['display' => $display, $data]);
+        return $this->render('dashboard/index.html.twig', ['data' => $data]);
     }
 }

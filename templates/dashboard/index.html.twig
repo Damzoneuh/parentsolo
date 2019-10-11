@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} Dashboard{% endblock %}
 
 {% block body %}
-    <div id="dashboard"></div>
+    <div id="dashboard" data-isMan="{{ data.isMan }}" data-img="{{ data.profilImg }}"
+    data-complete="{{ data.complete }}" ></div>
 {% endblock %}
 {% block javascripts %}{{ parent() }} {{ encore_entry_script_tags('dashboard') }}{% endblock %}

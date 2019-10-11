@@ -75,7 +75,7 @@ export default class TalkingThreatSubscribe extends Component{
                 })
             }
             else {
-                setTimeout(() => {i = -1}, 5000);
+                clearInterval();
             }
         }, 100)
     }

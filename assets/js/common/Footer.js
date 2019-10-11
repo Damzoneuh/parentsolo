@@ -19,22 +19,32 @@ export default class Footer extends Component{
         this.state= {
             isLoaded: false,
             links: [],
-            press: []
+            press: [],
+            user: []
         };
         axios.get('api/press')
             .then(res => {
                 this.setState({
                     press: res.data
-                })
+                });
             });
+        this.handleSub = this.handleSub.bind(this);
+        this.handleShop = this.handleShop.bind(this);
+        this.handleTestimony = this.handleTestimony.bind(this);
     }
     componentDidMount(){
         axios.get('/api/footer')
             .then(res => {
                this.setState({
                    links: res.data,
-                   isLoaded: true
-               })
+               });
+                axios.get('/api/user')
+                    .then(res => {
+                        this.setState({
+                            user: res.data,
+                            isLoaded: true
+                        })
+                    })
             })
     }
 
@@ -42,9 +52,17 @@ export default class Footer extends Component{
         window.location.hash='#'
     }
 
+    handleShop(){
+        window.location.hash='/shop'
+    }
+
+    handleTestimony(){
+        window.location.hash='/testimony'
+    }
+
 
     render() {
-        const {isLoaded, links, press} = this.state;
+        const {isLoaded, links, press, user} = this.state;
         if (isLoaded){
             return (
                 <div>
@@ -62,7 +80,9 @@ export default class Footer extends Component{
                             <div className="col-lg-6 col-md-6 col-sm-12">
                                 <div className="flex flex-column justify-content-center align-items-center h-100 w-75 m-auto">
                                     <div>
-                                        <button className="btn btn-lg btn-success pulse" onClick={() => this.handleSub()}>{links.sub}</button>
+                                        {!user.isSub ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleSub}>{links.sub}</button> : ''}
+                                        {user.isSub && !user.isPremium ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleShop}>{links.goShop}</button> : ''}
+                                        {user.isSub && user.isPremium ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleTestimony}>{links.letTestimony}</button> : ''}
                                     </div>
                                     <div className="bigger">
                                         <a href="/">{links.home}</a>|

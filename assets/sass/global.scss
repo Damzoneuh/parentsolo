@@ -10,6 +10,7 @@ $white: rgb(245,245,245);
 $transparent: rgba(0,0,0, 0);
 $redLight: rgba(227, 8, 19, 0.6);
 $redTestimony: rgba(227, 8, 19, 0.8);
+$black-80: rgba(0,0,0,0.8);
 
 @font-face {
   font-family: Avenir-next;
@@ -19,6 +20,13 @@ $redTestimony: rgba(227, 8, 19, 0.8);
 body{
   font-family: Avenir-next, sans-serif;
   font-weight: lighter;
+  a {
+    outline: none;
+  }
+}
+
+.black-80{
+  background-color: $black-80;
 }
 
 .box{
@@ -84,6 +92,12 @@ body{
 .z{
   z-index: 100;
 }
+
+/* Safari 5.6+ */
+.z{
+  -webkit-overflow-scrolling: auto !important;
+}
+
 @media screen and (max-width: 768px){
   .nav-logo{
     display: none;
@@ -144,7 +158,7 @@ body{
 
   .img-bubble{
     margin: 0;
-    padding: 0.5em;
+    padding: 1em;
     background-color: $white;
     border-radius: 0 1em 1em 1em;
     width: 75%;
@@ -393,7 +407,7 @@ footer{
 }
 
 .badged-icons{
-  font-size: 2em;
+  font-size: 1.3em;
   position: relative;
 }
 
