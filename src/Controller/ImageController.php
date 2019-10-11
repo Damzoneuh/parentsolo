@@ -74,7 +74,17 @@ class ImageController extends AbstractController
         $content['id'] = $img->getId();
         $content['title'] = $img->getTitle();
         $content['path'] = $img->getPath();
-        return $this->json($content);
+        return $this->json($img);
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @Route("/api/img/render/{id}", name="api_render_img", methods={"GET"})
+     */
+    public function renderImg($id){
+        $image = $this->getDoctrine()->getRepository(Img::class)->find($id);
+        return $this->file($image->getPath());
     }
 
     private function checkExtension(UploadedFile $file){

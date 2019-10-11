@@ -1,13 +1,31 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import Logger from "../../common/Logger";
+import logo from '../../../fixed/Logo_ParentsoloFR_Noir_sansBL.png';
+import TalkingThreatSubscribe from "./TalkingThreatSubscribe";
+import press1 from '../../../fixed/20minuten.png';
+import press2 from '../../../fixed/AargauerZeitung.png';
+import press3 from '../../../fixed/Bilan.jpg';
+import press4 from '../../../fixed/RTS.jpg';
+import press5 from '../../../fixed/SchweizerIllustriert.jpg';
+import press6 from '../../../fixed/SRF.png';
+import LogoForLang from "../../common/LogoForLang";
 
 export default class Registration extends Component{
     constructor(props){
         super(props);
+        let phoneScreen = null;
+        if (window.outerWidth > 752){
+            phoneScreen = false;
+            console.log(window.outerWidth)
+        }
+        else {
+            phoneScreen = true;
+            console.log(window.outerWidth)
+        }
         this.state = {
-            isLoaded: true,
+            isLoaded: false,
+            baseline: [],
             data: [],
             number: null,
             email: null,
@@ -16,11 +34,35 @@ export default class Registration extends Component{
             type: null,
             message: null,
             reset: null,
-            isMan: false
+            isMan: false,
+            activeImg: 2,
+            press: null,
+            phone: phoneScreen
         };
+        window.matchMedia('(max-width: 752px)').matches;
         this.handleForm = this.handleForm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCheckbox = this.handleCheckbox.bind(this);
+        this.CarouselHandler = this.CarouselHandler.bind(this);
+    }
+
+    componentDidMount(){
+        axios.get('/api/baseline')
+            .then(res => {
+                this.setState({
+                    isLoaded: true,
+                    baseline: res.data
+                })
+            });
+        axios.get('api/press')
+            .then(res => {
+                this.setState({
+                    press: res.data
+                })
+            });
+        if (window.matchMedia('(min-width: 768px)').matches){
+            setInterval(() => this.CarouselHandler(), 60000)
+        }
     }
 
     handleForm(e){
@@ -67,9 +109,23 @@ export default class Registration extends Component{
             isMan: !this.state.isMan
         })
     }
+
+    CarouselHandler(){
+        let active = this.state.activeImg;
+        if (active === 3){
+            active = 1
+        }
+        else {
+            active = active + 1
+        }
+        this.setState({
+            activeImg: active
+        })
+    }
+
     render() {
-        const {isLoaded, data, type, message, reset, isMan} = this.state;
-        if (!isLoaded)
+        const {isLoaded,baseline, activeImg, press, phone} = this.state;
+        if (!isLoaded || !press )
         {
             return (
                 <div></div>
@@ -77,40 +133,42 @@ export default class Registration extends Component{
         }
         else {
             return (
-                <div>
-                    <Logger message={message} type={type}/>
                     <div className="register-wrap">
-                        <form onChange={this.handleForm} onSubmit={this.handleSubmit} method="post">
-                            <div className="custom-control custom-switch flex-row align-items-center justify-content-around flex w-25">
-                                <div className="m-4">I'm a woman</div>
-                                <input type="checkbox" className="custom-control-input m-auto" id="isMan" name="isMan" onChange={this.handleCheckbox} defaultChecked={isMan}/>
-                                <label className="custom-control-label m-auto" htmlFor="isMan">I'm a man</label>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="email">Email</label>
-                                <input type="email" name="email" className="form-control" required/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="number">Phone number</label>
-                                <div className="input-group-prepend">
-                                    <div className="input-group-text"> +41</div>
-                                    <input type="text" name="number" className="form-control" required/>
+                        {!phone ?
+                            <div className={"w-100 banner banner-" + activeImg}>
+                                <div className="row row-banner">
+                                    <div className="offset-lg-6 col-lg-6 col-12 text-center marg-top-50">
+                                        <LogoForLang alt={"logo"} color={"black"} baseline={false} className={"w-75"} />
+                                        <div className="flex-row d-flex justify-content-center align-items-center">
+                                            <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
+                                        </div>
+                                        <TalkingThreatSubscribe phone={phone}/>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Type a password</label>
-                                <input type="password" name="password" className="form-control" required/>
+                            :
+                            <div className={"w-100 banner banner-phone"}>
+                                <div className="row row-banner">
+                                    <div className="offset-lg-6 col-lg-6 col-12 text-right marg-top-50">
+                                        <LogoForLang alt={"logo"} color={"black"} baseline={false} className={"w-75"} />
+                                        <div className="flex-row d-flex justify-content-end align-items-center">
+                                            <h1 className="w-75 baseline">{baseline.baseline[0]} <span className="threat-red">{baseline.baseline[1]}</span></h1>
+                                        </div>
+                                        <TalkingThreatSubscribe isPhone={phone}/>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="plainPassword">Confirm your password</label>
-                                <input type="password" name="plainPassword" className="form-control" required/>
-                            </div>
-                            <div className="marg-top-10">
-                                <button className="btn btn-group-lg btn-primary">Register</button>
-                            </div>
-                        </form>
+                        }
+                        <div className="press flex flex-row align-items-center justify-content-around">
+                            <h2>{press.press}</h2>
+                            <img src={press1} alt="press"/>
+                            <img src={press2} alt="press"/>
+                            <img src={press3} alt="press"/>
+                            <img src={press4} alt="press"/>
+                            <img src={press5} alt="press"/>
+                            <img src={press6} alt="press"/>
+                        </div>
                     </div>
-                </div>
             )
         }
     }
