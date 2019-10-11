@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +24,19 @@ class Canton
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profil", mappedBy="canton", cascade={"persist", "remove"})
+     * @ORM\Column(type="integer")
      */
-    private $profil;
+    private $code;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Cities", mappedBy="canton", orphanRemoval=true)
+     */
+    private $cities;
+
+    public function __construct()
+    {
+        $this->cities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -43,21 +55,45 @@ class Canton
         return $this;
     }
 
-    public function getProfil(): ?Profil
+    public function getCode(): ?int
     {
-        return $this->profil;
+        return $this->code;
     }
 
-    public function setProfil(?Profil $profil): self
+    public function setCode(int $code): self
     {
-        $this->profil = $profil;
+        $this->code = $code;
 
-        // set (or unset) the owning side of the relation if necessary
-        $newCanton = $profil === null ? null : $this;
-        if ($newCanton !== $profil->getCanton()) {
-            $profil->setCanton($newCanton);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Cities[]
+     */
+    public function getCities(): Collection
+    {
+        return $this->cities;
+    }
+
+    public function addCity(Cities $city): self
+    {
+        if (!$this->cities->contains($city)) {
+            $this->cities[] = $city;
+            $city->setCanton($this);
         }
 
+        return $this;
+    }
+
+    public function removeCity(Cities $city): self
+    {
+        if ($this->cities->contains($city)) {
+            $this->cities->removeElement($city);
+            // set the owning side to null (unless already changed)
+            if ($city->getCanton() === $this) {
+                $city->setCanton(null);
+            }
+        }
         return $this;
     }
 }

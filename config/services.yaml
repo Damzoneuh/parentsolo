@@ -14,6 +14,10 @@ parameters:
     api.six.terminal: '17966309'
     api.geo.uri: 'http://ip-api.com/json'
     storage.img: '/var/www/html/storage/img'
+    app.supported_locales: ['en', 'de', 'fr']
+    api.city.name: parentsolo
+    api.city.key: so03232fa975a927abf4d5e48b2e17968981c1c221
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -57,3 +61,8 @@ services:
     App\Service\:
         resource: '../src/Service'
         arguments: ['@doctrine.orm.entity_manager', '@swiftmailer.mailer.default']
+
+    App\EventListener\LocaleSubscriber:
+        arguments: ['%kernel.default_locale%']
+        # uncomment the next line if you are not using autoconfigure
+        tags: [kernel.event_subscriber]

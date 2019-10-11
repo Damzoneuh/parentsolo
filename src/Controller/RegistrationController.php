@@ -3,7 +3,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Canton;
+use App\Entity\Cities;
 use App\Entity\Profil;
+use App\Entity\Relationship;
 use App\Entity\User;
 use App\Mailer\Mailing;
 use App\Service\MailingService;
@@ -30,6 +33,7 @@ class RegistrationController extends AbstractController
     /**
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
+     * @param MailingService $mailingService
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
@@ -48,8 +52,16 @@ class RegistrationController extends AbstractController
             $data = $this->_serializer->decode($request->getContent(), 'json');
             $profil = new Profil();
             $profil->setIsMan($data['credentials']['sex']);
+            $relationship = $this->getDoctrine()->getRepository(Relationship::class)
+                ->findOneBy(['name' => $data['credentials']['relation']]);
+            $profil->setRelationship($relationship);
             $em = $this->getDoctrine()->getManager();
+
+            $birthDate = new \DateTime($data['credentials']['day'] . '-' . $data['credentials']['month'] . '-' . $data['credentials']['year']);
+            $city = $em->getRepository(Cities::class)->find($data['credentials']['city']);
             $user = new User();
+            $user->setBirthdate($birthDate);
+            $profil->setCityId($city->getId());
             $user->setCountry($country);
             $user->setProfil($profil);
             $user->setPhone($data['credentials']['number']);
@@ -63,7 +75,7 @@ class RegistrationController extends AbstractController
             $em->flush();
             $mailingService->sendRegistrationConfirmationMail($user, $token);
         }
-        return $this->json(['data' => ['error' => 'You must be a Swissman to be registered if you use a VPN you have to deactivate it to register']]);
+        return $this->json(['data' => 'success']);
     }
 
     /**
@@ -168,11 +180,47 @@ class RegistrationController extends AbstractController
         }
         $client = HttpClient::create();
         $response = $client->request('GET', $this->getParameter('api.geo.uri') . '/' . $clientIp);
-        $data = $this->_serializer->decode($response->getContent(), 'json');
-        if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){
-            return $data['countryCode'];
+        if ($response->getStatusCode() === 200){
+            $data = $this->_serializer->decode($response->getContent(), 'json');
+            if ($data['countryCode'] == 'CH' || $data['countryCode'] == 'FR'){
+                return $data['countryCode'];
+            }
         }
         return $data['countryCode'] = '?';
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/canton", name="api_get_canton", methods={"GET"})
+     */
+    public function getCantons(){
+        $em = $this->getDoctrine()->getRepository(Canton::class);
+        $data = [];
+        $push = [];
+        foreach ($em->findAll() as $canton){
+            $push['name'] = $canton->getName();
+            $push['id'] = $canton->getId();
+            array_push($data, $push);
+        }
+        return $this->json($data);
+    }
+
+    /**
+     * @param $canton
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/cities/{canton}", name="api_get_cities", methods={"GET"})
+     */
+    public function getCities($canton){
+        $em = $this->getDoctrine()->getRepository(Canton::class);
+        $cantons = $em->find($canton);
+        $data = [];
+        $push = [];
+        foreach ($cantons->getCities() as $city){
+            $push['name'] = $city->getName();
+            $push['id'] = $city->getId();
+            array_push($data, $push);
+        }
+        return $this->json($data);
     }
 
     /**

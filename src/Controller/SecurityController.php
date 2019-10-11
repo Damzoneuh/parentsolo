@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,5 +35,39 @@ class SecurityController extends AbstractController
     public function logout()
     {
        return $this->redirectToRoute('index');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("api/user", name="api_get_user", methods={"GET"})
+     */
+    public function getUserRoles(){
+        $data = [];
+        /** @var  $user User */
+        $user = $this->getUser();
+        $this->isGranted('ROLE_ADMIN');
+        if (!$user){
+            $data['isSub'] = false;
+            $data['isPremium'] = false;
+            return $this->json($data);
+        }
+        if ($this->isGranted('ROLE_PREMIUM')){
+            $data['isSub'] = true;
+            $data['isPremium'] = true;
+            return $this->json($data);
+        }
+        if($this->isGranted('ROLE_BASIC') || $this->isGranted('ROLE_MEDIUM')){
+            $data['isSub'] = true;
+            $data['isPremium'] = false;
+            return $this->json($data);
+        }
+        if($this->isGranted('ROLE_USER')){
+            $data['isSub'] = false;
+            $data['isPremium'] = false;
+            return $this->json($data);
+        }
+        $data['isPremium'] = false;
+        $data['isSub'] = false;
+        return $this->json($data);
     }
 }

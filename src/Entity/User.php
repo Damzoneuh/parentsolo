@@ -115,6 +115,11 @@ class User implements UserInterface
      */
     private $pseudo;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $birthdate;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
@@ -493,4 +498,17 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeInterface $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
 }

@@ -9,7 +9,8 @@ export default class Image extends Component{
             img: null,
             name: null,
             preview: null,
-            resize: null
+            resize: null,
+            path: []
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,9 +44,8 @@ export default class Image extends Component{
         });
     }
 
-    handleSubmit(){
-        event.preventDefault();
-        console.log(this.state.img);
+    handleSubmit(e){
+        e.preventDefault();
         let data = new FormData();
         data.append('file', this.state.img);
         data.append('name', this.state.name);
@@ -56,6 +56,15 @@ export default class Image extends Component{
         })
             .then(res => {
                 console.log(res.data)
+            })
+    }
+
+    getAllImg(){
+        axios.get('/api/img')
+            .then(res => {
+                this.setState({
+                    path: res.data
+                })
             })
     }
 

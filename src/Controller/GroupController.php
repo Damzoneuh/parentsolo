@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Groups;
+use App\Entity\Img;
 use App\Entity\Slug;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,6 +66,8 @@ class GroupController extends AbstractController
         }
         $group->setMembers($users);
         $em->persist($group);
+        $img = $em->getRepository(Img::class)->find($data['img']);
+        $img->setGroups($group);
         $em->flush();
 
         return $this->json('ok');
@@ -102,6 +105,8 @@ class GroupController extends AbstractController
         $group->setName($data['name']);
         $group->setDescription($data['description']);
         $group->setMembers($data['users']);
+        $img = $em->getRepository(Img::class)->find($data['img']);
+        $img->setGroups($group);
         $em->flush();
 
         return $this->json('success');
