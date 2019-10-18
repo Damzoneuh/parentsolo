@@ -19,6 +19,14 @@ class GroupsRepository extends ServiceEntityRepository
         parent::__construct($registry, Groups::class);
     }
 
+    public function getLastGroup(){
+        return $this->createQueryBuilder('g')
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Groups[] Returns an array of Groups objects
     //  */

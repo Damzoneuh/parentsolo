@@ -48,6 +48,10 @@ body{
   margin-top: 10px;
 }
 
+.marg-20{
+  margin: 20px;
+}
+
 .flex{
   display: flex;
 }
@@ -116,8 +120,16 @@ body{
   margin: 10px;
 }
 
+.marg-top-20{
+  margin-top: 20px;
+}
+
 .marg-top-50{
   margin-top: 50px;
+}
+
+.border-under-nav{
+  border-right: 1px solid $white;
 }
 
 @media screen and (min-width: 710px) {
@@ -298,6 +310,14 @@ footer{
   .follow-logo{
     width: 3em;
   }
+
+  .under-nav-button{
+    display: none;
+  }
+
+  .border-under-nav {
+    border-right: none;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1200px){
@@ -306,6 +326,14 @@ footer{
   }
   .follow-logo{
     width: 4em;
+  }
+
+  .border-under-nav{
+    border-right: 1px solid $white;
+  }
+
+  .under-nav-button{
+    display: inline-block;
   }
 
   .img-bubble{
@@ -393,6 +421,7 @@ footer{
   margin-top: 10px;
   margin-bottom: 50px;
   color: $white;
+  word-wrap: break-spaces;
 }
 
 .testimony-img{
@@ -411,10 +440,89 @@ footer{
   position: relative;
 }
 
-.border-under-nav{
-  border-right: 1px solid $white;
-}
-
 .border-ul-under{
   margin: 10px 25px;
+}
+
+.search-glass{
+  width: 2.5em;
+  margin: 1em;
+}
+
+.font-size-20{
+  font-size: 1.5em;
+}
+
+.heart-top{
+  width: 2em;
+}
+
+.heart-bottom{
+  width: 1.5em;
+}
+
+.launch-button:hover{
+  color: $red;
+}
+
+.red-border{
+  border: 2px solid $red;
+  width: 80px;
+  height: 80px;
+  margin: 0;
+  padding: 0;
+}
+
+.hover-img {
+  top: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.last-profile-link:hover{
+  .hover-img{
+   display: block;
+  }
+  .text-profile-hover{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.last-profile-link{
+  .hover-img{
+    display: none;
+  }
+}
+
+.plus{
+  padding: 0.2em 0.3em;
+  border: 1px solid $red;
+  font-weight: bold;
+}
+
+.marg-bottom-10{
+  margin-bottom: 10px;
+}
+
+.group-thumb{
+  border-radius: 1em;
+  width: 90%
+}
+
+.diary-img-55{
+  width: 55%;
+}
+
+.diary-wrap-dashboard{
+  margin-top: 10px;
+}
+
+.border-bottom-red{
+  border-bottom: 1px solid $red;
 }

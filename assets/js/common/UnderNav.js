@@ -70,9 +70,9 @@ export default class UnderNav extends Component{
                                 </div>
                             </li>
                         </ul>
-                        {!user.isSub ? <button className="btn btn-lg btn-outline-success pulse" onClick={() => this.handleSub}>{links.sub}</button> : ''}
-                        {user.isSub && !user.isPremium ? <button className="btn btn-lg btn-outline-success pulse" onClick={() => this.handleShop}>{links.goShop}</button> : ''}
-                        {user.isSub && user.isPremium ? <button className="btn btn-lg btn-outline-success pulse" onClick={() => this.handleTestimony}>{links.letTestimony}</button> : ''}
+                        {!user.isSub ? <button className="btn btn-lg btn-outline-success pulse under-nav-button" onClick={() => this.handleSub}>{links.sub}</button> : ''}
+                        {user.isSub && !user.isPremium ? <button className="btn btn-lg btn-outline-success pulse under-nav-button" onClick={() => this.handleShop}>{links.goShop}</button> : ''}
+                        {user.isSub && user.isPremium ? <button className="btn btn-lg btn-outline-success pulse under-nav-button" onClick={() => this.handleTestimony}>{links.letTestimony}</button> : ''}
                     </div>
                     <div className="w-50">
                         <ul className="navbar-nav flex flex-row justify-content-center align-items-center">

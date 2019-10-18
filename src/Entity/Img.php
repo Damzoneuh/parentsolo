@@ -41,6 +41,11 @@ class Img
      */
     private $childs;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isProfile;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +107,18 @@ class Img
     public function setChilds(?Childs $childs): self
     {
         $this->childs = $childs;
+
+        return $this;
+    }
+
+    public function getIsProfile(): ?bool
+    {
+        return $this->isProfile;
+    }
+
+    public function setIsProfile(bool $isProfile): self
+    {
+        $this->isProfile = $isProfile;
 
         return $this;
     }

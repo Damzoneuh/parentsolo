@@ -20,15 +20,11 @@ class DiaryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Diary[] Returns an array of Diary objects
-     * @throws \Exception
+     * @return mixed
      */
-
     public function findByValidateAndActual()
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.date >= :val')
-            ->setParameter('val', \DateTime::createFromFormat('dd/mm/yyyy', 'now'))
             ->orderBy('d.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()

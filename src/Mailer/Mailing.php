@@ -53,8 +53,10 @@ class Mailing
         $message->setBody('
             <h1>Exception Caught</h1>
             <p>message : '. $e->getMessage() . '</p>
+            <p>Line : ' .$e->getLine() .'</p>
             <p>error code : ' . $e->getCode()  . '</p>
             <p>stack trace : ' . $e->getTraceAsString() . '</p>
+           
         ', 'text/html');
         $this->_mailer->send($message);
     }
