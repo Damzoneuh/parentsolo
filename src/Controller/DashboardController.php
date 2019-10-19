@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Img;
+use App\Entity\Testimony;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,5 +65,40 @@ class DashboardController extends AbstractController
             'child' => $translator->trans('child', [], null, $request->getLocale()),
             'lastProfileTitle' => $translator->trans('last.profile.title', [], null, $request->getLocale())
         ], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/testimony", name="api_testimony", methods={"GET"})
+     */
+    public function getLastTestimony(Request $request, TranslatorInterface $translator){
+        $data = [];
+        $testimonies = $this->getDoctrine()->getRepository(Testimony::class)
+            ->findBy(['isValidated' => true], ['id' => 'DESC'], 1);
+        if (count($testimonies) > 0){
+            foreach ($testimonies as $testimony){
+                /** @var Testimony $testimony */
+                $data['id'] = $testimony->getId();
+                if ($testimony->getUser()->getImg()->count() > 0){
+                    /** @var Img $img */
+                    foreach ($testimony->getUser()->getImg()->getValues() as $img){
+                        $data['img'] = $img->getId();
+                    }
+                }
+                else{
+                    $data['img'] = null;
+                }
+                $data['isMan'] = $testimony->getUser()->getProfil()->getIsMan();
+                $data['title'] = $testimony->getTitle();
+                $data['text'] = $testimony->getText();
+                $data['pseudo'] = $testimony->getUser()->getPseudo();
+                $data['link'] = $translator->trans('read.more', [], null, $request->getLocale());
+                $data['testimony'] = $translator->trans('testimony.link', [], null, $request->getLocale());
+            }
+            return $this->json($data, 200);
+        }
+        return $this->json($data, 200);
     }
 }

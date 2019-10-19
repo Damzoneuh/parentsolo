@@ -8,6 +8,8 @@ import LastProfiles from "./LastProfiles";
 import Groups from "./Groups";
 import Diary from "./Diary";
 import Adsense from "../../common/Adsense";
+import Testimony from "./Testimony";
+import News from "./News";
 
 //TODO back the props after selected profile
 
@@ -23,16 +25,12 @@ export default class Dashboard extends Component{
                 <UnderNav/>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-8 col-sm-12">
+                        <div className="col-md-9 col-sm-12">
                             <div className="row">
                                 <LightSearch/>
                                 <AutoSearch/>
                             </div>
-                        </div>
-                        <div className="col-md-8 col-sm-12">
                             <LastProfiles/>
-                        </div>
-                        <div className="col-md-8 col-sm-12">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6">
                                     <Groups/>
@@ -42,8 +40,10 @@ export default class Dashboard extends Component{
                                 </div>
                             </div>
                         </div>
-                        <div className="col-sm-12 col-md-4">
+                        <div className="col-sm-12 col-md-3">
                             <Adsense/>
+                            <Testimony />
+                            <News/>
                         </div>
                     </div>
                 </div>

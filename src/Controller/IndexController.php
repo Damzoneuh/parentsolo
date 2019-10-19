@@ -36,6 +36,7 @@ class IndexController extends AbstractController
     public function index(Request $request, TranslatorInterface $translator)
     {
         $diaryDefault = $translator->trans('diary.home', [], null, $request->getLocale());
+        /** @var Diary $diary */
         $diary = $this->getDoctrine()->getRepository(Diary::class)->findByValidateAndActual();
         $testimony = $this->getDoctrine()->getRepository(Testimony::class)
             ->findBy(['isValidated' => true], ['id' => 'DESC'], 1);

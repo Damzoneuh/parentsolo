@@ -10,8 +10,8 @@ export default class Adsense extends Component{
 
     render() {
         return (
-            <div className="w-75 h-50 border-bottom-red">
-
+            <div className="border-bottom-red">
+                <div className="marg-top-50"> Adsense</div>
             </div>
         );
     }

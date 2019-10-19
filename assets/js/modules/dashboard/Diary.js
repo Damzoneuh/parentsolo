@@ -29,7 +29,7 @@ export default class Diary extends Component{
                 return (
                     <div className="diary-wrap">
                         <div className="flex flex-row justify-content-between marg-10">
-                            <h4>{diary.diary}</h4>
+                            <h4>{diary.diary.toUpperCase()}</h4>
                             <img src={diaryImg} alt="diary" className="diary-img" />
                         </div>
                         {diary.text}
@@ -43,7 +43,7 @@ export default class Diary extends Component{
                 <div className="diary-wrap diary-wrap-dashboard">
                     <div className="flex flex-row justify-content-between">
                         <div className="w-50 text-left">
-                            <h4>{diary.diary}</h4>
+                            <h4>{diary.diary.toUpperCase()}</h4>
                             <h4>{diary.title}</h4>
                             <h4 className="date">{diary.date}</h4>
                             <h5>{diary.location}</h5>

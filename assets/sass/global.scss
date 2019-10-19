@@ -11,6 +11,7 @@ $transparent: rgba(0,0,0, 0);
 $redLight: rgba(227, 8, 19, 0.6);
 $redTestimony: rgba(227, 8, 19, 0.8);
 $black-80: rgba(0,0,0,0.8);
+$grey: rgba(0,0,0,0.3);
 
 @font-face {
   font-family: Avenir-next;
@@ -23,6 +24,7 @@ body{
   a {
     outline: none;
   }
+  min-height: 100vh;
 }
 
 .black-80{
@@ -501,7 +503,7 @@ footer{
 }
 
 .plus{
-  padding: 0.2em 0.3em;
+  padding: 5px 15px;
   border: 1px solid $red;
   font-weight: bold;
 }
@@ -525,4 +527,20 @@ footer{
 
 .border-bottom-red{
   border-bottom: 1px solid $red;
+}
+
+.min-80-vh{
+  min-height: 59vh;
+}
+
+.border-grey{
+  border: 2px solid $grey;
+}
+
+.text-grey{
+  color: $grey;
+}
+
+.pad-left-inner{
+  padding-left: 1rem;
 }

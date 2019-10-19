@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="w-50 text-right">
                                     {% if diaryVal.img is not null %}
-                                        <img src="{{ diaryVal.img.path }}" alt="diary event" class="diary-img">
+                                        <img src="{{ path('api_render_img', {id: diaryVal.img.id}) }}" alt="diary event" class="diary-img">
                                     {% else %}
                                         <img src="{{ asset('/img/Agenda.png') }}" alt="diary" class="diary-img">
                                     {% endif %}

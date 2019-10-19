@@ -57,7 +57,6 @@ class ProfilController extends AbstractController
         $date = new \DateTime('now');
         $age = $date->diff($user->getBirthdate())->y;
         if ($user->getImg()->count() > 0){
-            dump($user->getImg()->count());
             $imgs = $user->getImg()->getValues();
             /** @var Img $img */
             foreach ($imgs as $img){

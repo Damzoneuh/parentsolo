@@ -57,62 +57,74 @@ export default class LastProfiles extends Component{
         if (isLoaded){
            return (
                <div className="row text-center">
-                   <div className="marg-10">
-                       {trans.lastProfileTitle.toUpperCase()}
-                       <a className="plus text-danger marg-10">+</a>
+                   <div className="marg-10 d-flex flex-row align-items-center justify-content-between w-100">
+                       <h3 className="marg-10">{trans.lastProfileTitle.toUpperCase()}</h3>
+                       <a className="plus text-danger">+</a>
                    </div>
                    <div className="col-12">
                        <div className="d-flex flex-row justify-content-between align-items-center" >
                            {userDetails.map(user => {
                                if (user.img !== null){
                                    return (
-                                       <a className="last-profile-link">
-                                            <ImageRenderer alt={"profile"} className={"testimony-img red-border position-relative"} id={user.img}/>
-                                            <div className="position-absolute bg-danger hover-img">
-                                                <div className="text-white text-profile-hover">
-                                                    {user.age}<br/>
-                                                    {user.canton}<br/>
-                                                    {/*{user.child}*/}
-                                                </div>
-                                            </div>
+                                       <div>
+                                           <a className="last-profile-link">
+                                               <div className="d-flex justify-content-center align-items-center">
+                                                    <ImageRenderer alt={"profile"} className={"testimony-img red-border position-relative"} id={user.img}/>
+                                                    <div className="position-absolute bg-danger hover-img">
+                                                        <div className="text-white text-profile-hover">
+                                                            {user.age}<br/>
+                                                            {user.canton}<br/>
+                                                            {/*{user.child}*/}
+                                                        </div>
+                                                    </div>
+                                               </div>
+                                           </a>
                                            <div className="text-center">
-                                               {user.pseudo.toUpperCase()}
+                                               {typeof user.pseudo !=='undefined' ? user.pseudo.toUpperCase() : ''}
                                            </div>
-                                       </a>
+                                       </div>
                                    )
                                }
                                if (user.isMan){
                                    return (
-                                       <a className="last-profile-link">
-                                           <img src={defaultMan} alt={"profil"} className={"testimony-img red-border position-relative"}/>
-                                           <div className="position-absolute bg-danger hover-img">
-                                               <div className="text-white text-profile-hover">
-                                                   {user.age}<br/>
-                                                   {user.canton}<br/>
-                                                   {/*{user.child}*/}
+                                       <div>
+                                           <a className="last-profile-link">
+                                               <div className="d-flex justify-content-center align-items-center">
+                                                   <img src={defaultMan} alt={"profil"} className={"testimony-img red-border position-relative"}/>
+                                                   <div className="position-absolute bg-danger hover-img">
+                                                       <div className="text-white text-profile-hover">
+                                                           {user.age}<br/>
+                                                           {user.canton}<br/>
+                                                           {/*{user.child}*/}
+                                                       </div>
+                                                   </div>
                                                </div>
-                                           </div>
+                                           </a>
                                            <div className="text-center">
-                                               {user.pseudo.toUpperCase()}
+                                               {typeof user.pseudo !=='undefined' ? user.pseudo.toUpperCase() : ''}
                                            </div>
-                                       </a>
+                                       </div>
                                    )
                                }
                                else {
                                    return (
-                                       <a className="last-profile-link">
-                                           <img src={defaultWoman} alt={"profil"} className={"testimony-img red-border position-relative"}/>
-                                           <div className="position-absolute bg-danger hover-img">
-                                               <div className="text-white text-profile-hover">
-                                                   {user.age}<br/>
-                                                   {user.canton}<br/>
-                                                   {/*{user.child}*/}
+                                       <div>
+                                           <a className="last-profile-link">
+                                               <div className="d-flex justify-content-center align-items-center">
+                                                   <img src={defaultWoman} alt={"profil"} className={"testimony-img red-border position-relative"}/>
+                                                   <div className="position-absolute bg-danger hover-img">
+                                                       <div className="text-white text-profile-hover">
+                                                           {user.age}<br/>
+                                                           {user.canton}<br/>
+                                                           {/*{user.child}*/}
+                                                       </div>
+                                                   </div>
                                                </div>
-                                           </div>
+                                           </a>
                                            <div className="text-center">
-                                               {user.pseudo.toUpperCase()}
+                                               {typeof user.pseudo !=='undefined' ? user.pseudo.toUpperCase() : ''}
                                            </div>
-                                       </a>
+                                       </div>
                                    )
                                }
                            })}

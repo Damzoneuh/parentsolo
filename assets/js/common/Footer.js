@@ -4,7 +4,7 @@ import axios from 'axios';
 import logo from '../../fixed/Logo_ParentsoloFR_Blanc.png';
 import logoPostFinance from '../../fixed/Logo_PostFinance.png';
 import fb from '../../fixed/Facebook.png';
-import twit from '../../fixed/Twitter.png';
+import twit from '../../fixed/Twitter.svg';
 import press1 from "../../fixed/20minuten.png";
 import press2 from "../../fixed/AargauerZeitung.png";
 import press3 from "../../fixed/Bilan.jpg";
