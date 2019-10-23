@@ -6,7 +6,7 @@ export default class LightSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            relation: true,
+            relation: 1,
             minAge: 18,
             maxAge: 98,
             child: [],
@@ -16,7 +16,8 @@ export default class LightSearch extends Component {
             age: [],
             canton: [],
             cantonSelected: 2,
-            childSelected: 0
+            childSelected: null,
+            search: []
         };
 
         for (let i = 18; i < 99; i++) {
@@ -30,6 +31,7 @@ export default class LightSearch extends Component {
         this.handleButton = this.handleButton.bind(this);
         this.handleAge = this.handleAge.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -51,12 +53,12 @@ export default class LightSearch extends Component {
     handleButton(value) {
         if (value === 1) {
             this.setState({
-                relation: true,
+                relation: value,
                 active: value
             })
         } else {
             this.setState({
-                relation: false,
+                relation: value,
                 active: value
             })
         }
@@ -78,8 +80,16 @@ export default class LightSearch extends Component {
         };
         axios.post('/api/search', data)
             .then(res => {
-                console.log(res);
+               this.setState({
+                   search: res.data
+               });
+               this.handleSearch();
             })
+    }
+
+    handleSearch(){
+        this.props.handleSearch(this.state.search);
+        this.props.handleTab(2)
     }
 
 
@@ -125,9 +135,10 @@ export default class LightSearch extends Component {
                     </div>
                     <div className="d-flex flex-row justify-content-between align-items-center marg-20">
                         {trans.child}
-                        <select name="childSelected" defaultChecked={childSelected} onChange={this.handleAge}>
+                        <select name="childSelected" onChange={this.handleAge}>
+                            <option value={null} >{trans.indifferent}</option>
                             {child.map(ch => {
-                                return (<option value={ch} key={ch}>{ch}</option>)
+                                return (<option value={ch} selected={ch === childSelected} key={ch}>{ch}</option>)
                             })}
                         </select>
                     </div>

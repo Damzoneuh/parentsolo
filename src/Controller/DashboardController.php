@@ -51,7 +51,7 @@ class DashboardController extends AbstractController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/api/trans/search")
+     * @Route("/api/trans/search", name="api_get_trans_search", methods={"GET"})
      */
     public function getSearchTranslate(Request $request, TranslatorInterface $translator){
         return $this->json([
@@ -63,7 +63,10 @@ class DashboardController extends AbstractController
             'yearsOld' => $translator->trans('years.old', [], null, $request->getLocale()),
             'canton' => $translator->trans('canton', [], null, $request->getLocale()),
             'child' => $translator->trans('child', [], null, $request->getLocale()),
-            'lastProfileTitle' => $translator->trans('last.profile.title', [], null, $request->getLocale())
+            'lastProfileTitle' => $translator->trans('last.profile.title', [], null, $request->getLocale()),
+            'indifferent' => $translator->trans('indifferent', [], null, $request->getLocale()),
+            'newSearch' => $translator->trans('new.search', [], null, $request->getLocale()),
+            'view' => $translator->trans('view', [], null, $request->getLocale())
         ], 200);
     }
 

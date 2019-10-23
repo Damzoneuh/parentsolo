@@ -52,7 +52,7 @@ export default class Diary extends Component{
                             <ImageRenderer id={diary.img} alt={"diary image"} className={"diary-img diary-img-55"}/>
                         </div>
                     </div>
-                    {diary.text}
+                    <div className="hidden-text"> {diary.text}</div>
                     <div className="text-center">
                         <a href="#" className="btn btn-group btn-outline-light marg-10">{diary.shareEvent}</a>
                         <a href="#" className="btn btn-group btn-outline-light marg-10">{diary.readMore}</a>

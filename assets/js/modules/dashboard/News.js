@@ -30,7 +30,7 @@ export default class News extends Component{
                         return (
                             <div key={d.id}>
                                 <ul className="pad-left-inner"><li><h4>{d.title}</h4></li></ul>
-                                <p>{d.text}</p>
+                                <div className="hidden-text"> <p>{d.text}</p></div>
                                 <div className="text-right"><a href={"/news"} className="text-danger">{d.viewMore}</a></div>
                             </div>
                         )

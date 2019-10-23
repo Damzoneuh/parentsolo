@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import AdSense from "react-adsense-ad";
 
 
 export default class Adsense extends Component{
@@ -11,10 +12,14 @@ export default class Adsense extends Component{
     render() {
         return (
             <div className="border-bottom-red">
-                <div className="marg-top-50"> Adsense</div>
+                <AdSense.Google client='ca-pub-1353633567358471'
+                                slot='1815823308'
+                                style={{ display: 'block' }}
+                                format='auto'
+                                height='250'
+                                width='300'
+                                responsive='true' />
             </div>
         );
     }
-
-
 }

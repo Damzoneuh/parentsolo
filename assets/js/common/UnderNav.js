@@ -53,6 +53,7 @@ export default class UnderNav extends Component{
     }
 
     render() {
+        //TODO pas mis les img au cas ou y en a pas
         const {display, isMan, img, complete, user, isLoaded, links} = this.state;
         if (isLoaded){
             return (
@@ -83,7 +84,7 @@ export default class UnderNav extends Component{
                     </div>
                     <div>
                         {img ? <ImageRenderer id={img} alt={"profil-img"} className={"testimony-img marg-10"} /> :
-                            isMan ? '' : ''}
+                            isMan ? '' : '' }
                     </div>
                 </div>
             );

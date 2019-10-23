@@ -41,7 +41,24 @@ class ItemsService
             $this->_em->flush();
         } catch (OptimisticLockException $e) {
             return false;
+        } catch (ORMException $e) {
+            return false;
         }
         return true;
+    }
+
+    public static function checkFavorite(User $currentUser, User $user) : bool
+    {
+        $currentFavorite = $currentUser->getProfil()->getFavorite();
+        if ($currentFavorite->count() > 0){
+            /** @var User $favorite */
+            foreach ($currentFavorite->getValues() as $favorite){
+                if ($favorite->getId() == $currentUser->getId()){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
 }

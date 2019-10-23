@@ -39,9 +39,12 @@ class SearchController extends AbstractController
         $citiesRepository = $this->getDoctrine()->getRepository(Cities::class);
         $search = [];
         foreach ($userRepository->findBy(['isValidated' => true, 'isConfirmed' => true]) as $user){
-            if (null !== $user->getProfil()->getRelation() && $user->getProfil()->getRelation()->getId() === $data['relationship']){
+            //dump($user->getProfil()->getRelation()->getId()); die();
+            if (null !== $user->getProfil()->getRelation() && $user->getProfil()->getRelation()->getId() == $data['relationship']){
                 if($searchService::filterAge($user, $data['minAge'], $data['maxAge'])){
-                    if ($citiesRepository->find($user->getProfil()->getCity())->getCanton()->getId() === $data['canton']){
+
+                    if ($citiesRepository->find($user->getProfil()->getCity())->getCanton()->getId() == $data['canton']){
+
                         if (!null === $data['child'] && count($user->getProfil()->getChilds()->getValues()) === $data['child']){
                             array_push($search, [$user->getId()]);
                         }
@@ -50,9 +53,6 @@ class SearchController extends AbstractController
                         }
                     }
                 }
-            }
-            else{
-                array_push($search, $user->getId());
             }
         }
         return $this->json($search);

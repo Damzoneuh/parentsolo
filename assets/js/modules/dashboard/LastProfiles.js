@@ -56,12 +56,12 @@ export default class LastProfiles extends Component{
         const {isLoaded, userDetails, trans} = this.state;
         if (isLoaded){
            return (
-               <div className="row text-center">
+               <div className="row text-center marg-top-10 marg-bottom-10">
                    <div className="marg-10 d-flex flex-row align-items-center justify-content-between w-100">
                        <h3 className="marg-10">{trans.lastProfileTitle.toUpperCase()}</h3>
                        <a className="plus text-danger">+</a>
                    </div>
-                   <div className="col-12">
+                   <div className="col-sm-12 w-100">
                        <div className="d-flex flex-row justify-content-between align-items-center" >
                            {userDetails.map(user => {
                                if (user.img !== null){
@@ -69,7 +69,7 @@ export default class LastProfiles extends Component{
                                        <div>
                                            <a className="last-profile-link">
                                                <div className="d-flex justify-content-center align-items-center">
-                                                    <ImageRenderer alt={"profile"} className={"testimony-img red-border position-relative"} id={user.img}/>
+                                                    <ImageRenderer alt={"profile"} className={"testimony-img-dashboard red-border position-relative"} id={user.img}/>
                                                     <div className="position-absolute bg-danger hover-img">
                                                         <div className="text-white text-profile-hover">
                                                             {user.age}<br/>
@@ -90,7 +90,7 @@ export default class LastProfiles extends Component{
                                        <div>
                                            <a className="last-profile-link">
                                                <div className="d-flex justify-content-center align-items-center">
-                                                   <img src={defaultMan} alt={"profil"} className={"testimony-img red-border position-relative"}/>
+                                                   <img src={defaultMan} alt={"profil"} className={"testimony-img-dashboard red-border position-relative"}/>
                                                    <div className="position-absolute bg-danger hover-img">
                                                        <div className="text-white text-profile-hover">
                                                            {user.age}<br/>
@@ -111,7 +111,7 @@ export default class LastProfiles extends Component{
                                        <div>
                                            <a className="last-profile-link">
                                                <div className="d-flex justify-content-center align-items-center">
-                                                   <img src={defaultWoman} alt={"profil"} className={"testimony-img red-border position-relative"}/>
+                                                   <img src={defaultWoman} alt={"profil"} className={"testimony-img-dashboard red-border position-relative"}/>
                                                    <div className="position-absolute bg-danger hover-img">
                                                        <div className="text-white text-profile-hover">
                                                            {user.age}<br/>

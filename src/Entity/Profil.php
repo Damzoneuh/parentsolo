@@ -144,10 +144,6 @@ class Profil
      */
     private $pets;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Favorite", inversedBy="profils")
-     */
-    private $favorite;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Langages", mappedBy="profil")
@@ -194,6 +190,11 @@ class Profil
      */
     private $reading;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User")
+     */
+    private $favorite;
+
     public function __construct()
     {
         $this->childs = new ArrayCollection();
@@ -205,9 +206,9 @@ class Profil
         $this->music = new ArrayCollection();
         $this->movies = new ArrayCollection();
         $this->pets = new ArrayCollection();
-        $this->favorite = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->reading = new ArrayCollection();
+        $this->favorite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -634,32 +635,6 @@ class Profil
     }
 
     /**
-     * @return Collection|Favorite[]
-     */
-    public function getFavorite(): Collection
-    {
-        return $this->favorite;
-    }
-
-    public function addFavorite(Favorite $favorite): self
-    {
-        if (!$this->favorite->contains($favorite)) {
-            $this->favorite[] = $favorite;
-        }
-
-        return $this;
-    }
-
-    public function removeFavorite(Favorite $favorite): self
-    {
-        if ($this->favorite->contains($favorite)) {
-            $this->favorite->removeElement($favorite);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Langages[]
      */
     public function getLangages(): Collection
@@ -811,4 +786,29 @@ class Profil
         return $this;
     }
 
+    /**
+     * @return Collection|User[]
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(User $favorite): self
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): self
+    {
+        if ($this->favorite->contains($favorite)) {
+            $this->favorite->removeElement($favorite);
+        }
+
+        return $this;
+    }
 }

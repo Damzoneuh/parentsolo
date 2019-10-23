@@ -28,7 +28,7 @@ export default class Testimony extends Component{
         if (isLoaded && typeof data.id !== 'undefined'){
             return (
                 <div className="border-bottom-red marg-top-20">
-                    <h3>{data.testimony}</h3>
+                    <h3>{data.testimony.toUpperCase()}</h3>
                     <div className="d-flex flex-row justify-content-between align-items-center">
                         {data.img ? <ImageRenderer id={data.img} alt={"profile image"} className={"testimony-img border-grey"}/> : ''}
                         {!data.img && data.isMan ? <img src={defaultMan} alt={"profile image"} className={"testimony-img border-grey"}/> : ''}
@@ -38,7 +38,7 @@ export default class Testimony extends Component{
                             <h4>{data.title}</h4>
                         </div>
                     </div>
-                    <div>{data.text}</div>
+                    <div className="hidden-text">{data.text}</div>
                     <div className="text-right">
                         <a href={"/testimony"} className="text-danger">{data.link} >> </a>
                     </div>

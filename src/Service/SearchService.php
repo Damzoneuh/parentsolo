@@ -69,7 +69,7 @@ class SearchService
         $date = new \DateTime('now');
         $birthDate = $user->getBirthdate();
         $age = $date->diff($birthDate);
-        if ($age->y >= $minAge && $age->y <= $maxAge){
+        if ($age->y > $minAge && $age->y < $maxAge || $age->y == $minAge || $age->y == $maxAge){
             return true;
         }
         return false;

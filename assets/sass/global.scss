@@ -12,6 +12,7 @@ $redLight: rgba(227, 8, 19, 0.6);
 $redTestimony: rgba(227, 8, 19, 0.8);
 $black-80: rgba(0,0,0,0.8);
 $grey: rgba(0,0,0,0.3);
+$black10: rgba(0,0,0,0.1);
 
 @font-face {
   font-family: Avenir-next;
@@ -25,6 +26,10 @@ body{
     outline: none;
   }
   min-height: 100vh;
+}
+
+.bg-black-10{
+  background-color: $black10;
 }
 
 .black-80{
@@ -48,6 +53,14 @@ body{
 
 .marg-top-10{
   margin-top: 10px;
+}
+
+.marg-top-100{
+  margin-top: 150px;
+}
+
+.marg-bottom-100{
+  margin-bottom: 150px;
 }
 
 .marg-20{
@@ -78,6 +91,10 @@ body{
 }
 .pad-right-10{
   margin-right: 10px;
+}
+
+.font-size-30{
+  font-size: 1.8em;
 }
 
 .none{
@@ -421,7 +438,7 @@ footer{
   border-radius: 1em;
   padding: 15px;
   margin-top: 10px;
-  margin-bottom: 50px;
+  //margin-bottom: 50px;
   color: $white;
   word-wrap: break-spaces;
 }
@@ -452,7 +469,7 @@ footer{
 }
 
 .font-size-20{
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 .heart-top{
@@ -469,16 +486,16 @@ footer{
 
 .red-border{
   border: 2px solid $red;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   margin: 0;
   padding: 0;
 }
 
 .hover-img {
   top: 0;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   text-align: center;
 }
@@ -544,3 +561,34 @@ footer{
 .pad-left-inner{
   padding-left: 1rem;
 }
+
+.hidden-text{
+  height: 70px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+
+.testimony-img-dashboard{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: 5px solid $red;
+}
+
+.thumb-profile-img{
+  width: 150px;
+  height: 150px;
+}
+
+.rounded-more{
+  border-radius: 2em 2em;
+}
+
+.banner-search{
+  background: url("../fixed/bg-search.jpg") center no-repeat fixed;
+  background-size: cover;
+}
+

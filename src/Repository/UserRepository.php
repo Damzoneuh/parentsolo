@@ -25,6 +25,14 @@ class UserRepository extends ServiceEntityRepository
         dump($age); die();
     }
 
+
+    public function excludeCurrentUser(User $user){
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :user')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
