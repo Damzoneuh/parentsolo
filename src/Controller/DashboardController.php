@@ -66,7 +66,10 @@ class DashboardController extends AbstractController
             'lastProfileTitle' => $translator->trans('last.profile.title', [], null, $request->getLocale()),
             'indifferent' => $translator->trans('indifferent', [], null, $request->getLocale()),
             'newSearch' => $translator->trans('new.search', [], null, $request->getLocale()),
-            'view' => $translator->trans('view', [], null, $request->getLocale())
+            'view' => $translator->trans('view', [], null, $request->getLocale()),
+            'acceptFavorite' => $translator->trans('accept.favorite', [], null, $request->getLocale()),
+            'accept' => $translator->trans('accept', [], null, $request->getLocale()),
+            'cancel' => $translator->trans('cancel', [], null, $request->getLocale())
         ], 200);
     }
 

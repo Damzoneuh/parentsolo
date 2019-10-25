@@ -68,15 +68,16 @@ class ProfilController extends AbstractController
         $currentUser = $this->getUser();
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
         $em = $this->getDoctrine()->getManager();
+
+        if (ItemsService::checkFavorite($currentUser, $user)){
+            $currentUser->getProfil()->removeFavorite($user);
+            $em->persist($currentUser);
+            $em->flush();
+
+            return $this->json('removed');
+        }
+
         if ($this->isGranted('ROLE_PREMIUM') || $currentUser->getFavoriteNumber() > 0){
-
-            if (ItemsService::checkFavorite($currentUser, $user)){
-                $currentUser->getProfil()->removeFavorite($user);
-                $em->persist($currentUser);
-                $em->flush();
-
-                return $this->json('removed');
-            }
 
             $currentUser->getProfil()->addFavorite($user);
             $favoriteNumber = $currentUser->getFavoriteNumber();
@@ -90,7 +91,8 @@ class ProfilController extends AbstractController
 
             return $this->json('added');
         }
-        return new AccessDeniedException();
+
+        return $this->json('error', 403);
     }
 
 
@@ -303,7 +305,6 @@ class ProfilController extends AbstractController
         else{
             /** @var Img $img */
             foreach ($imgs->getValues() as $img){
-                //dump($img->getIsProfile(), $img->getId()); die();
                 array_push($data['img'], [
                     'img' => $img->getId(),
                     'isProfile' => $img->getIsProfile()
@@ -462,6 +463,7 @@ class ProfilController extends AbstractController
             }
         }
 
+        $data['id'] = $user->getId();
         $data['personality']['wantedChild'] = $user->getProfil()->getChildWanted();
         $data['appearance']['size'] = $user->getProfil()->getSize();
         $data['isMan'] = $user->getProfil()->getIsMan();

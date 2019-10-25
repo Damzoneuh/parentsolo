@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import ImageRenderer from "./ImageRenderer";
+import Modal from '../common/Modal';
 import defaultMan from '../../fixed/HommeDefaut.png';
 import defaultWoman from '../../fixed/FemmeDefaut.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +15,16 @@ export default class ShowAllProfile extends Component{
         this.state = {
             search: this.props.search,
             profiles: [],
-        }
+            modal: false,
+            selectedProfile: {},
+            trans: this.props.trans
+        };
+
+        this.handleFavorite = this.handleFavorite.bind(this);
+        this.handleAcceptModal = this.handleAcceptModal.bind(this);
+        this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.submitFavorite = this.submitFavorite.bind(this);
+
     }
 
     componentDidMount(){
@@ -37,19 +47,64 @@ export default class ShowAllProfile extends Component{
         })
     }
 
-    handleFavorite(id, isFavorite){
-        axios.put('/api/favorite/' + id)
+    handleFavorite(profile){
+        if (profile.isFavorite){
+            this.setState({
+                selectedProfile: profile,
+                action: 'favorite',
+                modal: true
+            })
+        }
+        else {
+            this.submitFavorite(profile)
+        }
+    }
+
+    submitFavorite(profile){
+        let search = this.state.search;
+        let profiles = [];
+        axios.put('/api/favorite/' + profile.id)
             .then(res => {
-                //TODO voir si c'est un ajout ou une suppression
+                search.map(s => {
+                    axios.get('/api/profile/' + s)
+                        .then(res => {
+                            profiles.push(res.data);
+                            this.pushProfiles(profiles);
+                            this.setState({modal: false})
+                        })
+
+                })
+            })
+            .catch(e => {
+                window.location.href ='/shop'
             })
     }
 
+    handleCloseModal(){
+        this.setState({
+            modal: false
+        });
+    }
+
+    handleAcceptModal(){
+        this.submitFavorite(this.state.selectedProfile)
+    }
 
     render() {
-        const {profiles} = this.state;
+        const {profiles, modal, trans} = this.state;
         if (profiles.length > 0){
             return (
                 <div className="container-fluid">
+                    <div className={!modal ? 'none' : ''}>
+                        <Modal
+                        text={trans.acceptFavorite}
+                        type={'alert'}
+                        handleClose={this.handleCloseModal}
+                        handleAccept={this.handleAcceptModal}
+                        validate={trans.accept}
+                        cancel={trans.cancel}
+                        />
+                    </div>
                     <div className="row">
                         {profiles.map(profile => {
                             return (
@@ -70,7 +125,7 @@ export default class ShowAllProfile extends Component{
                                         {profile.age} | {profile.city} - {profile.canton}
                                         <div className="d-flex flex-row align-items-center justify-content-around marg-20">
                                             <button className="btn btn-outline-danger btn-lg btn-group-lg">{this.props.trans.view}</button>
-                                            <a href="#" onClick={}>
+                                            <a onClick={() => this.handleFavorite(profile)}>
                                                 <FontAwesomeIcon icon={'heart'} color={profile.isFavorite ? 'rgba(255,0,0,0.8)' : 'rgba(0,0,0,0.3)'} className={'font-size-30'}/>
                                             </a>
                                             <FontAwesomeIcon icon={'spa'} color={'rgba(0,0,0,0.3)'} className={'font-size-30'}/>

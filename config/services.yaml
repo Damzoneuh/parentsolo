@@ -17,12 +17,15 @@ parameters:
     app.supported_locales: ['en', 'de', 'fr']
     api.city.name: parentsolo
     api.city.key: so03232fa975a927abf4d5e48b2e17968981c1c221
+    env(MERCURE_PUBLISH_URL): ""
+    env(MERCURE_JWT_SECRET): ""
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false
         bind:
             $projectDir: '%kernel.project_dir%'
 
@@ -36,7 +39,7 @@ services:
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
-        tags: ['controller.service_arguments']
+        tags: ['controller.service_arguments', '@Symfony\Component\Mercure\Publisher']
 
     App\Mailer\:
         resource: '../src/Mailer'

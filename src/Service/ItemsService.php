@@ -53,7 +53,7 @@ class ItemsService
         if ($currentFavorite->count() > 0){
             /** @var User $favorite */
             foreach ($currentFavorite->getValues() as $favorite){
-                if ($favorite->getId() == $currentUser->getId()){
+                if ($favorite->getId() == $user->getId()){
                     return true;
                 }
             }
