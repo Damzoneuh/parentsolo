@@ -10,6 +10,9 @@
     <body>
     <div id="nav"></div>
         {% block body %}{% endblock %}
+    {% if is_granted('ROLE_BASIC') or is_granted('ROLE_MEDIUM') or is_granted('ROLE_PREMIUM')%}
+        <div id="chat" data-user="{{ app.user.id }}"></div>
+    {% endif %}
     <footer id="footer"></footer>
 {#        {% if is_granted('ROLE_BASIC') %}#}
 {#            <div id="chat" data-user="{{ app.user.id }}" class="flex w-100 position-fixed bottom-0 justify-content-sm-around"></div>#}
@@ -17,23 +20,11 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('footer') }}
             {{ encore_entry_script_tags('nav') }}
-{#            {% if is_granted('ROLE_BASIC') %}#}
-{#            {{ encore_entry_script_tags('chat') }}#}
-{#            {% endif %}#}
+           {% if is_granted('ROLE_BASIC') or is_granted('ROLE_MEDIUM') or is_granted('ROLE_PREMIUM')%}
+                {{ encore_entry_script_tags('chat') }}
+           {% endif %}
         {% endblock %}
-    <script>
-        const url = new URL('https://ws.parentsolo.backndev.fr');
-        url.searchParams.append('topic', 'https://parentsolo.backndev.fr/books/1');
-        // Subscribe to updates of several Book resources
-        // url.searchParams.append('topic', 'http://example.com/books/2');
-        // // All Review resources will match this pattern
-        // url.searchParams.append('topic', 'http://example.com/reviews/{id}');
 
-        const eventSource = new EventSource(url);
-        eventSource.onmessage = event => {
-            console.log(JSON.parse(event.data));
-        }
-    </script>
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     </body>
 

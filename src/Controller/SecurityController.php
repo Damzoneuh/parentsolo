@@ -51,6 +51,7 @@ class SecurityController extends AbstractController
         $data = [];
         /** @var  $user User */
         $user = $this->getUser();
+        $data['id'] = $user->getId();
         $this->isGranted('ROLE_ADMIN');
         if (!$user){
             $data['isSub'] = false;

@@ -1,36 +1,129 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {w3cwebsocket as W3CWebSocket} from 'websocket';
-import DirectChat from "./DirectChat";
-import WS from '../../../../vendor/gos/web-socket-bundle/Resources/public/js/gos_web_socket_client';
+import axios from 'axios';
+import ChatBox from "../../common/ChatBox";
+
 
 let el = document.getElementById('chat');
-//const client = new W3CWebSocket('https://parentsolo.backndev.fr/ws');
-// const eventSource = new EventSource('https://parentsolo.backndev.fr:3000?topic=' + encodeURIComponent('https://parentsolo.backndev.fr/ws'));
-// eventSource.onmessage = event => {
-//     // Will be called every time an update is published by the server
-//     console.log(JSON.parse(event.data));
-// }
+const es = new WebSocket('ws://ws.parentsolo.backndev.fr:5000/c/1');
 
 export default class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
             content: [],
-            message: null
+            messages: [],
+            isGranted: false,
+            user: el.dataset.user
+        };
+        axios.get('/api/user')
+            .then(res => {
+                if (res.data.isSub){
+                    this.setState({
+                        isGranted: true,
+                    });
+                }
+            });
+
+        this.setOrderedMessages = this.setOrderedMessages.bind(this);
+        this.handlePayLoad = this.handlePayLoad.bind(this);
+        this.connect = this.connect.bind(this);
+        this.handleReconnect = this.handleReconnect.bind(this);
+    }
+
+    componentDidMount(){
+        this.connect();
+    }
+
+    connect(){
+        es.onopen = () => {
+            console.log('connected');
+        };
+        es.onmessage = res => {
+            let data = JSON.parse(res.data);
+            let messages = [];
+            if (data.length > 0 && data[0] !== 'no messages'){
+                this.setState({
+                    messages: data
+                })
+            }
+            this.setOrderedMessages()
+        };
+        this.handleReconnect();
+    }
+
+    handleReconnect(){
+        es.onerror = e => {
+            es.close()
         };
 
-        WS.connect('wss://parentsolo.backndev.fr:3000')
+        es.onclose = e => {
+            setTimeout(() => this.connect())
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.messages.length !== this.state.messages.length){
+           this.setOrderedMessages();
+        }
+    }
+
+    setOrderedMessages(){
+        let order = {};
+        if (this.state.messages.length > 0){
+            this.state.messages.map(message => {
+                if (message.message_from === parseInt(el.dataset.user)){
+                    if (typeof order[message.message_to] === 'undefined'){
+                        order[message.message_to] = [message]
+                    }
+                    else{
+                        order[message.message_to].push(message)
+                    }
+                }
+                else {
+                    if (typeof order[message.message_from] === 'undefined'){
+                        order[message.message_from] = [message]
+                    }
+                    else{
+                        order[message.message_from].push(message)
+                    }
+                }
+            });
+            this.setContent(order);
+        }
+    }
+
+    setContent(order){
+        this.setState({
+            content: order
+        })
+    }
+
+    handlePayLoad(payLoad){
+        es.send(payLoad);
     }
 
 
 
     render() {
-        return (
-            <div>
-                coucou
-            </div>
-        );
+        const {isGranted, messages, content, user} = this.state;
+
+        if (isGranted && Object.entries(content).length > 0){
+            return (
+                <div className="d-flex flex-row justify-content-around align-items-end position-fixed bottom-0 w-100 chat-wrap">
+                    {Object.entries(content).map(message => {
+                        return (
+                            <ChatBox messages={message[1]} from={message[0]} handlePayLoad={this.handlePayLoad}/>
+                        )
+                    })}
+                </div>
+            );
+        }
+        else {
+            return (
+                <div> </div>
+            )
+        }
     }
 }
 ReactDOM.render(<Chat/>, document.getElementById('chat'));

@@ -12,15 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class PublishController extends AbstractController
 {
     //TODO install composer require api
-    /**
-     * @param Publisher $publisher
-     * @return Response
-     * @Route("/publish")
-     */
+    
     public function __invoke(Publisher $publisher): Response
     {
         $update = new Update(
-            'https://ws.parentsolo.backndev.fr/books/1',
+            'https://parentsolo.backndev.fr/books/1',
             json_encode(['status' => 'OutOfStock'])
         );
 
@@ -28,5 +24,12 @@ class PublishController extends AbstractController
         $publisher($update);
 
         return new Response('published!');
+    }
+
+    /**
+     * @Route("/books/1")
+     */
+    public function test(){
+        return $this->json('ok ok');
     }
 }

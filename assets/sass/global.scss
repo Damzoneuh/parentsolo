@@ -29,6 +29,18 @@ body{
   min-height: 100vh;
 }
 
+.charset-utf{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.top-25{
+  top: -35px;
+}
+
+.right-40{
+  right: 40px;
+}
+
 .bg-black-10{
   background-color: $black10;
 }
@@ -48,8 +60,17 @@ body{
   right: 0;
 }
 
+.marg-50{
+  margin: 50px;
+}
+
 .border-red-nav{
   border-bottom: 2px solid $red;
+}
+
+
+.marg-0{
+  margin: 0;
 }
 
 .marg-top-10{
@@ -591,5 +612,11 @@ footer{
 .banner-search{
   background: url("../fixed/bg-search.jpg") center no-repeat fixed;
   background-size: cover;
+}
+
+.chat-img{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
 }
 
