@@ -101,6 +101,9 @@ wss.on('connection', (ws, req) => {
             delete idMap[ws.id];
         })
     }
+    if (path.search('/n') === 0){
+
+    }
 });
 
 server.listen(5000, () => {

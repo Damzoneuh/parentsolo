@@ -45,6 +45,12 @@ export default class Footer extends Component{
                             isLoaded: true
                         })
                     })
+                    .catch(e => {
+                        this.setState({
+                            user: null,
+                            isLoaded: true
+                        })
+                    })
             })
     }
     handleSub(){
@@ -79,9 +85,9 @@ export default class Footer extends Component{
                             <div className="col-lg-6 col-md-6 col-sm-12">
                                 <div className="flex flex-column justify-content-center align-items-center h-100 w-75 m-auto">
                                     <div>
-                                        {!user.isSub ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleSub}>{links.sub}</button> : ''}
-                                        {user.isSub && !user.isPremium ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleShop}>{links.goShop}</button> : ''}
-                                        {user.isSub && user.isPremium ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleTestimony}>{links.letTestimony}</button> : ''}
+                                        {!user || !user.isSub ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleSub}>{links.sub}</button> : ''}
+                                        {user && user.isSub && !user.isPremium ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleShop}>{links.goShop}</button> : ''}
+                                        {user && user.isSub && user.isPremium ? <button className="btn btn-lg btn-success pulse" onClick={() => this.handleTestimony}>{links.letTestimony}</button> : ''}
                                     </div>
                                     <div className="bigger">
                                         <a href="/">{links.home}</a>|

@@ -5,8 +5,8 @@ import defaultMan from "../../fixed/HommeDefaut.png";
 import defaultWoman from "../../fixed/FemmeDefaut.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import { faSortUp } from "@fortawesome/free-solid-svg-icons";
-library.add(faSortUp);
+import { faSortUp, faCheck } from "@fortawesome/free-solid-svg-icons";
+library.add(faSortUp, faCheck);
 const el = document.getElementById('chat');
 
 export default class ChatBox extends Component{
@@ -36,9 +36,6 @@ export default class ChatBox extends Component{
         this.countWaitingMessages();
     }
 
-    // componentDidUpdate(){
-    //     this.countWaitingMessages()
-    // }
 
     countWaitingMessages(){
         let wait = 0;
@@ -88,6 +85,7 @@ export default class ChatBox extends Component{
             input.value = "";
         }
     }
+    //TODO fix reconnect
 
     handleChange(e){
         this.setState({
@@ -139,7 +137,26 @@ export default class ChatBox extends Component{
                     </div>
                     <div className={minimize ? "minimize-box bg-light" : "bg-light w-100 chat-messages maximize-box"}>
                         {messages.map(message => {
-                            return (<div className={minimize ? "none" : "charset-utf"}>{decodeURI(message.content)}</div>)
+                            //return (<div className={minimize ? "none" : "charset-utf"}>{decodeURI(message.content)}</div>)
+                            console.log(message);
+                            if (message.message_from === parseInt(el.dataset.user)){
+                                return (
+                                    <div className={minimize ? "none" : "d-flex flew-row justify-content-end align-items-center"} >
+                                        <div className={message.is_read ? "position-relative w-75 padding-0" : 'w-75 padding-0'}>
+                                            <div className="pink-rounded">{decodeURI(message.content)}</div>
+                                            {message.is_read ? <FontAwesomeIcon icon={faCheck} className={"is-read"} color={"rgb(0,255,0)"} />
+                                                : ''}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            else {
+                                return(
+                                    <div className={minimize ? "none" : "d-flex flex-row justify-content-start align-items-center"} >
+                                        <div className="red-rounded w-75">{decodeURI(message.content)}</div>
+                                    </div>
+                                )
+                            }
                         })}
                         <div className="anchor"> </div>
                     </div>
@@ -147,6 +164,9 @@ export default class ChatBox extends Component{
                         <form className="form w-75" onSubmit={this.handlePayLoad}>
                             <div className="form-group marg-0">
                                 <input type="text" className="form-control" id={"chat-" + this.props.from } onChange={this.handleChange} value={this.state.text}/>
+                            </div>
+                            <div className="form-group marg-0">
+                            {/* TODO mettre le smiley */}
                             </div>
                         </form>
                     </div>

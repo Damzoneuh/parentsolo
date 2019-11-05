@@ -1,6 +1,7 @@
-$red: #e30813;
+$red: rgb(245,0,0);
 $white: rgb(245,245,245);
 $black-80: rgba(0,0,0,0.8);
+$pink: rgba(245,0,0, 0.4);
 
 .display-none{
   display: none;
@@ -83,4 +84,25 @@ $black-80: rgba(0,0,0,0.8);
 .anchor * {
   overflow-anchor: auto;
   height: 1px;
+}
+
+.pink-rounded{
+  background-color: $pink;
+  margin-top: 5px;
+  border-radius: 1em;
+  padding: 10px;
+}
+
+.red-rounded{
+  background-color: $red;
+  margin-top: 5px;
+  border-radius: 1em;
+  padding: 10px;
+}
+
+.is-read{
+  position: absolute;
+  bottom: -7px;
+  right: 0;
+  font-size: 2.2em;
 }

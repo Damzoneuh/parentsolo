@@ -33,6 +33,10 @@ body{
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.bg-pink{
+  background-color: $pink;
+}
+
 .top-25{
   top: -35px;
 }
@@ -91,6 +95,10 @@ body{
 
 .flex{
   display: flex;
+}
+
+.padding-0{
+  padding: 0;
 }
 
 .pad-10{

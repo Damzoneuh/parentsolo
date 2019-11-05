@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} Shop{% endblock %}
+{% block javascripts %}{{ parent() }} {{ encore_entry_script_tags('shop') }}{% endblock %}
+{% block body %}
+    <div id="shop"></div>
+{% endblock %}

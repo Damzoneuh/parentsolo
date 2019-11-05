@@ -80,6 +80,7 @@ Encore
     .addEntry('footer', './assets/js/common/Footer.js')
     .addEntry('viewer', './assets/js/common/ImageViewer.js')
     .addEntry('dashboard', './assets/js/modules/dashboard/Dashboard.js')
+    .addEntry('shop', './assets/js/modules/shop/Shop.js')
 ;
 
 module.exports = Encore.getWebpackConfig();
