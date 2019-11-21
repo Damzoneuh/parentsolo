@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,11 +23,6 @@ class Relationship
      */
     private $name;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profil", mappedBy="relationship", cascade={"persist", "remove"})
-     */
-    private $profil;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -43,21 +40,4 @@ class Relationship
         return $this;
     }
 
-    public function getProfil(): ?Profil
-    {
-        return $this->profil;
-    }
-
-    public function setProfil(?Profil $profil): self
-    {
-        $this->profil = $profil;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newRelationship = $profil === null ? null : $this;
-        if ($newRelationship !== $profil->getRelationship()) {
-            $profil->setRelationship($newRelationship);
-        }
-
-        return $this;
-    }
 }

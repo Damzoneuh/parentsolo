@@ -8,7 +8,7 @@ export default class ImageRenderer extends Component{
 
     render() {
         return (
-            <img src={'https://parentsolo.backndev.fr/api/img/render/' + this.props.id} alt={this.props.alt} className={this.props.className} />
+            <img src={'https://parentsolo.disons-demain.be/api/img/render/' + this.props.id} alt={this.props.alt} className={this.props.className} />
         )
     }
 }

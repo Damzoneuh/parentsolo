@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Read;
+use App\Entity\Reading;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Read|null find($id, $lockMode = null, $lockVersion = null)
- * @method Read|null findOneBy(array $criteria, array $orderBy = null)
- * @method Read[]    findAll()
- * @method Read[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Reading|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Reading|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Reading[]    findAll()
+ * @method Reading[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ReadRepository extends ServiceEntityRepository
+class ReadingRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Read::class);
+        parent::__construct($registry, Reading::class);
     }
 
     // /**
-    //  * @return Read[] Returns an array of Read objects
+    //  * @return Reading[] Returns an array of Reading objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ReadRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Read
+    public function findOneBySomeField($value): ?Reading
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.exampleField = :val')

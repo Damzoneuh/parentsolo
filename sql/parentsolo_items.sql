@@ -1,0 +1,1 @@
+INSERT INTO parentsolo.items (id, type, price, is_asubscribe, duration, role, quantity, paypal_product) VALUES (1, 'flower', 10, 0, null, null, 1, null);

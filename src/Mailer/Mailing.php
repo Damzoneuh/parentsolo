@@ -53,8 +53,10 @@ class Mailing
         $message->setBody('
             <h1>Exception Caught</h1>
             <p>message : '. $e->getMessage() . '</p>
+            <p>Line : ' .$e->getLine() .'</p>
             <p>error code : ' . $e->getCode()  . '</p>
             <p>stack trace : ' . $e->getTraceAsString() . '</p>
+           
         ', 'text/html');
         $this->_mailer->send($message);
     }
@@ -66,8 +68,17 @@ class Mailing
         $message->setSubject('New message');
         $message->setBody('
             <h1>You have receive a new message</h1>
-            <p>' . $user->getEmail() . ' sent a message for you !</p>
+            <p>' . $user->getPseudo() . ' sent a message for you !</p>
         ', 'text/html');
+        $this->_mailer->send($message);
+    }
+
+    public function sendNotification(User $user, $action, $content){
+        $message = $this->_message;
+        $message->setTo($user->getEmail());
+        $message->setFrom('noreply@parentsolo.ch');
+        $message->setSubject($action);
+        $message->setBody('<p> ' . $content . '</p>');
         $this->_mailer->send($message);
     }
 }

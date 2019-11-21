@@ -19,6 +19,20 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function getAge(User $user, $minAge, $maxAge){
+        $date = new \DateTime('now');
+        $age = $date->diff($user->getBirthdate(), $date);
+        dump($age); die();
+    }
+
+
+    public function excludeCurrentUser(User $user){
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :user')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

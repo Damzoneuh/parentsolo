@@ -1,72 +1,128 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {w3cwebsocket as W3CWebSocket} from 'websocket';
-import DirectChat from "./DirectChat";
+import axios from 'axios';
+import ChatBox from "../../common/ChatBox";
+
 
 let el = document.getElementById('chat');
-const client = new W3CWebSocket('wss://parentsolo.backndev.fr:5050/c/' + el.dataset.user);
+const es = new WebSocket('ws://ws.disons-demain.be:5000/c/' + el.dataset.user);
 
-export default class Chat extends Component{
-    constructor(props){
+export default class Chat extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             content: [],
-            message: null
+            messages: [],
+            isGranted: false,
+            user: el.dataset.user
         };
-        client.onopen = function () {
-        };
-        client.onmessage = (message) => {
-            this.setState({
-                content: JSON.parse(message.data)
-            })
-        };
-        this.submitMessage = this.submitMessage.bind(this);
-        this.markAsRead = this.markAsRead.bind(this);
+        axios.get('/api/user')
+            .then(res => {
+                if (res.data.isSub){
+                    this.setState({
+                        isGranted: true,
+                    });
+                }
+            });
+
+        this.setOrderedMessages = this.setOrderedMessages.bind(this);
+        this.handlePayLoad = this.handlePayLoad.bind(this);
+        this.connect = this.connect.bind(this);
+        this.handleReconnect = this.handleReconnect.bind(this);
     }
 
-    submitMessage(data) {
-        client.send(JSON.stringify(data));
+    componentDidMount(){
+        this.connect();
     }
 
-    setData(){
-        let properties = {};
-        this.state.content.map((c) => {
-            if (typeof properties[c.message_to] === 'undefined'){
-                properties[c.message_to] = {message : []};
+    connect(){
+        es.onopen = () => {
+            console.log('connected');
+        };
+        es.onmessage = res => {
+            let data = JSON.parse(res.data);
+            if (data.length > 0 && data[0] !== 'no messages'){
+                this.setState({
+                    messages: data
+                })
             }
-            properties[c.message_to].message.push({message : decodeURI(c.content), isRead: c.is_read, from: c.message_from});
-        });
-        return properties
+            this.setOrderedMessages()
+        };
+        this.handleReconnect();
     }
 
-    markAsRead(data){
-        client.send(JSON.stringify(data));
+    handleReconnect(){
+        es.onerror = e => {
+            es.close()
+        };
+
+        es.onclose = e => {
+            setTimeout(() => this.connect(), 2000)
+        }
     }
+
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.messages.length !== this.state.messages.length){
+           this.setOrderedMessages();
+        }
+    }
+
+    setOrderedMessages(){
+        let order = {};
+        if (this.state.messages.length > 0){
+            this.state.messages.map(message => {
+                if (message.message_from === parseInt(el.dataset.user)){
+                    if (typeof order[message.message_to] === 'undefined'){
+                        order[message.message_to] = [message]
+                    }
+                    else{
+                        order[message.message_to].push(message)
+                    }
+                }
+                else {
+                    if (typeof order[message.message_from] === 'undefined'){
+                        order[message.message_from] = [message]
+                    }
+                    else{
+                        order[message.message_from].push(message)
+                    }
+                }
+            });
+            this.setContent(order);
+        }
+    }
+
+    setContent(order){
+        this.setState({
+            content: order
+        })
+    }
+
+    handlePayLoad(payLoad){
+        es.send(payLoad);
+    }
+
+
 
     render() {
-        const {content} = this.state;
-        //console.log(content);
-        if (content.length > 0) {
-            let properties = this.setData();
-            return(
-                <div>{
-                    Object.entries(properties).map((value, key) => {
+        const {isGranted, messages, content, user} = this.state;
+
+        if (isGranted && Object.entries(content).length > 0){
+            return (
+                <div className="d-flex flex-row justify-content-around align-items-end position-fixed bottom-0 w-100 chat-wrap">
+                    {Object.entries(content).map(message => {
                         return (
-                            <div key={key} className="position-relative">
-                                <DirectChat submitMessage={this.submitMessage} content={value} target={value[0]} user={el.dataset.user} markAsRead={this.markAsRead}/>
-                            </div>
-                        );
-                    })
-                }</div>
+                            <ChatBox messages={message[1]} from={message[0]} handlePayLoad={this.handlePayLoad}/>
+                        )
+                    })}
+                </div>
             );
         }
         else {
-            return(
-                <div></div>
+            return (
+                <div> </div>
             )
         }
     }
-
 }
-
 ReactDOM.render(<Chat/>, document.getElementById('chat'));

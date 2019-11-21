@@ -43,6 +43,7 @@ class ImageController extends AbstractController
             $img = new Img();
             $img->setPath($this->getParameter('storage.img') . '/' . $rand . '.' . $file->getClientOriginalExtension());
             $img->setTitle($request->get('name'));
+            $img->setIsProfile(false);
             $em->persist($img);
             $user->addImg($img);
             $em->flush();

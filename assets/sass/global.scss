@@ -4,6 +4,8 @@
 @import "registration";
 @import "chat";
 @import "animation";
+@import "modal";
+@import "profile";
 
 $red: #e30813;
 $white: rgb(245,245,245);
@@ -11,6 +13,8 @@ $transparent: rgba(0,0,0, 0);
 $redLight: rgba(227, 8, 19, 0.6);
 $redTestimony: rgba(227, 8, 19, 0.8);
 $black-80: rgba(0,0,0,0.8);
+$grey: rgba(0,0,0,0.3);
+$black10: rgba(0,0,0,0.1);
 
 @font-face {
   font-family: Avenir-next;
@@ -23,6 +27,27 @@ body{
   a {
     outline: none;
   }
+  min-height: 100vh;
+}
+
+.charset-utf{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bg-pink{
+  background-color: $pink;
+}
+
+.top-25{
+  top: -35px;
+}
+
+.right-40{
+  right: 40px;
+}
+
+.bg-black-10{
+  background-color: $black10;
 }
 
 .black-80{
@@ -40,16 +65,40 @@ body{
   right: 0;
 }
 
+.marg-50{
+  margin: 50px;
+}
+
 .border-red-nav{
   border-bottom: 2px solid $red;
+}
+
+.marg-0{
+  margin: 0;
 }
 
 .marg-top-10{
   margin-top: 10px;
 }
 
+.marg-top-100{
+  margin-top: 150px;
+}
+
+.marg-bottom-100{
+  margin-bottom: 150px;
+}
+
+.marg-20{
+  margin: 20px;
+}
+
 .flex{
   display: flex;
+}
+
+.padding-0{
+  padding: 0;
 }
 
 .pad-10{
@@ -72,6 +121,10 @@ body{
 }
 .pad-right-10{
   margin-right: 10px;
+}
+
+.font-size-30{
+  font-size: 1.8em;
 }
 
 .none{
@@ -116,8 +169,20 @@ body{
   margin: 10px;
 }
 
+.marg-right-10{
+  margin-right: 10px;
+}
+
+.marg-top-20{
+  margin-top: 20px;
+}
+
 .marg-top-50{
   margin-top: 50px;
+}
+
+.border-under-nav{
+  border-right: 1px solid $white;
 }
 
 @media screen and (min-width: 710px) {
@@ -298,6 +363,14 @@ footer{
   .follow-logo{
     width: 3em;
   }
+
+  .under-nav-button{
+    display: none;
+  }
+
+  .border-under-nav {
+    border-right: none;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1200px){
@@ -306,6 +379,14 @@ footer{
   }
   .follow-logo{
     width: 4em;
+  }
+
+  .border-under-nav{
+    border-right: 1px solid $white;
+  }
+
+  .under-nav-button{
+    display: inline-block;
   }
 
   .img-bubble{
@@ -391,8 +472,9 @@ footer{
   border-radius: 1em;
   padding: 15px;
   margin-top: 10px;
-  margin-bottom: 50px;
+  //margin-bottom: 50px;
   color: $white;
+  word-wrap: break-spaces;
 }
 
 .testimony-img{
@@ -411,10 +493,142 @@ footer{
   position: relative;
 }
 
-.border-under-nav{
-  border-right: 1px solid $white;
-}
-
 .border-ul-under{
   margin: 10px 25px;
 }
+
+.search-glass{
+  width: 2.5em;
+  margin: 1em;
+}
+
+.font-size-20{
+  font-size: 1.3em;
+}
+
+.heart-top{
+  width: 2em;
+}
+
+.heart-bottom{
+  width: 1.5em;
+}
+
+.launch-button:hover{
+  color: $red;
+}
+
+.red-border{
+  border: 2px solid $red;
+  width: 100px;
+  height: 100px;
+  margin: 0;
+  padding: 0;
+}
+
+.hover-img {
+  top: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.last-profile-link:hover{
+  .hover-img{
+   display: block;
+  }
+  .text-profile-hover{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.last-profile-link{
+  .hover-img{
+    display: none;
+  }
+}
+
+.plus{
+  padding: 5px 15px;
+  border: 1px solid $red;
+  font-weight: bold;
+}
+
+.marg-bottom-10{
+  margin-bottom: 10px;
+}
+
+.group-thumb{
+  border-radius: 1em;
+  width: 90%
+}
+
+.diary-img-55{
+  width: 55%;
+}
+
+.diary-wrap-dashboard{
+  margin-top: 10px;
+}
+
+.border-bottom-red{
+  border-bottom: 1px solid $red;
+}
+
+.min-80-vh{
+  min-height: 59vh;
+}
+
+.border-grey{
+  border: 2px solid $grey;
+}
+
+.text-grey{
+  color: $grey;
+}
+
+.pad-left-inner{
+  padding-left: 1rem;
+}
+
+.hidden-text{
+  height: 70px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+
+.testimony-img-dashboard{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: 5px solid $red;
+}
+
+.thumb-profile-img{
+  width: 150px;
+  height: 150px;
+}
+
+.rounded-more{
+  border-radius: 2em 2em;
+}
+
+.banner-search{
+  background: url("../fixed/bg-search.jpg") bottom left no-repeat fixed;
+  background-size: cover;
+}
+
+.chat-img{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
