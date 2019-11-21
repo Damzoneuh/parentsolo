@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 let el = document.querySelector('#viewer');
 
 export default class ImageViewer extends Component{

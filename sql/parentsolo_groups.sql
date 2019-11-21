@@ -1,0 +1,1 @@
+INSERT INTO parentsolo.`groups` (id, name, description, members) VALUES (2, 'new name', 'new test description', '[1]');

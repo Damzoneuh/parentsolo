@@ -1,0 +1,1 @@
+INSERT INTO parentsolo.img (id, user_id, groups_id, childs_id, path, title) VALUES (15, 1, null, null, '/var/www/html/storage/img/1f87a51e2ddb7e482b2dd07c.jpeg', 'docker');

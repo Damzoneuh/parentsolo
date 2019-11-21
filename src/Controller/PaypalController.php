@@ -65,6 +65,7 @@ class PaypalController extends AbstractController
 
     /**
      * @param Request $request
+     * @param ItemsService $itemsService
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface

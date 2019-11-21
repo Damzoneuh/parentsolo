@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+//import WS from '../../../../vendor/gos/web-socket-bundle/Resources/public/js/gos_web_socket_client';
 
 export default class DirectChat extends Component{
     constructor(props) {

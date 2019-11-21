@@ -36,6 +36,7 @@ class IndexController extends AbstractController
     public function index(Request $request, TranslatorInterface $translator)
     {
         $diaryDefault = $translator->trans('diary.home', [], null, $request->getLocale());
+        /** @var Diary $diary */
         $diary = $this->getDoctrine()->getRepository(Diary::class)->findByValidateAndActual();
         $testimony = $this->getDoctrine()->getRepository(Testimony::class)
             ->findBy(['isValidated' => true], ['id' => 'DESC'], 1);
@@ -246,6 +247,51 @@ class IndexController extends AbstractController
             ]
         ];
         return $this->json($data);
+    }
+
+    /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws \Exception
+     * @Route("/api/diary", name="api_get_diary", methods={"GET"})
+     */
+    public function getDiary(Request $request, TranslatorInterface $translator){
+        $em = $this->getDoctrine()->getRepository(Diary::class);
+        $data = [];
+        $date = new \DateTime('now');
+
+        if (!empty($lastDiary = $em->findByValidateAndActual())){
+            foreach ($lastDiary as $diary){
+                /** @var Diary $diary */
+                if ($diary->getDate()->getTimestamp() > $date->getTimestamp()){
+                    $data['readMore'] = $translator->trans('read.more', [], null, $request->getLocale());
+                    $data['shareEvent'] = $translator->trans('share.event', [], null, $request->getLocale());
+                    $data['text'] = $diary->getText();
+                    $data['title'] = $diary->getTitle();
+                    $data['img'] = $diary->getImg()->getId();
+                    $data['location'] = $diary->getLocation();
+                    $data['date'] = $diary->getDate()->format('d/m/y');
+                    $data['diary'] = $translator->trans('diary', [], null, $request->getLocale());
+                }
+                else{
+                    $data['readMore'] = null;
+                    $data['diary'] = $translator->trans('diary', [], null, $request->getLocale());
+                    $data['title'] = null;
+                    $data['text'] = $translator->trans('diary.home', [], null, $request->getLocale());
+                    $data['shareEvent'] = $translator->trans('share.event', [], null, $request->getLocale());
+                }
+            }
+
+            return $this->json($data, 200);
+        }
+        $data['readMore'] = null;
+        $data['title'] = null;
+        $data['diary'] = $translator->trans('diary', [], null, $request->getLocale());
+        $data['text'] = $translator->trans('diary.home', [], null, $request->getLocale());
+        $data['shareEvent'] = $translator->trans('share.event', [], null, $request->getLocale());
+
+        return $this->json($data, 200);
     }
 
     /**

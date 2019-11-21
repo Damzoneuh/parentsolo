@@ -69,16 +69,6 @@ class Profil
     private $temperament;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Relationship", cascade={"persist", "remove"})
-     */
-    private $relationship;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ChildWanted", inversedBy="profil", cascade={"persist", "remove"})
-     */
-    private $child_wanted;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Wedding", inversedBy="profil", cascade={"persist", "remove"})
      */
     private $wedding;
@@ -148,30 +138,17 @@ class Profil
      */
     private $movies;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Read", inversedBy="profils")
-     */
-    private $reading;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Pets", inversedBy="profils")
      */
     private $pets;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Favorite", inversedBy="profils")
-     */
-    private $favorite;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Langages", mappedBy="profil")
      */
     private $langages;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $cityId;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Religion", cascade={"persist", "remove"})
@@ -183,6 +160,41 @@ class Profil
      */
     private $activity;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $childWanted;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Relationship")
+     */
+    private $relation;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isLookingFor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Profession")
+     */
+    private $profession;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Cities")
+     */
+    private $city;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Reading")
+     */
+    private $reading;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User")
+     */
+    private $favorite;
+
     public function __construct()
     {
         $this->childs = new ArrayCollection();
@@ -193,10 +205,10 @@ class Profil
         $this->sports = new ArrayCollection();
         $this->music = new ArrayCollection();
         $this->movies = new ArrayCollection();
-        $this->reading = new ArrayCollection();
         $this->pets = new ArrayCollection();
-        $this->favorite = new ArrayCollection();
         $this->activity = new ArrayCollection();
+        $this->reading = new ArrayCollection();
+        $this->favorite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -339,30 +351,6 @@ class Profil
     public function setTemperament(?Temperament $temperament): self
     {
         $this->temperament = $temperament;
-
-        return $this;
-    }
-
-    public function getRelationship(): ?Relationship
-    {
-        return $this->relationship;
-    }
-
-    public function setRelationship(?Relationship $relationship): self
-    {
-        $this->relationship = $relationship;
-
-        return $this;
-    }
-
-    public function getChildWanted(): ?ChildWanted
-    {
-        return $this->child_wanted;
-    }
-
-    public function setChildWanted(?ChildWanted $child_wanted): self
-    {
-        $this->child_wanted = $child_wanted;
 
         return $this;
     }
@@ -619,31 +607,6 @@ class Profil
         return $this;
     }
 
-    /**
-     * @return Collection|Read[]
-     */
-    public function getReading(): Collection
-    {
-        return $this->reading;
-    }
-
-    public function addReading(Read $reading): self
-    {
-        if (!$this->reading->contains($reading)) {
-            $this->reading[] = $reading;
-        }
-
-        return $this;
-    }
-
-    public function removeReading(Read $reading): self
-    {
-        if ($this->reading->contains($reading)) {
-            $this->reading->removeElement($reading);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Pets[]
@@ -666,32 +629,6 @@ class Profil
     {
         if ($this->pets->contains($pet)) {
             $this->pets->removeElement($pet);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Favorite[]
-     */
-    public function getFavorite(): Collection
-    {
-        return $this->favorite;
-    }
-
-    public function addFavorite(Favorite $favorite): self
-    {
-        if (!$this->favorite->contains($favorite)) {
-            $this->favorite[] = $favorite;
-        }
-
-        return $this;
-    }
-
-    public function removeFavorite(Favorite $favorite): self
-    {
-        if ($this->favorite->contains($favorite)) {
-            $this->favorite->removeElement($favorite);
         }
 
         return $this;
@@ -721,18 +658,6 @@ class Profil
             $this->langages->removeElement($langage);
             $langage->removeProfil($this);
         }
-
-        return $this;
-    }
-
-    public function getCityId(): ?int
-    {
-        return $this->cityId;
-    }
-
-    public function setCityId(int $cityId): self
-    {
-        $this->cityId = $cityId;
 
         return $this;
     }
@@ -775,5 +700,115 @@ class Profil
         return $this;
     }
 
+    public function getChildWanted(): ?int
+    {
+        return $this->childWanted;
+    }
 
+    public function setChildWanted(?int $childWanted): self
+    {
+        $this->childWanted = $childWanted;
+
+        return $this;
+    }
+
+    public function getRelation(): ?Relationship
+    {
+        return $this->relation;
+    }
+
+    public function setRelation(?Relationship $relation): self
+    {
+        $this->relation = $relation;
+
+        return $this;
+    }
+
+    public function getIsLookingFor(): ?bool
+    {
+        return $this->isLookingFor;
+    }
+
+    public function setIsLookingFor(?bool $isLookingFor): self
+    {
+        $this->isLookingFor = $isLookingFor;
+
+        return $this;
+    }
+
+    public function getProfession(): ?Profession
+    {
+        return $this->profession;
+    }
+
+    public function setProfession(?Profession $profession): self
+    {
+        $this->profession = $profession;
+
+        return $this;
+    }
+
+    public function getCity(): ?Cities
+    {
+        return $this->city;
+    }
+
+    public function setCity(?Cities $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reading[]
+     */
+    public function getReading(): Collection
+    {
+        return $this->reading;
+    }
+
+    public function addReading(Reading $reading): self
+    {
+        if (!$this->reading->contains($reading)) {
+            $this->reading[] = $reading;
+        }
+
+        return $this;
+    }
+
+    public function removeReading(Reading $reading): self
+    {
+        if ($this->reading->contains($reading)) {
+            $this->reading->removeElement($reading);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(User $favorite): self
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): self
+    {
+        if ($this->favorite->contains($favorite)) {
+            $this->favorite->removeElement($favorite);
+        }
+
+        return $this;
+    }
 }

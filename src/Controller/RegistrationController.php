@@ -54,14 +54,14 @@ class RegistrationController extends AbstractController
             $profil->setIsMan($data['credentials']['sex']);
             $relationship = $this->getDoctrine()->getRepository(Relationship::class)
                 ->findOneBy(['name' => $data['credentials']['relation']]);
-            $profil->setRelationship($relationship);
+            $profil->setRelation($relationship);
             $em = $this->getDoctrine()->getManager();
 
             $birthDate = new \DateTime($data['credentials']['day'] . '-' . $data['credentials']['month'] . '-' . $data['credentials']['year']);
             $city = $em->getRepository(Cities::class)->find($data['credentials']['city']);
             $user = new User();
             $user->setBirthdate($birthDate);
-            $profil->setCityId($city->getId());
+            $profil->setCity($city);
             $user->setCountry($country);
             $user->setProfil($profil);
             $user->setPhone($data['credentials']['number']);
@@ -71,6 +71,7 @@ class RegistrationController extends AbstractController
             $user->setCreatedAt(new \DateTime('now'));
             $user->setResetToken($token);
             $user->setIsValidated(false);
+            $user->setIsConfirmed(false);
             $em->persist($user);
             $em->flush();
             $mailingService->sendRegistrationConfirmationMail($user, $token);

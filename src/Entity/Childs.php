@@ -24,7 +24,7 @@ class Childs
     private $born;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $sex;
 

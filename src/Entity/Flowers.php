@@ -26,6 +26,11 @@ class Flowers
      */
     private $description;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Img", mappedBy="flower", cascade={"persist", "remove"})
+     */
+    private $img;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,24 @@ class Flowers
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImg(): ?Img
+    {
+        return $this->img;
+    }
+
+    public function setImg(?Img $img): self
+    {
+        $this->img = $img;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newFlower = null === $img ? null : $this;
+        if ($img->getFlower() !== $newFlower) {
+            $img->setFlower($newFlower);
+        }
 
         return $this;
     }
