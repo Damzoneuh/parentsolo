@@ -12,8 +12,14 @@ class SearchService
 {
     public static function MatchingFilter(array $users, User $currentUser){
         $lookingFor = self::filterLookingFor($users, $currentUser);
-        if ($lookingFor <= 10){
-            return $lookingFor;
+        if (count($lookingFor) <= 10){
+            $result = [];
+            foreach ($users as $user){
+                if ($user->getId() != $currentUser->getId()){
+                    array_push($result, $user);
+                }
+            }
+            return $result;
         }
 
         $relationship = self::filterRelationship($lookingFor, $currentUser);

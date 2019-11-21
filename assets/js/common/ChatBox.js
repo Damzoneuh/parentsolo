@@ -138,7 +138,7 @@ export default class ChatBox extends Component{
                     <div className={minimize ? "minimize-box bg-light" : "bg-light w-100 chat-messages maximize-box"}>
                         {messages.map(message => {
                             //return (<div className={minimize ? "none" : "charset-utf"}>{decodeURI(message.content)}</div>)
-                            console.log(message);
+
                             if (message.message_from === parseInt(el.dataset.user)){
                                 return (
                                     <div className={minimize ? "none" : "d-flex flew-row justify-content-end align-items-center"} >

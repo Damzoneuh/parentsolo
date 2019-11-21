@@ -12,6 +12,7 @@
         {% block body %}{% endblock %}
     {% if is_granted('ROLE_BASIC') or is_granted('ROLE_MEDIUM') or is_granted('ROLE_PREMIUM')%}
         <div id="chat" data-user="{{ app.user.id }}"></div>
+        <div id="toasts" data-user="{{ app.user.id }}"></div>
     {% endif %}
     <footer id="footer"></footer>
 {#        {% if is_granted('ROLE_BASIC') %}#}
@@ -22,6 +23,7 @@
             {{ encore_entry_script_tags('nav') }}
            {% if is_granted('ROLE_BASIC') or is_granted('ROLE_MEDIUM') or is_granted('ROLE_PREMIUM')%}
                 {{ encore_entry_script_tags('chat') }}
+                {{ encore_entry_script_tags('toasts') }}
            {% endif %}
         {% endblock %}
 

@@ -11,8 +11,7 @@ import Adsense from "../../common/Adsense";
 import Testimony from "./Testimony";
 import News from "./News";
 import ShowAllProfile from "../../common/ShowAllProfile";
-
-//TODO redirect on profile search where this page will done
+import ProfilShow from "../../common/ProfilShow";
 
 
 export default class Dashboard extends Component{
@@ -22,11 +21,13 @@ export default class Dashboard extends Component{
             tab: 1,
             profile: null,
             search: [],
-            trans: []
+            trans: [],
+            profileShowData: []
         };
         this.handleTab = this.handleTab.bind(this);
         this.handleProfile = this.handleProfile.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleShow = this.handleShow.bind(this);
     }
 
     componentDidMount(){
@@ -57,8 +58,18 @@ export default class Dashboard extends Component{
         });
     }
 
+    handleShow(id){
+        axios.get('/api/profile/' + id)
+            .then(res => {
+                this.setState({
+                    profileShowData: res.data,
+                    tab: 3
+                })
+            })
+    }
+
     render() {
-        const {search, tab, trans} = this.state;
+        const {search, tab, trans, profileShowData} = this.state;
         if (tab === 1){
             return (
                 <div>
@@ -97,7 +108,15 @@ export default class Dashboard extends Component{
                     <div className="banner-search d-flex flex-row justify-content-around align-items-center">
                         <button className="btn btn-group-lg btn-lg btn-outline-danger marg-top-100 marg-bottom-100">{trans.newSearch}</button>
                     </div>
-                    <ShowAllProfile handleTab={this.handleTab} handleSearch={this.handleSearch} search={search} trans={trans}/>
+                    <ShowAllProfile handleTab={this.handleTab} handleSearch={this.handleSearch} search={search} trans={trans} handleShow={this.handleShow}/>
+                </div>
+            )
+        }
+        if (tab === 3 ){
+            return (
+                <div className="bg-black-10">
+                    <UnderNav/>
+                    <ProfilShow handleTab={this.handleTab} trans={trans} profile={profileShowData} />
                 </div>
             )
         }

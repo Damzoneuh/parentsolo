@@ -47,6 +47,11 @@ class ItemsService
         return true;
     }
 
+    /**
+     * @param User $currentUser
+     * @param User $user
+     * @return bool
+     */
     public static function checkFavorite(User $currentUser, User $user) : bool
     {
         $currentFavorite = $currentUser->getProfil()->getFavorite();
@@ -58,6 +63,18 @@ class ItemsService
                 }
             }
             return false;
+        }
+        return false;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public static function checkFlowersRights(User $user) : bool {
+        $flowers = $user->getFlowerNumber();
+        if ($flowers && $flowers > 0){
+            return true;
         }
         return false;
     }

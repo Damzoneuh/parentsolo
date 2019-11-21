@@ -5,6 +5,7 @@
 @import "chat";
 @import "animation";
 @import "modal";
+@import "profile";
 
 $red: #e30813;
 $white: rgb(245,245,245);
@@ -71,7 +72,6 @@ body{
 .border-red-nav{
   border-bottom: 2px solid $red;
 }
-
 
 .marg-0{
   margin: 0;
@@ -167,6 +167,10 @@ body{
 
 .marg-10{
   margin: 10px;
+}
+
+.marg-right-10{
+  margin-right: 10px;
 }
 
 .marg-top-20{
@@ -618,7 +622,7 @@ footer{
 }
 
 .banner-search{
-  background: url("../fixed/bg-search.jpg") center no-repeat fixed;
+  background: url("../fixed/bg-search.jpg") bottom left no-repeat fixed;
   background-size: cover;
 }
 

@@ -41,8 +41,7 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments', '@Symfony\Component\Mercure\Publisher']
 
-    App\Mailer\:
-        resource: '../src/Mailer'
+    App\Mailer\Mailing:
         arguments: ['swiftmailer.mailer.default', '@twig']
         public: true
 

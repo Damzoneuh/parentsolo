@@ -46,6 +46,11 @@ class Img
      */
     private $isProfile;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Flowers", inversedBy="img", cascade={"persist", "remove"})
+     */
+    private $flower;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +124,18 @@ class Img
     public function setIsProfile(bool $isProfile): self
     {
         $this->isProfile = $isProfile;
+
+        return $this;
+    }
+
+    public function getFlower(): ?Flowers
+    {
+        return $this->flower;
+    }
+
+    public function setFlower(?Flowers $flower): self
+    {
+        $this->flower = $flower;
 
         return $this;
     }

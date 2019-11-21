@@ -5,7 +5,7 @@ import ChatBox from "../../common/ChatBox";
 
 
 let el = document.getElementById('chat');
-const es = new WebSocket('ws://ws.parentsolo.backndev.fr:5000/c/1');
+const es = new WebSocket('ws://ws.disons-demain.be:5000/c/' + el.dataset.user);
 
 export default class Chat extends Component {
     constructor(props) {
@@ -41,7 +41,6 @@ export default class Chat extends Component {
         };
         es.onmessage = res => {
             let data = JSON.parse(res.data);
-            let messages = [];
             if (data.length > 0 && data[0] !== 'no messages'){
                 this.setState({
                     messages: data
@@ -58,7 +57,7 @@ export default class Chat extends Component {
         };
 
         es.onclose = e => {
-            setTimeout(() => this.connect())
+            setTimeout(() => this.connect(), 2000)
         }
     }
 

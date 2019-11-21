@@ -44,13 +44,20 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @param null $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("api/user", name="api_get_user", methods={"GET"})
+     * @Route("api/user/{id}", name="api_get_user", methods={"GET"})
      */
-    public function getUserRoles(){
+    public function getUserRoles($id = null){
         $data = [];
-        /** @var  $user User */
-        $user = $this->getUser();
+        if (!$id){
+            /** @var  $user User */
+            $user = $this->getUser();
+        }
+        else{
+            $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        }
+
         $data['id'] = $user->getId();
         $this->isGranted('ROLE_ADMIN');
         if (!$user){

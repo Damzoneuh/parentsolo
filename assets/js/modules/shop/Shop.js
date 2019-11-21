@@ -22,7 +22,7 @@ export default class Shop extends Component{
                     isLoaded: true,
                     trans: res.data
                 });
-                console.log(this.state.trans)
+
             })
     }
 
@@ -31,7 +31,7 @@ export default class Shop extends Component{
         if (isLoaded){
             return (
                 <div className="container-fluid">
-                    <div className="col-12">
+                    <div className="col-12 col-md-10 offset-md-1">
                         <div className="table-responsive">
                             <table className="table table-bordered">
                                 <thead className="bg-danger text-white">
@@ -97,14 +97,14 @@ export default class Shop extends Component{
                                         <td scope="col" className="bg-pink">{trans.flowerSend}</td>
                                         <td scope="col" className="text-center"><FontAwesomeIcon icon={faTimes}  color={"rgb(0,0,0)"} /></td>
                                         <td scope="col" className="text-center">{trans.options} *</td>
-                                        <td scope="col" className="text-center">5/{trans.month} + {trans.options} *</td>
+                                        <td scope="col" className="text-center">5/{trans.month} <br/>+ {trans.options} *</td>
                                         <td scope="col" className="text-center text-success">{trans.unlimited}</td>
                                     </tr>
                                     <tr>
                                         <td scope="col" className="bg-pink">{trans.favoriteList}</td>
                                         <td scope="col" className="text-center"><FontAwesomeIcon icon={faTimes}  color={"rgb(0,0,0)"} /></td>
                                         <td scope="col" className="text-center">{trans.options} *</td>
-                                        <td scope="col" className="text-center">5/{trans.month} + {trans.options} *</td>
+                                        <td scope="col" className="text-center">5/{trans.month} <br/>+ {trans.options} *</td>
                                         <td scope="col" className="text-center text-success">{trans.unlimited}</td>
                                     </tr>
                                     <tr>

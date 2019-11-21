@@ -69,7 +69,10 @@ class DashboardController extends AbstractController
             'view' => $translator->trans('view', [], null, $request->getLocale()),
             'acceptFavorite' => $translator->trans('accept.favorite', [], null, $request->getLocale()),
             'accept' => $translator->trans('accept', [], null, $request->getLocale()),
-            'cancel' => $translator->trans('cancel', [], null, $request->getLocale())
+            'cancel' => $translator->trans('cancel', [], null, $request->getLocale()),
+            'sendFlower' => $translator->trans('flower.send', [], null, $request->getLocale()),
+            'contact' => $translator->trans('contact', [], null, $request->getLocale()),
+            'validate' => $translator->trans('validate', [], null, $request->getLocale())
         ], 200);
     }
 
@@ -90,7 +93,9 @@ class DashboardController extends AbstractController
                 if ($testimony->getUser()->getImg()->count() > 0){
                     /** @var Img $img */
                     foreach ($testimony->getUser()->getImg()->getValues() as $img){
-                        $data['img'] = $img->getId();
+                        if ($img->getIsProfile()){
+                            $data['img'] = $img->getId();
+                        }
                     }
                 }
                 else{

@@ -125,6 +125,21 @@ class User implements UserInterface
      */
     private $isConfirmed;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\FlowerReceived", mappedBy="target")
+     */
+    private $flowerReceiveds;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FlowerReceived", mappedBy="target", orphanRemoval=true)
+     */
+    private $target;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FlowerReceived", mappedBy="sender", orphanRemoval=true)
+     */
+    private $sender;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
@@ -132,6 +147,9 @@ class User implements UserInterface
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->slugs = new ArrayCollection();
+        $this->flowerReceiveds = new ArrayCollection();
+        $this->target = new ArrayCollection();
+        $this->sender = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -524,6 +542,96 @@ class User implements UserInterface
     public function setIsConfirmed(bool $isConfirmed): self
     {
         $this->isConfirmed = $isConfirmed;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FlowerReceived[]
+     */
+    public function getFlowerReceiveds(): Collection
+    {
+        return $this->flowerReceiveds;
+    }
+
+    public function addFlowerReceived(FlowerReceived $flowerReceived): self
+    {
+        if (!$this->flowerReceiveds->contains($flowerReceived)) {
+            $this->flowerReceiveds[] = $flowerReceived;
+            $flowerReceived->addTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlowerReceived(FlowerReceived $flowerReceived): self
+    {
+        if ($this->flowerReceiveds->contains($flowerReceived)) {
+            $this->flowerReceiveds->removeElement($flowerReceived);
+            $flowerReceived->removeTarget($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FlowerReceived[]
+     */
+    public function getTarget(): Collection
+    {
+        return $this->target;
+    }
+
+    public function addTarget(FlowerReceived $target): self
+    {
+        if (!$this->target->contains($target)) {
+            $this->target[] = $target;
+            $target->setTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(FlowerReceived $target): self
+    {
+        if ($this->target->contains($target)) {
+            $this->target->removeElement($target);
+            // set the owning side to null (unless already changed)
+            if ($target->getTarget() === $this) {
+                $target->setTarget(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FlowerReceived[]
+     */
+    public function getSender(): Collection
+    {
+        return $this->sender;
+    }
+
+    public function addSender(FlowerReceived $sender): self
+    {
+        if (!$this->sender->contains($sender)) {
+            $this->sender[] = $sender;
+            $sender->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSender(FlowerReceived $sender): self
+    {
+        if ($this->sender->contains($sender)) {
+            $this->sender->removeElement($sender);
+            // set the owning side to null (unless already changed)
+            if ($sender->getSender() === $this) {
+                $sender->setSender(null);
+            }
+        }
 
         return $this;
     }

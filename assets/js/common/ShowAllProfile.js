@@ -7,6 +7,7 @@ import defaultWoman from '../../fixed/FemmeDefaut.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faHeart, faComments, faSpa, faUser} from "@fortawesome/free-solid-svg-icons";
+import ProfilShow from "./ProfilShow";
 library.add(faHeart, faComments, faUser, faSpa);
 
 export default class ShowAllProfile extends Component{
@@ -24,6 +25,7 @@ export default class ShowAllProfile extends Component{
         this.handleAcceptModal = this.handleAcceptModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.submitFavorite = this.submitFavorite.bind(this);
+        this.handleSelectedProfile = this.handleSelectedProfile.bind(this);
 
     }
 
@@ -90,6 +92,10 @@ export default class ShowAllProfile extends Component{
         this.submitFavorite(this.state.selectedProfile)
     }
 
+    handleSelectedProfile(id){
+        this.props.handleShow(id)
+    }
+
     render() {
         const {profiles, modal, trans} = this.state;
         if (profiles.length > 0){
@@ -108,7 +114,7 @@ export default class ShowAllProfile extends Component{
                     <div className="row">
                         {profiles.map(profile => {
                             return (
-                                <div className="col-lg-3 col-md-4 col-sm-12">
+                                <div className="col-lg-3 col-md-4 col-sm-12" key={profile.id}>
                                     <div className="text-center rounded-more bg-light marg-10 pad-10">
                                         <div className="profile-all-wrap">
                                             {profile.img && profile.img.length > 0 ? profile.img.map(img => {
@@ -124,7 +130,9 @@ export default class ShowAllProfile extends Component{
                                         <h4 className="font-weight-bold">{profile.pseudo.toUpperCase()}</h4>
                                         {profile.age} | {profile.city} - {profile.canton}
                                         <div className="d-flex flex-row align-items-center justify-content-around marg-20">
-                                            <button className="btn btn-outline-danger btn-lg btn-group-lg">{this.props.trans.view}</button>
+
+                                            <button className="btn btn-outline-danger btn-lg btn-group-lg" onClick={() => this.handleSelectedProfile(profile.id)}>{this.props.trans.view}</button>
+
                                             <a onClick={() => this.handleFavorite(profile)}>
                                                 <FontAwesomeIcon icon={'heart'} color={profile.isFavorite ? 'rgba(255,0,0,0.8)' : 'rgba(0,0,0,0.3)'} className={'font-size-30'}/>
                                             </a>
@@ -139,10 +147,11 @@ export default class ShowAllProfile extends Component{
                 </div>
             );
         }
+
         else {
             return (
                 <div>
-                    nothing to show
+
                 </div>
             )
         }

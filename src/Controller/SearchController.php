@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cities;
 use App\Entity\User;
 use App\Service\SearchService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,7 +63,7 @@ class SearchController extends AbstractController
      * @param SearchService $searchService
      * @Route("/api/matching", name="api_matching", methods={"GET"})
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @IsGranted("ROLE_MEDIUM")
+     * @Security("is_granted('ROLE_MEDIUM') or is_granted('ROLE_PREMIUM')")
      */
     public function autoSearch(SearchService $searchService){
         /** @var User $user */

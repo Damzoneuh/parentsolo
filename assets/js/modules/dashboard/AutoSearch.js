@@ -13,7 +13,8 @@ export default class AutoSearch extends Component{
         this.state = {
             isLoaded: false,
             trans: []
-        }
+        };
+        this.handleMatching = this.handleMatching.bind(this);
     }
 
     componentDidMount(){
@@ -23,6 +24,14 @@ export default class AutoSearch extends Component{
                     trans: res.data,
                     isLoaded: true
                 })
+            })
+    }
+
+    handleMatching(){
+        axios.get('/api/matching')
+            .then(res => {
+                this.props.handleSearch(res.data);
+                this.props.handleTab(2)
             })
     }
 
@@ -44,7 +53,7 @@ export default class AutoSearch extends Component{
                                 </div>
                             </div>
                             <div className="w-75 d-flex justify-content-around align-items-center">
-                                <button className="btn-lg btn btn-group btn-outline-light launch-button">{trans.launch} !</button>
+                                <button className="btn-lg btn btn-group btn-outline-light launch-button" onClick={this.handleMatching}>{trans.launch} !</button>
                             </div>
                             <div className="w-25">
                                 <div className="text-right">
