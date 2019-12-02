@@ -351,6 +351,22 @@ class ProfilController extends AbstractController
             $data['personality']['relation'] = $translator->trans($user->getProfil()->getRelation()->getName(), [], null, $request->getLocale());
         }
 
+        $familyStatus = $user->getProfil()->getFamilyStatus();
+        if (!$familyStatus){
+            $data['personality']['familyStatus'] = null;
+        }
+        else{
+            $data['personality']['familyStatus'] = $translator->trans($familyStatus->getName(), [], null, $request->getLocale());
+        }
+
+        $activity = $user->getProfil()->getActivity();
+        if (!$activity){
+            $data['lifeStyle']['activity'] = null;
+        }
+        else{
+            $data['lifeStyle']['activity'] = $translator->trans($activity->getName(), [], null, $request->getLocale());
+        }
+
         $temperament = $user->getProfil()->getTemperament();
         if (!$temperament){
             $data['personality']['temperament'] = null;

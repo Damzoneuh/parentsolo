@@ -33,9 +33,9 @@ export default class DropDownProfile extends Component{
         return (
             <div className="text-center marg-top-10">
                 <div className="d-flex flex-row justify-content-between align-items-center">
-                    <div >
+                    <div className="d-flex align-items-end">
                         {img ? <img src={img} className={imgClass} alt={title} /> : '' }
-                        <h4>{title}</h4>
+                        <h4 className="marg-0 marg-left-10">{title}</h4>
                     </div>
                     <div onClick={this.toggleDropDown} >
                         {toggled ? <FontAwesomeIcon icon="sort-up" color={"rgb(0, 0, 0)"} className={"pad-right-10 font-size-30"}/> : <FontAwesomeIcon icon="sort-down" color={"rgb(0, 0, 0)"} className={"pad-right-10 font-size-30"}/>}

@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FamilyStatusRepository")
  */
-class Activity
+class FamilyStatus
 {
     /**
      * @ORM\Id()
@@ -22,7 +20,6 @@ class Activity
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-
 
     public function getId(): ?int
     {
