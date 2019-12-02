@@ -106,11 +106,6 @@ class User implements UserInterface
     private $favoriteNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Slug", mappedBy="author", orphanRemoval=true)
-     */
-    private $slugs;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pseudo;
@@ -140,16 +135,21 @@ class User implements UserInterface
      */
     private $sender;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Groups", mappedBy="members")
+     */
+    private $groupsMembers;
+
     public function __construct()
     {
         $this->payment_profil = new ArrayCollection();
         $this->img = new ArrayCollection();
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
-        $this->slugs = new ArrayCollection();
         $this->flowerReceiveds = new ArrayCollection();
         $this->target = new ArrayCollection();
         $this->sender = new ArrayCollection();
+        $this->groupsMembers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -479,37 +479,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Slug[]
-     */
-    public function getSlugs(): Collection
-    {
-        return $this->slugs;
-    }
-
-    public function addSlug(Slug $slug): self
-    {
-        if (!$this->slugs->contains($slug)) {
-            $this->slugs[] = $slug;
-            $slug->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSlug(Slug $slug): self
-    {
-        if ($this->slugs->contains($slug)) {
-            $this->slugs->removeElement($slug);
-            // set the owning side to null (unless already changed)
-            if ($slug->getAuthor() === $this) {
-                $slug->setAuthor(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getPseudo(): ?string
     {
         return $this->pseudo;
@@ -631,6 +600,34 @@ class User implements UserInterface
             if ($sender->getSender() === $this) {
                 $sender->setSender(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Groups[]
+     */
+    public function getGroupsMembers(): Collection
+    {
+        return $this->groupsMembers;
+    }
+
+    public function addGroupsMember(Groups $groupsMember): self
+    {
+        if (!$this->groupsMembers->contains($groupsMember)) {
+            $this->groupsMembers[] = $groupsMember;
+            $groupsMember->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupsMember(Groups $groupsMember): self
+    {
+        if ($this->groupsMembers->contains($groupsMember)) {
+            $this->groupsMembers->removeElement($groupsMember);
+            $groupsMember->removeMember($this);
         }
 
         return $this;

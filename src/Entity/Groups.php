@@ -24,33 +24,23 @@ class Groups
     private $name;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $description;
-
-    /**
-     * @ORM\Column(type="json_array")
-     */
-    private $members = [];
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Slug", mappedBy="groups")
-     */
-    private $slugs;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $createdBy;
-
-    /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isValidated;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="groupsMembers")
+     */
+    private $members;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $createdBy;
+
     public function __construct()
     {
-        $this->slugs = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,78 +60,52 @@ class Groups
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getMembers(): ?array
-    {
-        return $this->members;
-    }
-
-    public function setMembers(array $members): self
-    {
-        $this->members = $members;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Slug[]
-     */
-    public function getSlugs(): Collection
-    {
-        return $this->slugs;
-    }
-
-    public function addSlug(Slug $slug): self
-    {
-        if (!$this->slugs->contains($slug)) {
-            $this->slugs[] = $slug;
-            $slug->addGroup($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSlug(Slug $slug): self
-    {
-        if ($this->slugs->contains($slug)) {
-            $this->slugs->removeElement($slug);
-            $slug->removeGroup($this);
-        }
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
     public function getIsValidated(): ?bool
     {
         return $this->isValidated;
     }
 
-    public function setIsValidated(bool $isValidated): self
+    public function setIsValidated(?bool $isValidated): self
     {
         $this->isValidated = $isValidated;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): self
+    {
+        if ($this->members->contains($member)) {
+            $this->members->removeElement($member);
+        }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(int $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

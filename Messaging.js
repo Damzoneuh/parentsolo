@@ -40,15 +40,16 @@ wss.on('connection', (ws, req) => {
 
     if (path.search('/c') === 0) {
         ws.id = path.substring(3);
+        //TODO here check problem
         idMap[ws.id] = ws;
-        let auth = null;
-        axios.get("https://parentsolo.disons-demain.be/api/user/" + ws.id)
-            .then(res => {
-                if (res.data.isSub){
-                    auth = true;
-                }
-            })
-            .catch(e => console.log(e));
+        let auth = true;
+        // axios.get("https://parentsolo.disons-demain.be/api/user/" + ws.id)
+        //     .then(res => {
+        //         if (res.data.isSub){
+        //             auth = true;
+        //         }
+        //     })
+        //     .catch(e => console.log(e));
         connection.query('SELECT * FROM messages WHERE message_to=' + ws.id + ' OR message_from=' + ws.id + ' ORDER BY id ASC', (err, rows, fields) => {
             if (!err && rows.length > 0) {
                 rows.map((row) => {
@@ -64,26 +65,29 @@ wss.on('connection', (ws, req) => {
 
         ws.on('message', (message) => {
             message = JSON.parse(message);
-            if (message.action === 'send' && auth) {
+            console.log(message);
+            if (message.action === 'send') {
                 connection.query('INSERT INTO messages (message_from, message_to, content, is_read) VALUES (' + ws.id + ', ' + message.target + ', "' + encodeURI(message.message) + '", false)');
                 connection.query('SELECT * FROM messages WHERE message_to=' + ws.id + ' OR message_from=' + ws.id + ' ORDER BY id ASC', (err, rows, fields) => {
                     if (!err){
-                        ws.send(JSON.stringify(rows))
+                        idMap[ws.id].send(JSON.stringify(rows));
                     }
                     else {
                         console.log(err)
                     }
                 });
-
                 let dest = idMap[message.target];
+                console.log(idMap);
+                //ws.send(JSON.stringify(idMap));
                 if (dest) {
+                    console.log('ici');
                     connection.query('SELECT * FROM messages WHERE message_from=' + ws.id + ' AND message_to=' + dest.id, (err, rows) => {
                         if (rows.length > 0) {
                             rows.map((row) => {
                                 messages.push(row);
                             });
-                            dest.send(JSON.stringify(messages));
-                            messages = [];
+                            dest.send(JSON.stringify(messages)).then(() => {messages = []});
+                            //messages = [];
                             axios.get("https://parentsolo.disons-demain.be/api/trans/newmessage")
                                 .then(res => {
                                     notification(dest, 'message', res.data.trans);
@@ -104,19 +108,20 @@ wss.on('connection', (ws, req) => {
                     })
                 }
             }
+
+            else if (message.action === 'read'){
+                connection.query('UPDATE messages SET is_read=true WHERE message_to=' + ws.id + ' AND message_from=' + message.target);
+                connection.query('SELECT * FROM messages WHERE message_to=' + ws.id + ' OR message_from=' + ws.id + ' ORDER BY id \'ASC\'', (err, rows, fields) => {
+                    ws.send(JSON.stringify(rows))
+                })
+            }
+
             else {
                 axios.get("https://parentsolo.disons-demain.be/api/trans/notsub")
                     .then(res => {
                         notification(ws, 'error', res.data.trans);
                     })
 
-            }
-
-            if (message.action === 'read'){
-                connection.query('UPDATE messages SET is_read=true WHERE message_to=' + ws.id + ' AND message_from=' + message.target);
-                connection.query('SELECT * FROM messages WHERE message_to=' + ws.id + ' OR message_from=' + ws.id + ' ORDER BY id \'ASC\'', (err, rows, fields) => {
-                    ws.send(JSON.stringify(rows))
-                })
             }
         });
 
