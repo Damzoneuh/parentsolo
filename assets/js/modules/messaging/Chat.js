@@ -27,43 +27,32 @@ export default class Chat extends Component {
 
         this.setOrderedMessages = this.setOrderedMessages.bind(this);
         this.handlePayLoad = this.handlePayLoad.bind(this);
-        this.connect = this.connect.bind(this);
-        this.handleReconnect = this.handleReconnect.bind(this);
+        this.setContent = this.setContent.bind(this);
     }
 
     componentDidMount(){
-        this.connect();
-    }
-
-    connect(){
         es.onopen = () => {
             console.log('connected');
         };
+
         es.onmessage = res => {
+            console.log(JSON.parse(res.data));
             let data = JSON.parse(res.data);
             if (data.length > 0 && data[0] !== 'no messages'){
                 this.setState({
                     messages: data
-                })
+                });
+                console.log(data)
             }
             this.setOrderedMessages()
         };
-        this.handleReconnect();
-    }
 
-    handleReconnect(){
-        es.onerror = e => {
-            es.close()
+        es.onerror = () => {
+            es.onclose()
         };
 
-        es.onclose = e => {
-            setTimeout(() => this.connect(), 2000)
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState){
-        if (prevState.messages.length !== this.state.messages.length){
-           this.setOrderedMessages();
+        es.onclose = () => {
+            es.onopen()
         }
     }
 
@@ -95,14 +84,12 @@ export default class Chat extends Component {
     setContent(order){
         this.setState({
             content: order
-        })
+        });
     }
 
     handlePayLoad(payLoad){
         es.send(payLoad);
     }
-
-
 
     render() {
         const {isGranted, messages, content, user} = this.state;

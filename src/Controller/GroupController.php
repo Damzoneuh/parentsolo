@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Groups;
 use App\Entity\Img;
-use App\Entity\Slug;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -187,45 +186,23 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/api/group/post", name="api_group_post", methods={"POST"})
+     * @Route("/api/group/user/{id}", name="api_group_user", methods={"GET"})
      */
-    public function addSlug(Request $request){
-        $data = $this->_serializer->decode($request->getContent(), 'json');
-        $em = $this->getDoctrine()->getManager();
-        /** @var User $user */
-        $user = $this->getUser();
-        $slug = new Slug();
-        $slug->setText($data['text']);
-        $group = $em->getRepository(Groups::class)->find($data['groupId']);
-        $slug->addGroup($group);
-        $slug->setAuthor($user);
-        $em->persist($slug);
-        $em->flush();
-        return $this->json('success');
-    }
-
-    /**
-     * @param $group
-     * @param null $id
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Route("/api/group/slug/{group}/{id}", name="api_get_slugs", methods={"GET"})
-     */
-    public function getSlug($group, $id = null){
-        $em = $this->getDoctrine()->getRepository(Slug::class);
-        if ($id){
-            return $this->json($em->find($id));
+    public function getUserGroup($id){
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $groups = $user->getGroupsMembers()->getValues();
+        $data = [];
+        if (count($groups) > 0){
+            foreach ($groups as $group){
+                /** @var Groups $group */
+                $row = [
+                    'id' => $group->getId(),
+                    'name' => $group->getName()
+                ];
+                array_push($data, $row);
+            }
         }
-        $group = $this->getDoctrine()->getRepository(Groups::class)->find($group);
-        $slugs = [];
-        foreach ($group->getSlugs()->getValues() as $slug){
-            /** @var  Slug $slug */
-            $content['text'] = $slug->getText();
-            $content['id'] = $slug->getId();
-            $content['author'] = $slug->getAuthor();
-            array_push($slugs, $content);
-        }
-        return $this->json($slugs);
+        return $this->json($data, 200);
     }
 }

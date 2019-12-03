@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
 let el = document.getElementById('toasts');
-const es = new WebSocket('ws://ws.parentsolo.disons-demain.fr:5000/n/' + el.dataset.user);
+const es = new WebSocket('ws://ws.parentsolo.disons-demain.be:5000/n/' + el.dataset.user);
 
 export default class Toasts extends Component{
     constructor(props) {

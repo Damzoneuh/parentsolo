@@ -82,6 +82,7 @@ Encore
     .addEntry('dashboard', './assets/js/modules/dashboard/Dashboard.js')
     .addEntry('shop', './assets/js/modules/shop/Shop.js')
     .addEntry('toasts', './assets/js/common/Toasts.js')
+    .addEntry('editProfile', './assets/js/modules/profil/EditProfil.js')
 ;
 
 module.exports = Encore.getWebpackConfig();
