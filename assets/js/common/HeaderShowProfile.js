@@ -12,6 +12,8 @@ import TextAreaModal from "./TextAreaModal";
 library.add(faComments, faSpa);
 import axios from 'axios';
 import MessageModal from "./MessageModal";
+import ImgModal from "./ImgModal";
+import ChildModal from "./ChildModal";
 
 let el = document.getElementById('chat');
 const es = new WebSocket('ws://ws.disons-demain.be:5000/f/' + el.dataset.user);
@@ -123,6 +125,7 @@ export default class HeaderShowProfile extends Component {
     render() {
         const {profile, trans} = this.props;
         const {flowers, modalFlower, messagesModal} = this.state;
+        let count = 0;
         return (
             <div className="banner-search d-flex flex-row justify-content-around align-items-center">
                 {modalFlower && flowers.length > 0 ? <TextAreaModal handleClose={this.handleClose} handleSend={this.handleSend} flowers={flowers} validate={trans.validate} /> : ""}
@@ -149,12 +152,32 @@ export default class HeaderShowProfile extends Component {
                             }
                             {profile.img !== null && profile.img.length > 1 ?
                                 <div className="col-3">
-                                    {profile.img.map((img, key) => {
+                                    {profile.img.length <= 3 ? profile.img.map((img, key) => {
                                         if (!img.isProfile && key <= 2) {
                                             return (<ImageRenderer id={img.img} alt={"profil-img"}
                                                                    className={"header-profile-img w-100"}/>)
                                         }
-                                    })}
+                                    }) : ''}
+                                    {profile.img.length > 3 ?
+                                        profile.img.map(img => {
+                                            if (!img.isProfile && count < 1){
+                                                count ++;
+                                                return (
+                                                    <ImageRenderer id={img.img} alt={"profile image"} className={"header-profile-img w-100"}/>
+                                                )
+                                            }
+                                            if (!img.isProfile && count === 1){
+                                                count ++;
+                                                return (
+                                                    <div className="position-relative marg-top-10">
+                                                        <ImageRenderer id={img.img} alt={"profile image"} className={"header-profile-img w-100 marg-0"}/>
+                                                        <div className="position-absolute header-absolute" data-toggle="modal"
+                                                             data-target=".bd-profile-modal-lg"> + {profile.img.length - 3}</div>
+                                                        <ImgModal img={profile.img} dataTarget={"bd-profile-modal-lg"}/>
+                                                    </div>
+                                                )
+                                            }
+                                        }) : '' }
                                 </div>
                                 : ''}
                         </div>
@@ -197,6 +220,12 @@ export default class HeaderShowProfile extends Component {
                                        }
                                    })
                                     : ''}
+                            {profile.child.length > 2 ?
+                                <div className="col-12 text-center marg-top-10">
+                                    <button className="btn btn-group btn-outline-dark marg-10" data-toggle="modal"
+                                         data-target=".bd-child-modal-lg"> {trans.viewMore}</button>
+                                    <ChildModal child={profile.child} dataTarget={"bd-child-modal-lg"} trans={trans}/>
+                                </div> : '' }
                         </div>
                     </div>
                 </div>

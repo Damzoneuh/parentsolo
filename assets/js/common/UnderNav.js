@@ -7,6 +7,8 @@ library.add(faBars, faComments, faUser, faSpa);
 let el = document.getElementById('dashboard');
 import axios from 'axios';
 
+//TODO fix links DD
+
 export default class UnderNav extends Component{
     constructor(props) {
         super(props);
@@ -25,7 +27,7 @@ export default class UnderNav extends Component{
     }
 
     componentDidMount(){
-        axios.get('/api/user')
+        axios.get('/api/user/' + el.dataset.user)
             .then(res => {
                 this.setState({
                     user: res.data

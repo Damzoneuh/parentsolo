@@ -89,6 +89,7 @@ class DashboardController extends AbstractController
             'studies.level' => $translator->trans('studies.level', [], null, $request->getLocale()),
             'line.of.buisness' => $translator->trans('line.of.buisness', [], null, $request->getLocale()),
             'appearence' => $translator->trans('appearence', [], null, $request->getLocale()),
+            'viewMore' => $translator->trans('view.more', [], null, $request->getLocale())
 
         ], 200);
     }
