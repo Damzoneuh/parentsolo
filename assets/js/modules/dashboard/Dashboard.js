@@ -73,7 +73,7 @@ export default class Dashboard extends Component{
         if (tab === 1){
             return (
                 <div>
-                    <UnderNav/>
+                    <UnderNav data={"dashboard"}/>
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-9 col-sm-12">
@@ -104,7 +104,7 @@ export default class Dashboard extends Component{
         if (tab === 2){
             return (
                 <div className="bg-black-10">
-                    <UnderNav/>
+                    <UnderNav data={"dashboard"}/>
                     <div className="banner-search d-flex flex-row justify-content-around align-items-center">
                         <button className="btn btn-group-lg btn-lg btn-outline-danger marg-top-100 marg-bottom-100">{trans.newSearch}</button>
                     </div>
@@ -115,7 +115,7 @@ export default class Dashboard extends Component{
         if (tab === 3 ){
             return (
                 <div className="bg-black-10">
-                    <UnderNav/>
+                    <UnderNav data={"dashboard"}/>
                     <ProfilShow handleTab={this.handleTab} trans={trans} profile={profileShowData} />
                 </div>
             )

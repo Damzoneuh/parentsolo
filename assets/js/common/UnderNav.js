@@ -4,7 +4,6 @@ import {faBars, faComments, faUser, faSpa} from "@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ImageRenderer from "./ImageRenderer";
 library.add(faBars, faComments, faUser, faSpa);
-let el = document.getElementById('dashboard');
 import axios from 'axios';
 
 //TODO fix links DD
@@ -12,6 +11,7 @@ import axios from 'axios';
 export default class UnderNav extends Component{
     constructor(props) {
         super(props);
+        const el = document.getElementById(this.props.data);
         this.state = {
             isLoaded: false,
             display: el.dataset.display,
@@ -19,7 +19,8 @@ export default class UnderNav extends Component{
             img: el.dataset.img,
             complete: el.dataset.complete,
             user: [],
-            links: []
+            links: [],
+            userElement: el.dataset.user
         };
         this.handleSub = this.handleSub.bind(this);
         this.handleShop = this.handleShop.bind(this);
@@ -27,6 +28,7 @@ export default class UnderNav extends Component{
     }
 
     componentDidMount(){
+        const el = document.getElementById(this.props.data);
         axios.get('/api/user/' + el.dataset.user)
             .then(res => {
                 this.setState({
@@ -43,7 +45,7 @@ export default class UnderNav extends Component{
     }
 
     handleSub(){
-        window.location.hash='#'
+        window.location.hash='/shop'
     }
 
     handleShop(){

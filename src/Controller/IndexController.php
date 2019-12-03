@@ -189,11 +189,11 @@ class IndexController extends AbstractController
             ],
             'secondButton' => [
                 'daddy' => [
-                    'value' => true,
+                    'value' => 1,
                     'text' => $translator->trans('daddy', [], null, $request->getLocale())
                 ],
                 'mom' => [
-                    'value' => false,
+                    'value' => 0,
                     'text' => $translator->trans('mom', [], null, $request->getLocale())
                 ]
             ],

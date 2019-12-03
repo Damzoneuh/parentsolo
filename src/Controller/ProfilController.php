@@ -159,6 +159,42 @@ class ProfilController extends AbstractController
         return $this->json(self::createFullyUserPayload($user, $currentUser, $request, $translator), 200);
     }
 
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/edit/profile", name="edit_profile")
+     */
+    public function renderEditProfile(){
+        /** @var $user User */
+        $user = $this->getUser();
+        $data = [];
+        $img = $user->getImg()->getValues();
+        if (!empty($img[0])){
+            $image = $img[0];
+            /** @var $image Img */
+            $data['profilImg'] = $image->getId();
+        }
+        else{
+            $data['profilImg'] = null;
+        }
+        $data['isMan'] = $user->getProfil()->getIsMan();
+        $profil = $user->getProfil();
+        $data['complete'] = true;
+
+        if (empty($profil->getDescription()) || empty($profil->getActivity()->getValues())
+            || empty($profil->getCook()->getValues()) || empty($profil->getEyes())
+            || empty($profil->getHair()) || empty($profil->getHairStyle()) || empty($profil->getHobbies()->getValues()) || empty($profil->getLangages()->getValues())
+            || empty($profil->getLifestyle()) || empty($profil->getMusic()->getValues()) || empty($profil->getNationality()) || empty($profil->getOrigin())
+            || empty($profil->getOuting()->getValues()) || empty($profil->getReading()->getValues())
+            || empty($profil->getSilhouette()) || empty($profil->getSize()) || empty($profil->getSmoke())){
+            $data['complete'] = false;
+        }
+
+        $data['userId'] = $user->getId();
+
+        return $this->render('profil/edit.html.twig', ['data' => $data]);
+    }
+
     private static function createFullyUserPayload(User $user, User $currentUser, Request $request, TranslatorInterface $translator){
         $data = [];
 
@@ -503,6 +539,8 @@ class ProfilController extends AbstractController
 //        $em->flush();
 //        return $this->json('ok');
 //    }
+
+
 
     private static function getAge($birthDate){
         $date = new \DateTime('now');

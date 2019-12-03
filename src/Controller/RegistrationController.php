@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
             $token = self::genToken();
             $data = $this->_serializer->decode($request->getContent(), 'json');
             $profil = new Profil();
-            $profil->setIsMan($data['credentials']['sex']);
+            $profil->setIsMan(intval($data['credentials']['sex']));
             $relationship = $this->getDoctrine()->getRepository(Relationship::class)
                 ->findOneBy(['name' => $data['credentials']['relation']]);
             $profil->setRelation($relationship);
