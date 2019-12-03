@@ -155,10 +155,7 @@ class Profil
      */
     private $religion;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Activity", inversedBy="profils")
-     */
-    private $activity;
+
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -195,6 +192,16 @@ class Profil
      */
     private $favorite;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FamilyStatus")
+     */
+    private $familyStatus;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Activity")
+     */
+    private $activity;
+
     public function __construct()
     {
         $this->childs = new ArrayCollection();
@@ -206,7 +213,7 @@ class Profil
         $this->music = new ArrayCollection();
         $this->movies = new ArrayCollection();
         $this->pets = new ArrayCollection();
-        $this->activity = new ArrayCollection();
+
         $this->reading = new ArrayCollection();
         $this->favorite = new ArrayCollection();
     }
@@ -674,32 +681,6 @@ class Profil
         return $this;
     }
 
-    /**
-     * @return Collection|Activity[]
-     */
-    public function getActivity(): Collection
-    {
-        return $this->activity;
-    }
-
-    public function addActivity(Activity $activity): self
-    {
-        if (!$this->activity->contains($activity)) {
-            $this->activity[] = $activity;
-        }
-
-        return $this;
-    }
-
-    public function removeActivity(Activity $activity): self
-    {
-        if ($this->activity->contains($activity)) {
-            $this->activity->removeElement($activity);
-        }
-
-        return $this;
-    }
-
     public function getChildWanted(): ?int
     {
         return $this->childWanted;
@@ -808,6 +789,30 @@ class Profil
         if ($this->favorite->contains($favorite)) {
             $this->favorite->removeElement($favorite);
         }
+
+        return $this;
+    }
+
+    public function getFamilyStatus(): ?FamilyStatus
+    {
+        return $this->familyStatus;
+    }
+
+    public function setFamilyStatus(?FamilyStatus $familyStatus): self
+    {
+        $this->familyStatus = $familyStatus;
+
+        return $this;
+    }
+
+    public function getActivity(): ?Activity
+    {
+        return $this->activity;
+    }
+
+    public function setActivity(?Activity $activity): self
+    {
+        $this->activity = $activity;
 
         return $this;
     }

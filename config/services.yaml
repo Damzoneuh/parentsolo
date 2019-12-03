@@ -17,6 +17,9 @@ parameters:
     app.supported_locales: ['en', 'de', 'fr']
     api.city.name: parentsolo
     api.city.key: so03232fa975a927abf4d5e48b2e17968981c1c221
+    de.trans.file: '%kernel.project_dir%/translations/messages.de.yaml'
+    fr.trans.file: '%kernel.project_dir%/translations/messages.fr.yaml'
+    en.trans.file: "%kernel.project_dir%/translations/messages.en.yaml"
     env(MERCURE_PUBLISH_URL): ""
     env(MERCURE_JWT_SECRET): ""
 

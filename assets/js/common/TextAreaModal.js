@@ -23,7 +23,8 @@ export default class TextAreaModal extends Component{
         e.preventDefault();
         this.props.handleSend({
             id: this.state.selectedFlower,
-            text: this.state.text
+            text: this.state.text,
+            action: 'flower'
         });
 
     }

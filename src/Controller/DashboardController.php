@@ -8,6 +8,7 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DashboardController extends AbstractController
@@ -72,8 +73,34 @@ class DashboardController extends AbstractController
             'cancel' => $translator->trans('cancel', [], null, $request->getLocale()),
             'sendFlower' => $translator->trans('flower.send', [], null, $request->getLocale()),
             'contact' => $translator->trans('contact', [], null, $request->getLocale()),
-            'validate' => $translator->trans('validate', [], null, $request->getLocale())
+            'validate' => $translator->trans('validate', [], null, $request->getLocale()),
+            'personality' => $translator->trans('personality', [], null, $request->getLocale()),
+            'relationship.search' => $translator->trans('relationship.search', [], null, $request->getLocale()),
+            'temperament' => $translator->trans('temperament', [], null, $request->getLocale()),
+            'child.wanted' => $translator->trans('childs.wanted', [], null, $request->getLocale()),
+            'spoken.languages' => $translator->trans('spoken.languages', [], null, $request->getLocale()),
+            'nationality' => $translator->trans('nationality', [], null, $request->getLocale()),
+            'lifestyle' => $translator->trans('lifestyle', [], null, $request->getLocale()),
+            'family.status' => $translator->trans('family.status', [], null, $request->getLocale()),
+            'way.of.life' => $translator->trans('way.of.life', [], null, $request->getLocale()),
+            'childs.care' => $translator->trans('childs.care', [], null, $request->getLocale()),
+            'religion' => $translator->trans('religion', [], null, $request->getLocale()),
+            'smoke' => $translator->trans('smoke', [], null, $request->getLocale()),
+            'studies.level' => $translator->trans('studies.level', [], null, $request->getLocale()),
+            'line.of.buisness' => $translator->trans('line.of.buisness', [], null, $request->getLocale()),
+            'appearence' => $translator->trans('appearence', [], null, $request->getLocale()),
+            'viewMore' => $translator->trans('view.more', [], null, $request->getLocale())
+
         ], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Route("/api/trans/all", name="api_trans_all", methods={"GET"})
+     */
+    public function allTrans(Request $request){
+        return $this->json(Yaml::parseFile($this->getParameter($request->getLocale() . '.trans.file')), 200);
     }
 
     /**
